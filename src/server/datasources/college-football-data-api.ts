@@ -30,7 +30,6 @@ export class CFBDataSource {
   makeRequest(endpoint: string, options?: RequestOptions): Promise<Response> {
     const params = this.urlEncode(options);
     const url = `${CFB_ENDPOINT}${endpoint}${params}`;
-    console.log("URL", url);
     return fetch(url, {
       headers: {
         Authorization: this.auth,
