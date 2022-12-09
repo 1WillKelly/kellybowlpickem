@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
-    "migrate-prod": "prisma migrate deploy",
+    "migrate-prod": "scripts/migrate.sh",
     "lint": "next lint",
     "start": "next start"
   },
