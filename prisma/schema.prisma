@@ -81,9 +81,10 @@ model Season {
 }
 
 model FootballTeam {
-  id    String @id @default(cuid())
-  apiId String
-  name  String
+  id         String  @id @default(cuid())
+  apiId      String
+  name       String
+  conference String?
 
   homeGames FootballMatchup[] @relation("HomeGames")
   awayGames FootballMatchup[] @relation("AwayGames")
@@ -104,6 +105,14 @@ model FootballMatchup {
   homeTeam   FootballTeam @relation(name: "HomeGames", fields: [homeTeamId], references: [id])
   awayTeamId String
   awayTeam   FootballTeam @relation(name: "AwayGames", fields: [awayTeamId], references: [id])
+
+  completed Boolean
+  homeScore Int?
+  awayScore Int?
+
+  // How many points a participant gets for correctly predicting
+  homePointValue Int?
+  awayPointValue Int?
 
   @@unique([apiId])
   @@index([seasonId])
