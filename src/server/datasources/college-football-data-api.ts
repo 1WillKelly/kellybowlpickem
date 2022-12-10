@@ -3,6 +3,27 @@ import fetch from "cross-fetch";
 import { env } from "../../env/server.mjs";
 const CFB_ENDPOINT = "https://api.collegefootballdata.com";
 
+export interface CFBDGame {
+  id: number;
+  season: number;
+  week: number;
+  season_type: number;
+  start_date: string;
+  completed: boolean;
+  conference_game: boolean;
+  venue: string;
+  home_id: number;
+  home_team: string;
+  home_conference: string;
+  home_points: number;
+  away_id: number;
+  away_team: string;
+  away_conference: string;
+  away_points: number;
+  // Will be the bowl game title
+  notes?: string;
+}
+
 interface RequestOptions {
   [key: string]: string | number;
 }
@@ -27,14 +48,29 @@ export class CFBDataSource {
     return `?${parts.join("&")}`;
   }
 
-  makeRequest(endpoint: string, options?: RequestOptions): Promise<Response> {
+  private async makeRequest<T = unknown>(
+    endpoint: string,
+    options?: RequestOptions
+  ): Promise<T> {
     const params = this.urlEncode(options);
     const url = `${CFB_ENDPOINT}${endpoint}${params}`;
-    return fetch(url, {
+    const result = await fetch(url, {
       headers: {
         Authorization: this.auth,
         Accept: "application/json",
       },
-    }).then((resp) => resp.json());
+    });
+    return (await result.json()) as T;
+  }
+
+  games(season: number, options?: RequestOptions): Promise<CFBDGame[]> {
+    return this.makeRequest<CFBDGame[]>("/games", {
+      year: season,
+      ...options,
+    });
+  }
+
+  postSeasonGames(season: number): Promise<CFBDGame[]> {
+    return this.games(season, { seasonType: "postseason" });
   }
 }
