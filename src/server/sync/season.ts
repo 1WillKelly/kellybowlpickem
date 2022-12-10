@@ -28,7 +28,8 @@ export const getSeason = async (): Promise<Season> => {
 
 const upsertTeam = async (
   apiId: string,
-  name: string
+  name: string,
+  conference: string | undefined
 ): Promise<FootballTeam> => {
   return await prisma.footballTeam.upsert({
     where: {
@@ -37,9 +38,11 @@ const upsertTeam = async (
     create: {
       apiId,
       name,
+      conference,
     },
     update: {
       name,
+      conference,
     },
   });
 };
@@ -49,29 +52,41 @@ export const syncBowlGames = async () => {
   const client = new CFBDataSource();
   const games = await client.postSeasonGames(season.year);
   for (const game of games) {
-    const homeTeam = await upsertTeam(game.home_id.toString(), game.home_team);
-    const awayTeam = await upsertTeam(game.away_id.toString(), game.away_team);
+    const homeTeam = await upsertTeam(
+      game.home_id.toString(),
+      game.home_team,
+      game.home_conference
+    );
+    const awayTeam = await upsertTeam(
+      game.away_id.toString(),
+      game.away_team,
+      game.away_conference
+    );
 
     const startDate = new Date(game.start_date);
     const apiId = game.id.toString();
+    const commonUpdateFields = {
+      startDate,
+      completed: game.completed,
+      homeScore: game.home_points,
+      awayScore: game.away_points,
+      name: game.notes,
+    };
+
     await prisma.footballMatchup.upsert({
       where: {
         apiId,
       },
       create: {
-        startDate,
         apiId,
         week: game.week,
         seasonType: game.season_type,
         seasonId: season.id,
         homeTeamId: homeTeam.id,
         awayTeamId: awayTeam.id,
-        name: game.notes,
+        ...commonUpdateFields,
       },
-      update: {
-        name: game.notes,
-        startDate,
-      },
+      update: commonUpdateFields,
     });
   }
 };
