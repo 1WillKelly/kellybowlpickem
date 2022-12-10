@@ -85,20 +85,29 @@ model FootballTeam {
   apiId String
   name  String
 
+  homeGames FootballMatchup[] @relation("HomeGames")
+  awayGames FootballMatchup[] @relation("AwayGames")
+
   @@unique([apiId])
 }
 
 model FootballMatchup {
-  id         String   @id @default(cuid())
+  id         String       @id @default(cuid())
+  apiId      String
   startDate  DateTime
   week       Int
   seasonType String
-  apiId      String
   seasonId   String
-  season     Season   @relation(fields: [seasonId], references: [id])
+  season     Season       @relation(fields: [seasonId], references: [id])
+  homeTeamId String
+  homeTeam   FootballTeam @relation(name: "HomeGames", fields: [homeTeamId], references: [id])
+  awayTeamId String
+  awayTeam   FootballTeam @relation(name: "AwayGames", fields: [awayTeamId], references: [id])
 
   @@unique([apiId])
   @@index([seasonId])
+  @@index([homeTeamId])
+  @@index([awayTeamId])
 }
 
 model Participant {

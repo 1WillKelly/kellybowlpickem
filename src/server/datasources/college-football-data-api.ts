@@ -7,7 +7,7 @@ export interface CFBDGame {
   id: number;
   season: number;
   week: number;
-  season_type: number;
+  season_type: string;
   start_date: string;
   completed: boolean;
   conference_game: boolean;
