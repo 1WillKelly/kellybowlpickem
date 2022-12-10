@@ -97,6 +97,7 @@ model FootballMatchup {
   startDate  DateTime
   week       Int
   seasonType String
+  name       String?
   seasonId   String
   season     Season       @relation(fields: [seasonId], references: [id])
   homeTeamId String

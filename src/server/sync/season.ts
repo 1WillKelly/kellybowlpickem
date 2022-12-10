@@ -66,8 +66,10 @@ export const syncBowlGames = async () => {
         seasonId: season.id,
         homeTeamId: homeTeam.id,
         awayTeamId: awayTeam.id,
+        name: game.notes,
       },
       update: {
+        name: game.notes,
         startDate,
       },
     });
