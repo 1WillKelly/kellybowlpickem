@@ -1,13 +1,15 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { CFBDataSource } from "server/datasources/college-football-data-api";
+import { syncBowlGames } from "server/sync/season";
 import { webhookAuth } from "./auth";
 
-const syncBowlGames = async (_req: NextApiRequest, res: NextApiResponse) => {
-  const client = new CFBDataSource();
-  const games = await client.postSeasonGames(2022);
+const syncBowlGamesEndpoint = async (
+  _req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  await syncBowlGames();
   res.status(200).json({
-    games,
+    ok: true,
   });
 };
 
-export default webhookAuth(syncBowlGames);
+export default webhookAuth(syncBowlGamesEndpoint);
