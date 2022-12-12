@@ -34,8 +34,8 @@ const isAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
-const ADMIN_ALLOWED_EMAILS = process.env.ADMIN_ALLOWED_EMAILS
-  ? process.env.ADMIN_ALLOWED_EMAILS.split(",")
+const ADMIN_ALLOWED_EMAILS = env.ADMIN_ALLOWED_EMAILS
+  ? env.ADMIN_ALLOWED_EMAILS.split(",")
   : [];
 
 const requireAdmin = t.middleware(({ ctx, next }) => {
