@@ -13,5 +13,14 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  async redirects() {
+    return [
+      {
+        source: "/admin",
+        destination: "/admin/games",
+        permanent: false,
+      },
+    ];
+  },
 };
 export default config;

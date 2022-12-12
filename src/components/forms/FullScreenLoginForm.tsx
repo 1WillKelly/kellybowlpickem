@@ -9,7 +9,7 @@ const FullScreenLoginForm: React.FC = () => {
         You need to be signed in to view this page.
       </div>
       <div className="mt-4">
-        <Button onClick={() => signIn("google")}>Sign in </Button>
+        <Button onClick={() => signIn("google")}>Sign in with Google</Button>
       </div>
     </div>
   );
