@@ -5,6 +5,7 @@ interface EditableTableProps<TData> {
   items?: readonly TData[];
   renderItem: (item: TData) => React.ReactNode[];
   editItem: (item: TData) => void;
+  deleteItem?: (item: TData) => void;
   loading?: boolean;
 }
 
@@ -51,13 +52,24 @@ const EditableTable = <TData,>(props: EditableTableProps<TData>) => {
                         {cell}
                       </td>
                     ))}
-                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                    <td className="relative space-x-2 whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                       <button
                         className="text-indigo-600 hover:text-indigo-900"
                         onClick={() => props.editItem(item)}
                       >
                         Edit
                       </button>
+
+                      {props.deleteItem && (
+                        <button
+                          className="text-red-600 hover:text-red-900"
+                          onClick={() =>
+                            props.deleteItem && props.deleteItem(item)
+                          }
+                        >
+                          Delete
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}

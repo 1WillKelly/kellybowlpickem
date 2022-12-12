@@ -7,6 +7,8 @@ import { useState } from "react";
 import { type ParticipantWithTeam } from "types/admin-types";
 import Button from "components/Button";
 import EditParticipantDialog from "components/dialog/EditParticipantDialog";
+import { type Participant } from "@prisma/client";
+import DeleteParticipantDialog from "components/dialog/DeleteParticipantDialog";
 
 const AdminParticipantPage: NextPage = () => {
   const { isLoading, data } = trpc.admin.participants.useQuery();
@@ -16,6 +18,10 @@ const AdminParticipantPage: NextPage = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingParticipant, setDeletingParticipant] = useState<
+    Participant | undefined
+  >();
 
   return (
     <AdminLayout>
@@ -32,6 +38,16 @@ const AdminParticipantPage: NextPage = () => {
           onClose={() => setEditDialogOpen(false)}
         />
       )}
+      {deletingParticipant && (
+        <DeleteParticipantDialog
+          open={deleteDialogOpen}
+          participant={deletingParticipant}
+          onClose={() => {
+            setDeleteDialogOpen(false);
+            setDeletingParticipant(undefined);
+          }}
+        />
+      )}
       <div className="flex justify-between">
         <h1 className="text-xl">Participants</h1>
         <Button onClick={() => setCreateDialogOpen(true)}>
@@ -46,6 +62,10 @@ const AdminParticipantPage: NextPage = () => {
         editItem={(participant) => {
           setEditingParticipant(participant);
           setEditDialogOpen(true);
+        }}
+        deleteItem={(participant) => {
+          setDeletingParticipant(participant);
+          setDeleteDialogOpen(true);
         }}
       />
     </AdminLayout>

@@ -1,5 +1,4 @@
 import { type Participant } from "@prisma/client";
-import Button from "components/Button";
 import Input from "components/Input";
 import { useForm } from "react-hook-form";
 import { trpc } from "utils/trpc";
@@ -21,13 +20,6 @@ const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
   const { register, handleSubmit } = useForm<FormProps>();
   const utils = trpc.useContext();
   const update = trpc.admin.upsertParticipant.useMutation({
-    onSuccess: () => {
-      props.onClose();
-      utils.admin.participants.invalidate();
-    },
-  });
-
-  const deleteParticipant = trpc.admin.deleteParticipant.useMutation({
     onSuccess: () => {
       props.onClose();
       utils.admin.participants.invalidate();
@@ -73,21 +65,6 @@ const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
           />
         </div>
         <input type="submit" className="hidden" />
-        {props.participant && (
-          <div className="flex justify-center">
-            <Button
-              className="bg-red-600"
-              onClick={() =>
-                props.participant &&
-                deleteParticipant.mutate({
-                  participantId: props.participant.id,
-                })
-              }
-            >
-              Delete Participant
-            </Button>
-          </div>
-        )}
       </form>
     </Dialog>
   );
