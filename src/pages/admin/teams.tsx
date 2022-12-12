@@ -9,14 +9,10 @@ import Button from "components/Button";
 import EditParticipantTeamDialog from "components/dialog/EditParticipantTeamDialog";
 import DeleteParticipantTeamDialog from "components/dialog/DeleteParticipantTeamDialog";
 
-import { type TeamWithParticipants } from "types/admin-types";
-
 const AdminTeamPage: NextPage = () => {
   const { isLoading, data } = trpc.adminTeams.teams.useQuery();
 
-  const [editingTeam, setEditingTeam] = useState<
-    TeamWithParticipants | undefined
-  >();
+  const [editingTeamId, setEditingTeamId] = useState<string | undefined>();
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -38,10 +34,10 @@ const AdminTeamPage: NextPage = () => {
           onClose={() => setCreateDialogOpen(false)}
         />
       )}
-      {editingTeam && (
+      {editingTeamId && (
         <EditParticipantTeamDialog
           open={editDialogOpen}
-          team={editingTeam}
+          team={data?.teams.find((t) => t.id === editingTeamId)}
           onClose={() => setEditDialogOpen(false)}
         />
       )}
@@ -60,7 +56,7 @@ const AdminTeamPage: NextPage = () => {
         columnNames={["Name", "Members"]}
         loading={isLoading}
         editItem={(team) => {
-          setEditingTeam(team);
+          setEditingTeamId(team.id);
           setEditDialogOpen(true);
         }}
         renderItem={(team) => [
