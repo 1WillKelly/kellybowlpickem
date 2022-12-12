@@ -1,4 +1,4 @@
-import { type Participant } from "@prisma/client";
+import { type ParticipantTeam } from "@prisma/client";
 import Input from "components/Input";
 import { useForm } from "react-hook-form";
 import { trpc } from "utils/trpc";
@@ -7,11 +7,10 @@ import Dialog from "./Dialog";
 
 interface FormProps {
   name: string;
-  email: string;
 }
 
 interface EditParticipantDialogProps {
-  participant?: Participant;
+  team?: ParticipantTeam;
   open: boolean;
   onClose: () => void;
 }
@@ -19,16 +18,16 @@ interface EditParticipantDialogProps {
 const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
   const { register, handleSubmit } = useForm<FormProps>();
   const utils = trpc.useContext();
-  const update = trpc.adminParticipants.upsertParticipant.useMutation({
+  const update = trpc.adminTeams.upsertTeam.useMutation({
     onSuccess: () => {
       props.onClose();
-      utils.adminParticipants.participants.invalidate();
+      utils.adminTeams.teams.invalidate();
     },
   });
 
   const onSubmit = handleSubmit(async (data) => {
     update.mutate({
-      participantId: props.participant?.id,
+      teamId: props.team?.id,
       ...data,
     });
   });
@@ -37,8 +36,8 @@ const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
     <Dialog
       open={props.open}
       onClose={props.onClose}
-      title={props.participant ? "Edit Participant" : "Create Participant"}
-      primaryButtonText={props.participant ? "Update" : "Create"}
+      title={props.team ? "Edit Team" : "Create Team"}
+      primaryButtonText={props.team ? "Update" : "Create"}
       onSubmit={onSubmit}
     >
       <form
@@ -52,16 +51,8 @@ const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
           <label htmlFor="name">Name</label>
           <Input
             type="text"
-            defaultValue={props.participant?.name}
+            defaultValue={props.team?.name}
             {...register("name", { required: true })}
-          />
-        </div>
-        <div className="flex flex-row items-center justify-between space-x-4">
-          <label htmlFor="name">Email</label>
-          <Input
-            type="email"
-            defaultValue={props.participant?.email}
-            {...register("email", { required: true })}
           />
         </div>
         <input type="submit" className="hidden" />

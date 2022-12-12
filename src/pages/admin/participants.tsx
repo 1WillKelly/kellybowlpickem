@@ -11,7 +11,7 @@ import { type Participant } from "@prisma/client";
 import DeleteParticipantDialog from "components/dialog/DeleteParticipantDialog";
 
 const AdminParticipantPage: NextPage = () => {
-  const { isLoading, data } = trpc.admin.participants.useQuery();
+  const { isLoading, data } = trpc.adminParticipants.participants.useQuery();
   const [editingParticipant, setEditingParticipant] = useState<
     ParticipantWithTeam | undefined
   >();
@@ -56,9 +56,13 @@ const AdminParticipantPage: NextPage = () => {
       </div>
       <EditableTable
         items={data?.participants}
-        columnNames={["Name", "Email"]}
+        columnNames={["Name", "Email", "Team"]}
         loading={isLoading}
-        renderItem={(participant) => [participant.name, participant.email]}
+        renderItem={(participant) => [
+          participant.name,
+          participant.email,
+          participant.teamMembership?.team.name,
+        ]}
         editItem={(participant) => {
           setEditingParticipant(participant);
           setEditDialogOpen(true);
