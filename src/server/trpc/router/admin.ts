@@ -6,7 +6,7 @@ import { router, adminProcedure } from "../trpc";
 export const adminRouter = router({
   listGames: adminProcedure.query(async ({ ctx }) => {
     const season = await getSeason();
-    return ctx.prisma.footballMatchup.findMany({
+    const matchups = await ctx.prisma.footballMatchup.findMany({
       orderBy: {
         startDate: "asc",
       },
@@ -18,6 +18,10 @@ export const adminRouter = router({
         awayTeam: true,
       },
     });
+    return {
+      season,
+      matchups,
+    };
   }),
   updateGame: adminProcedure
     .input(
@@ -37,7 +41,7 @@ export const adminRouter = router({
         dataToUpdate.homePointValue = input.homePointValue;
       }
       if (input.awayPointValue) {
-        dataToUpdate.awayPointValue = input.awayPointValue;
+        dataToUpdate.awayPointValue = input.homePointValue;
       }
       return await ctx.prisma.footballMatchup.update({
         where: {

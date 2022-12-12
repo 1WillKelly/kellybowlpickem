@@ -15,7 +15,9 @@ const AdminGamePage: NextPage = () => {
 
   return (
     <AdminLayout>
-      <h1 className="text-xl">Game Management</h1>
+      <h1 className="text-xl">
+        Game Management {data?.season && `(${data?.season.displayName})`}
+      </h1>
       {editingGame && (
         <EditGameDialog
           key={editingGame.id}
@@ -25,7 +27,7 @@ const AdminGamePage: NextPage = () => {
         />
       )}
       <EditableTable
-        items={data}
+        items={data?.matchups}
         columnNames={[
           "Game",
           "Home Team",

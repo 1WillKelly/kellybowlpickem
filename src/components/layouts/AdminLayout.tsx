@@ -27,7 +27,7 @@ const AdminLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Bowl Pickem Admin</title>
+        <title>Bowl Pick&apos;em Admin</title>
       </Head>
       {content()}
     </>
