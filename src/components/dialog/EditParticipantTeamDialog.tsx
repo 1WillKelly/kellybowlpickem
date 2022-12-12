@@ -1,3 +1,4 @@
+import Button from "components/Button";
 import Input from "components/Input";
 import { useForm } from "react-hook-form";
 import { type TeamWithParticipants } from "types/admin-types";
@@ -44,6 +45,13 @@ const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
       utils.adminTeams.teams.invalidate();
     },
   });
+
+  const removeTeamMember =
+    trpc.adminTeams.removeParticipantFromTeam.useMutation({
+      onSuccess: () => {
+        utils.adminTeams.teams.invalidate();
+      },
+    });
 
   const onSubmit = handleSubmit(async (data) => {
     update.mutate({
@@ -96,10 +104,26 @@ const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
       </form>
       {props.team && (
         <div className="mt-4">
-          <div className="text-left">
+          <div className="space-y-2 text-left">
             {props.team?.members.length && <p className="font-bold">Members</p>}
             {props.team?.members.map((m) => (
-              <div key={m.id}>{m.participant.name}</div>
+              <div
+                key={m.id}
+                className="flex flex-row items-center justify-between"
+              >
+                <div>{m.participant.name}</div>
+                <Button
+                  primary={false}
+                  secondary
+                  onClick={() => {
+                    removeTeamMember.mutate({
+                      id: m.id,
+                    });
+                  }}
+                >
+                  Remove
+                </Button>
+              </div>
             ))}
           </div>
           <form
