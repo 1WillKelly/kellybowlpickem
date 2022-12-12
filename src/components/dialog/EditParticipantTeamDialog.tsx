@@ -1,6 +1,6 @@
-import { type ParticipantTeam } from "@prisma/client";
 import Input from "components/Input";
 import { useForm } from "react-hook-form";
+import { type TeamWithParticipants } from "types/admin-types";
 import { trpc } from "utils/trpc";
 
 import Dialog from "./Dialog";
@@ -10,7 +10,7 @@ interface FormProps {
 }
 
 interface EditParticipantDialogProps {
-  team?: ParticipantTeam;
+  team?: TeamWithParticipants;
   open: boolean;
   onClose: () => void;
 }

@@ -1,17 +1,22 @@
 import { type NextPage } from "next";
-import AdminLayout from "components/layouts/AdminLayout";
-import { trpc } from "utils/trpc";
-import EditableTable from "components/EditableTable";
-import { type ParticipantTeam } from "@prisma/client";
 import { useState } from "react";
+
+import { trpc } from "utils/trpc";
+import { type ParticipantTeam } from "@prisma/client";
+import AdminLayout from "components/layouts/AdminLayout";
+import EditableTable from "components/EditableTable";
 import Button from "components/Button";
 import EditParticipantTeamDialog from "components/dialog/EditParticipantTeamDialog";
 import DeleteParticipantTeamDialog from "components/dialog/DeleteParticipantTeamDialog";
 
+import { type TeamWithParticipants } from "types/admin-types";
+
 const AdminTeamPage: NextPage = () => {
   const { isLoading, data } = trpc.adminTeams.teams.useQuery();
 
-  const [editingTeam, setEditingTeam] = useState<ParticipantTeam | undefined>();
+  const [editingTeam, setEditingTeam] = useState<
+    TeamWithParticipants | undefined
+  >();
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
