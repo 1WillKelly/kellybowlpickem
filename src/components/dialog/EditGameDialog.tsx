@@ -1,5 +1,6 @@
 import { type GameWithTeam } from "types/admin-types";
 import Dialog from "./Dialog";
+import { useForm } from "react-hook-form";
 
 interface EditGameDialogProps {
   game: GameWithTeam;
@@ -8,14 +9,25 @@ interface EditGameDialogProps {
 }
 
 const EditGameDialog: React.FC<EditGameDialogProps> = (props) => {
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = handleSubmit(async (data) => {});
+
   return (
     <Dialog
       open={props.open}
       onClose={props.onClose}
       title="Edit Game"
       primaryButtonText="Save"
-      cancelButton={false}
-    ></Dialog>
+      onSubmit={onSubmit}
+    >
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
+      ></form>
+    </Dialog>
   );
 };
 
