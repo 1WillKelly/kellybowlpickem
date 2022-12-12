@@ -80,7 +80,10 @@ export const adminRouter = router({
           where: {
             id: input.participantId,
           },
-          data: input,
+          data: {
+            name: input.name,
+            email: input.email,
+          },
         });
       }
       return await ctx.prisma.participant.create({

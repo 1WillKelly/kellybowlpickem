@@ -58,11 +58,19 @@ const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
       >
         <div className="flex flex-row items-center justify-between space-x-4">
           <label htmlFor="name">Name</label>
-          <Input type="text" {...register("name", { required: true })} />
+          <Input
+            type="text"
+            defaultValue={props.participant?.name}
+            {...register("name", { required: true })}
+          />
         </div>
         <div className="flex flex-row items-center justify-between space-x-4">
           <label htmlFor="name">Email</label>
-          <Input type="email" {...register("email", { required: true })} />
+          <Input
+            type="email"
+            defaultValue={props.participant?.email}
+            {...register("email", { required: true })}
+          />
         </div>
         <input type="submit" className="hidden" />
         {props.participant && (
