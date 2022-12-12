@@ -23,14 +23,11 @@ export const serverSchema = z.object({
     // VERCEL_URL doesn't include `https` so it cant be validated as a URL
     process.env.VERCEL ? z.string() : z.string().url()
   ),
-  // TODO(aiden) make this required once prod is rolled out
-  GOOGLE_CLIENT_ID: z.string().optional(),
-  // TODO(aiden) make this required once prod is rolled out
-  GOOGLE_CLIENT_SECRET: z.string().optional(),
+  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
   ADMIN_ALLOWED_EMAILS:
     process.env.NODE_ENV === "production"
-      ? // TODO (aiden) make this required once prod is rolled out
-        z.string().min(1).optional()
+      ? z.string().min(1)
       : z.string().min(1).optional(),
   // Collegefootballdata.com
   CFBD_API_KEY: z.string(),
