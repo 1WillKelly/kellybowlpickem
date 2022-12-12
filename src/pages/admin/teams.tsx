@@ -52,13 +52,16 @@ const AdminTeamPage: NextPage = () => {
       )}
       <EditableTable
         items={data?.teams}
-        columnNames={["Name"]}
+        columnNames={["Name", "Members"]}
         loading={isLoading}
         editItem={(team) => {
           setEditingTeam(team);
           setEditDialogOpen(true);
         }}
-        renderItem={(team) => [team.name]}
+        renderItem={(team) => [
+          team.name,
+          team.members.map((m) => m.participant.name).join(" "),
+        ]}
         deleteItem={(team) => {
           setDeletingTeam(team);
           setDeleteDialogOpen(true);
