@@ -5,6 +5,7 @@ import EditableTable from "components/EditableTable";
 import { type ParticipantTeam } from "@prisma/client";
 import { useState } from "react";
 import Button from "components/Button";
+import EditParticipantTeamDialog from "components/dialog/EditParticipantTeamDialog";
 
 const AdminTeamPage: NextPage = () => {
   const { isLoading, data } = trpc.adminTeams.teams.useQuery();
@@ -25,6 +26,19 @@ const AdminTeamPage: NextPage = () => {
         <Button onClick={() => setCreateDialogOpen(true)}>Add Team</Button>
       </div>
 
+      {createDialogOpen && (
+        <EditParticipantTeamDialog
+          open={true}
+          onClose={() => setCreateDialogOpen(false)}
+        />
+      )}
+      {editingTeam && (
+        <EditParticipantTeamDialog
+          open={editDialogOpen}
+          team={editingTeam}
+          onClose={() => setEditDialogOpen(false)}
+        />
+      )}
       <EditableTable
         items={data?.teams}
         columnNames={["Name"]}
