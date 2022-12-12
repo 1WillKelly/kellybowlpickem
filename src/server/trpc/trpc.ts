@@ -41,22 +41,22 @@ const requireAdmin = t.middleware(({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  // Skip email allowlist in dev
-  if (
-    process.env.NODE_ENV === "development" &&
-    ADMIN_ALLOWED_EMAILS.length === 0
-  ) {
-    return next({ ctx });
-  }
+  const isAdmin =
+    // Skip email allowlist in dev
+    (process.env.NODE_ENV === "development" &&
+      ADMIN_ALLOWED_EMAILS.length === 0) ||
+    (ctx.session.user.email &&
+      ADMIN_ALLOWED_EMAILS.includes(ctx.session.user.email));
 
-  if (
-    !ctx.session.user.email ||
-    !ADMIN_ALLOWED_EMAILS.includes(ctx.session.user.email)
-  ) {
+  if (!isAdmin) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-
-  return next({ ctx });
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
 });
 
 /**
@@ -64,4 +64,7 @@ const requireAdmin = t.middleware(({ ctx, next }) => {
  **/
 export const protectedProcedure = t.procedure.use(isAuthed);
 
+/**
+ * Admin procedure
+ **/
 export const adminProcedure = t.procedure.use(isAuthed).use(requireAdmin);

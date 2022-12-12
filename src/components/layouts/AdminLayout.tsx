@@ -1,6 +1,7 @@
 import React from "react";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
+import AdminNav from "components/navigation/AdminNav";
 
 const AdminLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { status } = useSession();
@@ -26,7 +27,12 @@ const AdminLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
       );
     }
 
-    return children;
+    return (
+      <div className="min-h-full bg-gray-100">
+        <AdminNav />
+        {children}
+      </div>
+    );
   };
 
   return (
@@ -34,7 +40,7 @@ const AdminLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
       <Head>
         <title>Bowl Pickem Admin</title>
       </Head>
-      <div>{content()}</div>
+      {content()}
     </>
   );
 };
