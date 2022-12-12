@@ -65,7 +65,7 @@ const AdminTeamPage: NextPage = () => {
         }}
         renderItem={(team) => [
           team.name,
-          team.members.map((m) => m.participant.name).join(" "),
+          team.members.map((m) => m.participant.name).join(", "),
         ]}
         deleteItem={(team) => {
           setDeletingTeam(team);
