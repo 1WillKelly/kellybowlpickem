@@ -8,18 +8,28 @@ on:
     # # Every 2 hours on the 00
     # - cron: "0 */2 * * *"
     # # Once a week
-    # - cron: "0 0 * * 1"
+    - cron: "0 0 * * 1"
 
 jobs:
   sync-games:
     runs-on: ubuntu-22.04
     steps:
       - name: Sync Bowl Games
-        if: github.event.schedule == '30 * * * *'
+        if: github.event.schedule == "0 0 * * 1"
         run: |
           curl -X POST -ss \
             -H "Authentication: token $WEBHOOK_SECRET" \
             "${DEPLOYMENT_URL}/api/sync/sync-bowl-games"
+        env:
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+          DEPLOYMENT_URL: ${{ secrets.DEPLOYMENT_URL }}
+
+      - name: Sync Scores
+        if: github.event.schedule == "30 * * * *"
+        run: |
+          curl -X POST -ss \
+            -H "Authentication: token $WEBHOOK_SECRET" \
+            "${DEPLOYMENT_URL}/api/sync/sync-scores
         env:
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
           DEPLOYMENT_URL: ${{ secrets.DEPLOYMENT_URL }}
