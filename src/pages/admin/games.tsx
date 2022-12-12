@@ -18,6 +18,7 @@ const AdminGamePage: NextPage = () => {
       <h1 className="text-xl">Game Management</h1>
       {editingGame && (
         <EditGameDialog
+          key={editingGame.id}
           game={editingGame}
           open={dialogOpen}
           onClose={() => setDialogOpen(false)}
@@ -25,7 +26,14 @@ const AdminGamePage: NextPage = () => {
       )}
       <EditableTable
         items={data}
-        columnNames={["Game", "Home Team", "Away Team", "Time"]}
+        columnNames={[
+          "Game",
+          "Home Team",
+          "Home Points",
+          "Away Team",
+          "Away Points",
+          "Time",
+        ]}
         loading={isLoading}
         editItem={(game) => {
           setEditingGame(game);
@@ -34,7 +42,9 @@ const AdminGamePage: NextPage = () => {
         renderItem={(game) => [
           game.name,
           game.homeTeam.name,
+          game.homePointValue,
           game.awayTeam.name,
+          game.awayPointValue,
           formatTime(game.startDate),
         ]}
       />
