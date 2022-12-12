@@ -6,6 +6,7 @@ import { type ParticipantTeam } from "@prisma/client";
 import { useState } from "react";
 import Button from "components/Button";
 import EditParticipantTeamDialog from "components/dialog/EditParticipantTeamDialog";
+import DeleteParticipantTeamDialog from "components/dialog/DeleteParticipantTeamDialog";
 
 const AdminTeamPage: NextPage = () => {
   const { isLoading, data } = trpc.adminTeams.teams.useQuery();
@@ -37,6 +38,16 @@ const AdminTeamPage: NextPage = () => {
           open={editDialogOpen}
           team={editingTeam}
           onClose={() => setEditDialogOpen(false)}
+        />
+      )}
+      {deletingTeam && (
+        <DeleteParticipantTeamDialog
+          open={deleteDialogOpen}
+          team={deletingTeam}
+          onClose={() => {
+            setDeleteDialogOpen(false);
+            setDeletingTeam(undefined);
+          }}
         />
       )}
       <EditableTable
