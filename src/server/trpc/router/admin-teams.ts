@@ -57,4 +57,31 @@ export const adminTeamsRouter = router({
         },
       });
     }),
+
+  removeParticipantFromTeam: adminProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.participantTeamMember.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+
+  addParticipantToTeam: adminProcedure
+    .input(
+      z.object({
+        participantId: z.string(),
+        teamId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.participantTeamMember.create({
+        data: input,
+      });
+    }),
 });

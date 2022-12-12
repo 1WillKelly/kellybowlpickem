@@ -104,8 +104,8 @@ model FootballMatchup {
   awayScore Int?
 
   // How many points a participant gets for correctly predicting
-  homePointValue Int?
-  awayPointValue Int?
+  homePointValue Float?
+  awayPointValue Float?
 
   @@unique([apiId])
   @@index([seasonId])

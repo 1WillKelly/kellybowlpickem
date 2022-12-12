@@ -29,7 +29,7 @@ jobs:
         run: |
           curl -X POST -ss \
             -H "Authentication: token $WEBHOOK_SECRET" \
-            "${DEPLOYMENT_URL}/api/sync/sync-scores
+            "${DEPLOYMENT_URL}/api/sync/sync-scores"
         env:
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
           DEPLOYMENT_URL: ${{ secrets.DEPLOYMENT_URL }}

@@ -1,9 +1,10 @@
 import { type NextPage } from "next";
-import AdminLayout from "components/layouts/AdminLayout";
-import { trpc } from "utils/trpc";
-import EditableTable from "components/EditableTable";
-import { type ParticipantTeam } from "@prisma/client";
 import { useState } from "react";
+
+import { trpc } from "utils/trpc";
+import { type ParticipantTeam } from "@prisma/client";
+import AdminLayout from "components/layouts/AdminLayout";
+import EditableTable from "components/EditableTable";
 import Button from "components/Button";
 import EditParticipantTeamDialog from "components/dialog/EditParticipantTeamDialog";
 import DeleteParticipantTeamDialog from "components/dialog/DeleteParticipantTeamDialog";
@@ -11,7 +12,7 @@ import DeleteParticipantTeamDialog from "components/dialog/DeleteParticipantTeam
 const AdminTeamPage: NextPage = () => {
   const { isLoading, data } = trpc.adminTeams.teams.useQuery();
 
-  const [editingTeam, setEditingTeam] = useState<ParticipantTeam | undefined>();
+  const [editingTeamId, setEditingTeamId] = useState<string | undefined>();
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -33,10 +34,10 @@ const AdminTeamPage: NextPage = () => {
           onClose={() => setCreateDialogOpen(false)}
         />
       )}
-      {editingTeam && (
+      {editingTeamId && (
         <EditParticipantTeamDialog
           open={editDialogOpen}
-          team={editingTeam}
+          team={data?.teams.find((t) => t.id === editingTeamId)}
           onClose={() => setEditDialogOpen(false)}
         />
       )}
@@ -55,12 +56,12 @@ const AdminTeamPage: NextPage = () => {
         columnNames={["Name", "Members"]}
         loading={isLoading}
         editItem={(team) => {
-          setEditingTeam(team);
+          setEditingTeamId(team.id);
           setEditDialogOpen(true);
         }}
         renderItem={(team) => [
           team.name,
-          team.members.map((m) => m.participant.name).join(" "),
+          team.members.map((m) => m.participant.name).join(", "),
         ]}
         deleteItem={(team) => {
           setDeletingTeam(team);

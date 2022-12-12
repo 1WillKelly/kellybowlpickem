@@ -18,3 +18,9 @@ export type ParticipantWithTeam = Participant & {
       })
     | null;
 };
+
+export type TeamWithParticipants = ParticipantTeam & {
+  members: (ParticipantTeamMember & {
+    participant: Participant;
+  })[];
+};
