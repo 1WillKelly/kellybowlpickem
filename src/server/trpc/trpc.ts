@@ -34,7 +34,9 @@ const isAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
-const ADMIN_ALLOWED_EMAILS = (env.ADMIN_ALLOWED_EMAILS || "").split(",");
+const ADMIN_ALLOWED_EMAILS = process.env.ADMIN_ALLOWED_EMAILS
+  ? process.env.ADMIN_ALLOWED_EMAILS.split(",")
+  : [];
 
 const requireAdmin = t.middleware(({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
@@ -49,6 +51,7 @@ const requireAdmin = t.middleware(({ ctx, next }) => {
       ADMIN_ALLOWED_EMAILS.includes(ctx.session.user.email));
 
   if (!isAdmin) {
+    console.error("Non-admin tried to access: ", ctx.session.user.email);
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
