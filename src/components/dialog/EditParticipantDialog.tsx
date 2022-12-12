@@ -19,10 +19,10 @@ interface EditParticipantDialogProps {
 const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
   const { register, handleSubmit } = useForm<FormProps>();
   const utils = trpc.useContext();
-  const update = trpc.admin.upsertParticipant.useMutation({
+  const update = trpc.adminParticipants.upsertParticipant.useMutation({
     onSuccess: () => {
       props.onClose();
-      utils.admin.participants.invalidate();
+      utils.adminParticipants.participants.invalidate();
     },
   });
 

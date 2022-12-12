@@ -14,12 +14,13 @@ const DeleteParticipantDialog: React.FC<DeleteParticipantDialogProps> = (
 ) => {
   const utils = trpc.useContext();
 
-  const deleteParticipant = trpc.admin.deleteParticipant.useMutation({
-    onSuccess: () => {
-      props.onClose();
-      utils.admin.participants.invalidate();
-    },
-  });
+  const deleteParticipant =
+    trpc.adminParticipants.deleteParticipant.useMutation({
+      onSuccess: () => {
+        props.onClose();
+        utils.adminParticipants.participants.invalidate();
+      },
+    });
 
   const onSubmit = () => {
     deleteParticipant.mutate({
