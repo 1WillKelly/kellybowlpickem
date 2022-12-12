@@ -13,6 +13,14 @@ const AdminGamePage: NextPage = () => {
   const [editingGame, setEditingGame] = useState<GameWithTeam | undefined>();
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const formatName = (game: GameWithTeam) => {
+    if (!game.homePointValue || !game.awayPointValue) {
+      return <span className="border-b-2 border-red-600">{game.name}</span>;
+    }
+
+    return game.name;
+  };
+
   return (
     <AdminLayout>
       <h1 className="text-xl">
@@ -42,7 +50,7 @@ const AdminGamePage: NextPage = () => {
           setDialogOpen(true);
         }}
         renderItem={(game) => [
-          game.name,
+          formatName(game),
           game.homeTeam.name,
           game.homePointValue,
           game.awayTeam.name,
