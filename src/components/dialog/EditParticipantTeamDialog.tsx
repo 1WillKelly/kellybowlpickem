@@ -105,7 +105,9 @@ const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
       {props.team && (
         <div className="mt-4">
           <div className="space-y-2 text-left">
-            {props.team?.members.length && <p className="font-bold">Members</p>}
+            {props.team?.members.length > 0 && (
+              <p className="font-bold">Members</p>
+            )}
             {props.team?.members.map((m) => (
               <div
                 key={m.id}
