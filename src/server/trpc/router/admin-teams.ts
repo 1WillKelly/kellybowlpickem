@@ -1,5 +1,3 @@
-import { type FootballMatchup } from "@prisma/client";
-import { getSeason } from "server/sync/season";
 import { z } from "zod";
 import { router, adminProcedure } from "../trpc";
 
@@ -42,6 +40,20 @@ export const adminTeamsRouter = router({
       return await ctx.prisma.participantTeam.create({
         data: {
           name: input.name,
+        },
+      });
+    }),
+
+  deleteTeam: adminProcedure
+    .input(
+      z.object({
+        teamId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.participantTeam.delete({
+        where: {
+          id: input.teamId,
         },
       });
     }),
