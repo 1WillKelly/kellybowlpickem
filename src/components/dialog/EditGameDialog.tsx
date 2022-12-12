@@ -82,6 +82,7 @@ const EditGameDialog: React.FC<EditGameDialogProps> = (props) => {
             defaultValue={props.game.awayPointValue ?? undefined}
           />
         </div>
+        <input type="submit" className="hidden" />
       </form>
     </Dialog>
   );
