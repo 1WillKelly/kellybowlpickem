@@ -93,15 +93,13 @@ export const syncBowlGames = async () => {
       completed: matchupData.completed,
       homeScore: matchupData.home_points,
       awayScore: matchupData.away_points,
-      name: matchupData.notes,
     };
 
     if (
       matchup.startDate.getTime() !== updateFields.startDate.getTime() ||
       matchup.completed !== updateFields.completed ||
       matchup.homeScore !== updateFields.homeScore ||
-      matchup.awayScore !== updateFields.awayScore ||
-      matchup.name !== updateFields.name
+      matchup.awayScore !== updateFields.awayScore
     ) {
       upserts.push(
         prisma.footballMatchup.update({
