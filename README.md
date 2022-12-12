@@ -20,6 +20,9 @@ cp .env.example .env
 Then, fill in `CFBD_API_KEY` with a valid [CollegeFootballData.com API
 key](https://collegefootballdata.com/key).
 
+Fill in `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` with Google OAuth 2.0
+credentials (for the admin interfac).
+
 ### Migrations
 
 If your database is out of sync, or if you made some schema changes and want to
@@ -27,6 +30,14 @@ deploy a migration, run:
 
 ```sh
 yarn prisma migrate dev
+```
+
+## Syncing data
+
+In local development, you can run the webhooks without authentication:
+
+```sh
+curl localhost:3000/api/sync/sync-bowl-games
 ```
 
 ## How do I deploy this?

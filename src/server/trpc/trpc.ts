@@ -1,4 +1,5 @@
 import { initTRPC, TRPCError } from "@trpc/server";
+import { env } from "env/server.mjs";
 import superjson from "superjson";
 
 import { type Context } from "./context";
@@ -33,7 +34,34 @@ const isAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
+const ADMIN_ALLOWED_EMAILS = (env.ADMIN_ALLOWED_EMAILS || "").split(",");
+
+const requireAdmin = t.middleware(({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  // Skip email allowlist in dev
+  if (
+    process.env.NODE_ENV === "development" &&
+    ADMIN_ALLOWED_EMAILS.length === 0
+  ) {
+    return next({ ctx });
+  }
+
+  if (
+    !ctx.session.user.email ||
+    !ADMIN_ALLOWED_EMAILS.includes(ctx.session.user.email)
+  ) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return next({ ctx });
+});
+
 /**
  * Protected procedure
  **/
 export const protectedProcedure = t.procedure.use(isAuthed);
+
+export const adminProcedure = t.procedure.use(isAuthed).use(requireAdmin);
