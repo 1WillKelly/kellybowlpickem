@@ -4,6 +4,7 @@ interface EditableTableProps<TData> {
   columnNames: readonly string[];
   items?: readonly TData[];
   renderItem: (item: TData) => React.ReactNode[];
+  editItem: (item: TData) => void;
   loading?: boolean;
 }
 
@@ -50,16 +51,14 @@ const EditableTable = <TData,>(props: EditableTableProps<TData>) => {
                         {cell}
                       </td>
                     ))}
-                    {/*
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <a
-                        href="#"
+                      <button
                         className="text-indigo-600 hover:text-indigo-900"
+                        onClick={() => props.editItem(item)}
                       >
-                        Edit<span className="sr-only">, {person.name}</span>
-                      </a>
+                        Edit
+                      </button>
                     </td>
-                    */}
                   </tr>
                 ))}
               </tbody>
