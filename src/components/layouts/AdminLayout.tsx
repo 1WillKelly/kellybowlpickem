@@ -28,7 +28,7 @@ const AdminLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
 
     return (
-      <div className="min-h-full bg-gray-100">
+      <div className="min-h-screen bg-gray-100">
         <AdminNav />
         {children}
       </div>
