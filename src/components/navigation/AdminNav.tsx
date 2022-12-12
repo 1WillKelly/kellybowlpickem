@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import FootballLogo from "../../../public/images/football-logo.png";
 
 const NavItems = [
   { title: "Games", url: "/admin/games" },
@@ -13,7 +15,7 @@ const AdminNav: React.FC = () => {
   return (
     <nav className="flex h-16 flex-row bg-white px-6 shadow-md">
       <div className="flex items-center">
-        <div>Pickem Admin (LOGO goes here)</div>
+        <Image src={FootballLogo.src} alt="Football" width={48} height={31} />
       </div>
       <div className="ml-6 flex space-x-8">
         {NavItems.map(({ title, url }) => (
