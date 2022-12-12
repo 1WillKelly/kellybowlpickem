@@ -10,7 +10,7 @@ const AdminIndexPage: NextPage = () => {
       return <div>Loading...</div>;
     }
 
-    return <div>Hello admin: {data?.name}</div>;
+    return <div className="px-8 py-6">Hello admin: {data?.name}</div>;
   };
   return <AdminLayout>{content()}</AdminLayout>;
 };
