@@ -1,6 +1,7 @@
 import { CFBDataSource } from "server/datasources/college-football-data-api";
 import { prisma } from "server/db/client";
 import { getSeason } from "./season";
+import { settlePicks } from "./settle-picks";
 
 export const syncScores = async () => {
   const season = await getSeason();
@@ -19,6 +20,7 @@ export const syncScores = async () => {
   const games = await client.postSeasonGames(season.year);
 
   const updates = [];
+  const justFinishedGamesIds = [];
 
   for (const game of games) {
     const matchup = matchupsToSync.find((m) => m.apiId === game.id.toString());
@@ -32,6 +34,12 @@ export const syncScores = async () => {
       matchup.awayScore !== game.away_points ||
       matchup.homeScore !== game.home_points
     ) {
+      if (matchup.completed !== game.completed) {
+        // Only push the ID, because the in-memory data representation isn't
+        // updated yet.
+        justFinishedGamesIds.push(matchup.id);
+      }
+
       updates.push(
         prisma.footballMatchup.update({
           where: { id: matchup.id },
@@ -47,6 +55,10 @@ export const syncScores = async () => {
 
   if (updates.length) {
     await prisma.$transaction(updates);
+  }
+
+  if (justFinishedGamesIds) {
+    await settlePicks(justFinishedGamesIds);
   }
 
   return matchupsToSync;
