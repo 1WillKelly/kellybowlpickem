@@ -8,6 +8,7 @@ const NavItems = [
   { title: "Games", url: "/admin/games" },
   { title: "Participants", url: "/admin/participants" },
   { title: "Teams", url: "/admin/teams" },
+  { title: "Picks", url: "/admin/picks" },
 ];
 
 const AdminNav: React.FC = () => {
