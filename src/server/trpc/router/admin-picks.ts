@@ -1,5 +1,4 @@
 import { getSeason } from "server/sync/season";
-import { z } from "zod";
 import { router, adminProcedure } from "../trpc";
 
 export const adminPicksRouter = router({
