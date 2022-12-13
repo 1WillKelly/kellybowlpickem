@@ -6,12 +6,14 @@ import { adminTeamsRouter } from "./admin-teams";
 import { authRouter } from "./auth";
 import { gamesRouter } from "./games";
 import { picksRouter } from "./picks";
+import { teamsRouter } from "./teams";
 
 export const appRouter = router({
   games: gamesRouter,
   auth: authRouter,
   admin: adminRouter,
   picks: picksRouter,
+  teams: teamsRouter,
   adminTeams: adminTeamsRouter,
   adminParticipants: adminParticipantsRouter,
   adminPicks: adminPicksRouter,

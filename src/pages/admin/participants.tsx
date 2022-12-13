@@ -57,14 +57,31 @@ const AdminParticipantPage: NextPage = () => {
       </div>
       <EditableTable
         items={data?.participants}
-        columnNames={["Name", "Email", "Team", "Pick Count"]}
+        columnNames={[
+          "Name",
+          "Email",
+          "Team",
+          "Score",
+          "Possible Score",
+          "Pick Count",
+        ]}
         loading={isLoading}
         renderItem={(participant) => [
-          <Link key={participant.id} href={`/user/${participant.id}/picks`}>
+          <Link
+            key={participant.id}
+            href={`/user/${participant.id}/picks`}
+            className="text-indigo-500"
+          >
             {participant.name}
           </Link>,
           participant.email,
           participant.teamMembership?.team.name,
+          participant.seasonScores.length === 1
+            ? participant.seasonScores[0]?.points
+            : undefined,
+          participant.seasonScores.length === 1
+            ? participant.seasonScores[0]?.possiblePoints
+            : undefined,
           participant.picks.length + participant.championshipPick.length,
         ]}
         editItem={(participant) => {

@@ -12,6 +12,9 @@ export const adminParticipantsRouter = router({
             team: true,
           },
         },
+        seasonScores: {
+          where: { season },
+        },
         picks: {
           where: { season },
           select: { id: true },
