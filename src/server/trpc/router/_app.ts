@@ -5,11 +5,13 @@ import { adminPicksRouter } from "./admin-picks";
 import { adminTeamsRouter } from "./admin-teams";
 import { authRouter } from "./auth";
 import { gamesRouter } from "./games";
+import { picksRouter } from "./picks";
 
 export const appRouter = router({
   games: gamesRouter,
   auth: authRouter,
   admin: adminRouter,
+  picks: picksRouter,
   adminTeams: adminTeamsRouter,
   adminParticipants: adminParticipantsRouter,
   adminPicks: adminPicksRouter,
