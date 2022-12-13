@@ -86,6 +86,17 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
     findGame(game, props.games)
   );
 
+  const missingGames = columnsToGames
+    .map((game, idx) => {
+      if (!game) {
+        return bowlGameNames[idx];
+      }
+    })
+    .filter(Boolean);
+  if (missingGames.length) {
+    return <div>No matchup on record for games: {missingGames.join(" ")}</div>;
+  }
+
   const championshipMarkers = columnsToGames.filter(
     (g) => g && isChampionship(g)
   ).length;
@@ -104,13 +115,11 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
       .split(",")
       .slice(3)
       .forEach((team) => {
-        // Already cleaned
         if (teamLookups[team]) {
           return;
         }
         const cleanedName = cleanTeamName(team);
         const foundTeam = teams.find((t) => t.name === cleanedName);
-        console.log("Team", team, cleanedName);
         if (foundTeam) {
           teamLookups[team] = foundTeam;
         } else {
