@@ -35,7 +35,8 @@ export const serverSchema = z.object({
       ? z.string().min(1)
       : z.string().min(1).optional(),
   // Collegefootballdata.com
-  CFBD_API_KEY: z.string(),
+  CFBD_API_KEY:
+    process.env.NODE_ENV === "test" ? z.string().optional() : z.string(),
 });
 
 /**
