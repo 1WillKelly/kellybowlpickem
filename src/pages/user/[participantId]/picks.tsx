@@ -1,4 +1,5 @@
 import { formatTime } from "components/date-time";
+import FullScreenLoading from "components/FullScreenLoading";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -17,8 +18,7 @@ const ParticipantPicksPage: NextPage = () => {
   );
 
   if (isLoading) {
-    // TODO add a real loading state
-    return <div>Loading...</div>;
+    return <FullScreenLoading />;
   }
 
   if (!data?.participant || !data?.picks) {
