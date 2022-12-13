@@ -3,7 +3,7 @@ import FullScreenLoading from "components/FullScreenLoading";
 import { type NextPage } from "next";
 
 import Head from "next/head";
-import { TeamWithScores } from "types/admin-types";
+import { type TeamWithScores } from "types/admin-types";
 import { trpc } from "utils/trpc";
 
 interface TeamSummaryProps {
@@ -69,7 +69,7 @@ const TeamsPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Teams - Kelly Bowl Pick'em</title>
+        <title>Teams - Kelly Bowl Pick&apos;em</title>
       </Head>
       <div>
         {isLoading ? (

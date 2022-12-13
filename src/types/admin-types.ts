@@ -5,7 +5,7 @@ import {
   type Participant,
   type ParticipantTeam,
   type ParticipantTeamMember,
-  ParticipantSeasonScore,
+  type ParticipantSeasonScore,
 } from "@prisma/client";
 
 export type GameWithTeam = FootballMatchup & {
