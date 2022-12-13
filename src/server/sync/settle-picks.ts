@@ -18,8 +18,44 @@ export const settlePicks = async (gameIds?: string[]) => {
     },
   });
 
+  const incompleteGames = await prisma.footballMatchup.findMany({
+    where: {
+      season,
+      completed: false,
+    },
+  });
+
+  const participantsWithPicks = await prisma.participant.findMany({
+    include: {
+      picks: {
+        where: {
+          season,
+        },
+      },
+    },
+  });
+
   for (const game of gamesToSettle) {
+    if (game.participantPicks.length === 0) {
+      continue;
+    }
+
     console.log("Settling matchup", game.name);
+
+    if (game.homeScore === null || game.awayScore === null) {
+      throw new Error(
+        "Game is completed without home or away scores: " +
+          game.name +
+          " " +
+          game.id
+      );
+    }
+    // Don't forget to add 45 for championship
+    // TODO pull whether championship is complete
+
+    const homeTeamWon = game.homeScore > game.awayScore;
+    // Update scores
+    await prisma.$transaction([]);
   }
 
   // TODO
