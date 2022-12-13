@@ -1,27 +1,44 @@
-# Create T3 App
+# KellyBowlPickem.com
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Development environment
 
-## What's next? How do I make an app with this?
+This repository uses Docker (and `docker-compose`) in development for its MySQL
+database.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+```sh
+docker-compose up -d
+```
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+### First time setup
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+Copy `.env.example` to `.env`:
 
-## Learn More
+```sh
+cp .env.example .env
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+Then, fill in `CFBD_API_KEY` with a valid [CollegeFootballData.com API
+key](https://collegefootballdata.com/key).
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+Fill in `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` with Google OAuth 2.0
+credentials (for the admin interfac).
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### Migrations
+
+If your database is out of sync, or if you made some schema changes and want to
+deploy a migration, run:
+
+```sh
+yarn prisma migrate dev
+```
+
+## Syncing data
+
+In local development, you can run the webhooks without authentication:
+
+```sh
+curl localhost:3000/api/sync/sync-bowl-games
+```
 
 ## How do I deploy this?
 

@@ -15,12 +15,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
@@ -28,16 +22,17 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? // @db.Text
-  access_token      String? // @db.Text
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? // @db.Text
+  id_token          String? @db.Text
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -46,16 +41,19 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Participant   Participant[]
 }
 
 model VerificationToken {
@@ -64,4 +62,87 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Season {
+  id          String            @id @default(cuid())
+  year        Int
+  displayName String
+  matchups    FootballMatchup[]
+
+  @@unique([year])
+}
+
+model FootballTeam {
+  id         String  @id @default(cuid())
+  apiId      String
+  name       String
+  conference String?
+
+  homeGames FootballMatchup[] @relation("HomeGames")
+  awayGames FootballMatchup[] @relation("AwayGames")
+
+  @@unique([apiId])
+}
+
+model FootballMatchup {
+  id         String       @id @default(cuid())
+  apiId      String
+  startDate  DateTime
+  week       Int
+  seasonType String
+  name       String?
+  seasonId   String
+  season     Season       @relation(fields: [seasonId], references: [id])
+  homeTeamId String
+  homeTeam   FootballTeam @relation(name: "HomeGames", fields: [homeTeamId], references: [id])
+  awayTeamId String
+  awayTeam   FootballTeam @relation(name: "AwayGames", fields: [awayTeamId], references: [id])
+
+  completed Boolean
+  homeScore Int?
+  awayScore Int?
+
+  // How many points a participant gets for correctly predicting
+  homePointValue Float?
+  awayPointValue Float?
+
+  @@unique([apiId])
+  @@index([seasonId])
+  @@index([homeTeamId])
+  @@index([awayTeamId])
+}
+
+model Participant {
+  id             String                 @id @default(cuid())
+  name           String
+  email          String
+  // Participants may or may not have logged in before. The first
+  // time they do, match them by email.
+  userId         String?
+  user           User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamMembership ParticipantTeamMember?
+
+  @@unique([email])
+  @@unique([userId])
+  @@index([userId])
+}
+
+model ParticipantTeam {
+  id      String                  @id @default(cuid())
+  name    String
+  members ParticipantTeamMember[]
+
+  @@unique([name])
+}
+
+model ParticipantTeamMember {
+  id            String          @id @default(cuid())
+  teamId        String
+  team          ParticipantTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  participantId String
+  participant   Participant     @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([participantId])
+  @@index([teamId])
 }
