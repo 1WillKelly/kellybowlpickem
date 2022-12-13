@@ -65,12 +65,13 @@ model VerificationToken {
 }
 
 model Season {
-  id                     String                   @id @default(cuid())
-  year                   Int
-  displayName            String
-  matchups               FootballMatchup[]
-  participantSeasonScore ParticipantSeasonScore[]
-  participantPicks       ParticipantPick[]
+  id                          String                        @id @default(cuid())
+  year                        Int
+  displayName                 String
+  matchups                    FootballMatchup[]
+  participantSeasonScore      ParticipantSeasonScore[]
+  participantPicks            ParticipantPick[]
+  participantChampionshipPick ParticipantChampionshipPick[]
 
   @@unique([year])
 }
@@ -81,9 +82,10 @@ model FootballTeam {
   name       String
   conference String?
 
-  homeGames        FootballMatchup[] @relation("HomeGames")
-  awayGames        FootballMatchup[] @relation("AwayGames")
-  participantPicks ParticipantPick[]
+  homeGames                    FootballMatchup[]             @relation("HomeGames")
+  awayGames                    FootballMatchup[]             @relation("AwayGames")
+  participantPicks             ParticipantPick[]
+  participantChampionshipPicks ParticipantChampionshipPick[]
 
   @@unique([apiId])
 }
@@ -118,16 +120,17 @@ model FootballMatchup {
 }
 
 model Participant {
-  id             String                   @id @default(cuid())
-  name           String
-  email          String
+  id               String                        @id @default(cuid())
+  name             String
+  email            String
   // Participants may or may not have logged in before. The first
   // time they do, match them by email.
-  userId         String?
-  user           User?                    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  teamMembership ParticipantTeamMember?
-  picks          ParticipantPick[]
-  seasonScores   ParticipantSeasonScore[]
+  userId           String?
+  user             User?                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamMembership   ParticipantTeamMember?
+  picks            ParticipantPick[]
+  seasonScores     ParticipantSeasonScore[]
+  championshipPick ParticipantChampionshipPick[]
 
   @@unique([email])
   @@unique([userId])
@@ -171,6 +174,23 @@ model ParticipantPick {
   @@unique([participantId, matchupId])
   @@index([participantId])
   @@index([matchupId])
+  @@index([seasonId])
+  @@index([teamId])
+}
+
+// Worth 45 points every year. Treated specially because not published on CFBD
+// until the 4 teams have played.
+model ParticipantChampionshipPick {
+  id            String       @id @default(cuid())
+  seasonId      String
+  season        Season       @relation(fields: [seasonId], references: [id])
+  participantId String
+  participant   Participant  @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  teamId        String
+  team          FootballTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([participantId, seasonId])
+  @@index([participantId])
   @@index([seasonId])
   @@index([teamId])
 }
