@@ -16,5 +16,20 @@ services:
     volumes:
       - db-datavolume:/var/lib/mysql
 
+  test-db:
+    image: mysql
+    command: --default-authentication-plugin=caching_sha2_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: bowlpickem-test
+      MYSQL_USER: bowlpickem
+      MYSQL_PASSWORD: bowlpickem
+      MYSQL_ROOT_PASSWORD: bowlpickem
+    ports:
+      - "3364:3306"
+    volumes:
+      - test-datavolume:/var/lib/mysql
+
 volumes:
   db-datavolume:
+  test-datavolume:
