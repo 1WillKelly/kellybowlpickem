@@ -132,6 +132,33 @@ describe("settling picks", () => {
     expect(m2score.possiblePoints).toEqual(
       m2score.points + (matchup3.awayPointValue ?? 0) + CHAMPIONSHIP_POINT_VALUE
     );
+
+    // Do it again, test that it's the same
+    await settlePicks();
+
+    const m1scoreRefetched =
+      await prisma.participantSeasonScore.findUniqueOrThrow({
+        where: {
+          participantId_seasonId: {
+            participantId: p1.id,
+            seasonId: season.id,
+          },
+        },
+      });
+
+    expect(m1scoreRefetched.points).toEqual(32 + 34.5);
+
+    const m2scoreRefetched =
+      await prisma.participantSeasonScore.findUniqueOrThrow({
+        where: {
+          participantId_seasonId: {
+            participantId: p2.id,
+            seasonId: season.id,
+          },
+        },
+      });
+
+    expect(m2scoreRefetched.points).toEqual(34.5);
   });
 
   test("updates scores for participants", async () => {
