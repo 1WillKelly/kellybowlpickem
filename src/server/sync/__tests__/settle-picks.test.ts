@@ -162,7 +162,61 @@ describe("settling picks", () => {
   });
 
   test("updates scores for participants", async () => {
+    const season = await getSeason();
+    const p1 = await upsertTestParticipant("p1");
+    const matchup1 = await createMatchup(season, `m1-${new Date().getTime()}`);
+    const existingPoints = await prisma.participantSeasonScore.create({
+      data: {
+        participantId: p1.id,
+        seasonId: season.id,
+        points: 42.2,
+      },
+    });
+    // Championship picks
+    await prisma.participantChampionshipPick.create({
+      data: {
+        seasonId: season.id,
+        participantId: p1.id,
+        teamId: matchup1.homeTeamId,
+      },
+    });
+
+    await prisma.footballMatchup.update({
+      where: { id: matchup1.id },
+      data: {
+        completed: true,
+        homeScore: 10,
+        awayScore: 7,
+      },
+    });
+
+    await prisma.participantPick.createMany({
+      data: [
+        // Matchup 1: p1 is correct, p2 is incorrect
+        {
+          participantId: p1.id,
+          teamId: matchup1.homeTeamId,
+          matchupId: matchup1.id,
+          seasonId: season.id,
+        },
+      ],
+    });
+
     await settlePicks();
-    // TODO
+
+    const m1score = await prisma.participantSeasonScore.findUniqueOrThrow({
+      where: {
+        participantId_seasonId: {
+          participantId: p1.id,
+          seasonId: season.id,
+        },
+      },
+    });
+
+    expect(m1score.points).toEqual(
+      (matchup1.homePointValue ?? 0) + existingPoints.points
+    );
+
+    expect(m1score.points).toEqual(32 + 42.2);
   });
 });
