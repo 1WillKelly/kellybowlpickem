@@ -69,7 +69,8 @@ model Season {
   year                   Int
   displayName            String
   matchups               FootballMatchup[]
-  ParticipantSeasonScore ParticipantSeasonScore[]
+  participantSeasonScore ParticipantSeasonScore[]
+  participantPicks       ParticipantPick[]
 
   @@unique([year])
 }
@@ -80,9 +81,9 @@ model FootballTeam {
   name       String
   conference String?
 
-  homeGames       FootballMatchup[] @relation("HomeGames")
-  awayGames       FootballMatchup[] @relation("AwayGames")
-  ParticipantPick ParticipantPick[]
+  homeGames        FootballMatchup[] @relation("HomeGames")
+  awayGames        FootballMatchup[] @relation("AwayGames")
+  participantPicks ParticipantPick[]
 
   @@unique([apiId])
 }
@@ -106,9 +107,9 @@ model FootballMatchup {
   awayScore Int?
 
   // How many points a participant gets for correctly predicting
-  homePointValue  Float?
-  awayPointValue  Float?
-  ParticipantPick ParticipantPick[]
+  homePointValue   Float?
+  awayPointValue   Float?
+  participantPicks ParticipantPick[]
 
   @@unique([apiId])
   @@index([seasonId])
@@ -117,16 +118,16 @@ model FootballMatchup {
 }
 
 model Participant {
-  id                     String                   @id @default(cuid())
-  name                   String
-  email                  String
+  id             String                   @id @default(cuid())
+  name           String
+  email          String
   // Participants may or may not have logged in before. The first
   // time they do, match them by email.
-  userId                 String?
-  user                   User?                    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  teamMembership         ParticipantTeamMember?
-  ParticipantPick        ParticipantPick[]
-  ParticipantSeasonScore ParticipantSeasonScore[]
+  userId         String?
+  user           User?                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamMembership ParticipantTeamMember?
+  picks          ParticipantPick[]
+  seasonScores   ParticipantSeasonScore[]
 
   @@unique([email])
   @@unique([userId])
@@ -154,6 +155,8 @@ model ParticipantTeamMember {
 
 model ParticipantPick {
   id            String          @id @default(cuid())
+  seasonId      String
+  season        Season          @relation(fields: [seasonId], references: [id])
   participantId String
   participant   Participant     @relation(fields: [participantId], references: [id], onDelete: Cascade)
   matchupId     String
@@ -168,6 +171,7 @@ model ParticipantPick {
   @@unique([participantId, matchupId])
   @@index([participantId])
   @@index([matchupId])
+  @@index([seasonId])
   @@index([teamId])
 }
 
