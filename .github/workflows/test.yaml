@@ -1,0 +1,45 @@
+name: TypeScript Tests
+on:
+  - push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: bowlpickem-test
+          MYSQL_ROOT_PASSWORD: bowlpickem
+        ports:
+          - "3380:3306"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Set up dummy environment
+        run: |
+          cat << EOF > .env
+          DATABASE_URL=mysql://root:bowlpickem@localhost:3380/bowlpickem-test
+          EOF
+
+      - name: Run lint
+        run: yarn lint
+
+      - name: Run TypeScript compiler
+        run: yarn tsc -noEmit
+
+      - name: Run tests
+        run: yarn test
+
