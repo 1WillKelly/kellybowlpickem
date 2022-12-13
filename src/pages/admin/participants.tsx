@@ -56,12 +56,13 @@ const AdminParticipantPage: NextPage = () => {
       </div>
       <EditableTable
         items={data?.participants}
-        columnNames={["Name", "Email", "Team"]}
+        columnNames={["Name", "Email", "Team", "Pick Count"]}
         loading={isLoading}
         renderItem={(participant) => [
           participant.name,
           participant.email,
           participant.teamMembership?.team.name,
+          participant.picks.length + participant.championshipPick.length,
         ]}
         editItem={(participant) => {
           setEditingParticipant(participant);
