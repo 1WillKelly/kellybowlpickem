@@ -20,6 +20,11 @@ export const picksRouter = router({
         },
       });
       const picks = await ctx.prisma.participantPick.findMany({
+        orderBy: {
+          matchup: {
+            startDate: "asc",
+          },
+        },
         where: {
           season,
           participantId: input.participantId,
@@ -29,12 +34,25 @@ export const picksRouter = router({
           matchup: {
             select: {
               name: true,
+              startDate: true,
             },
           },
         },
       });
 
+      const championshipPick =
+        await ctx.prisma.participantChampionshipPick.findMany({
+          where: {
+            season,
+            participantId: input.participantId,
+          },
+          include: {
+            team: true,
+          },
+        });
+
       return {
+        championshipPick,
         participant,
         picks,
       };
