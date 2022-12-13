@@ -1,6 +1,7 @@
 import { router } from "../trpc";
 import { adminRouter } from "./admin";
 import { adminParticipantsRouter } from "./admin-participants";
+import { adminPicksRouter } from "./admin-picks";
 import { adminTeamsRouter } from "./admin-teams";
 import { authRouter } from "./auth";
 import { gamesRouter } from "./games";
@@ -11,6 +12,7 @@ export const appRouter = router({
   admin: adminRouter,
   adminTeams: adminTeamsRouter,
   adminParticipants: adminParticipantsRouter,
+  adminPicks: adminPicksRouter,
 });
 
 // export type definition of API

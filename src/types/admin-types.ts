@@ -1,4 +1,5 @@
 import {
+  type ParticipantPick,
   type FootballMatchup,
   type FootballTeam,
   type Participant,
@@ -23,4 +24,8 @@ export type TeamWithParticipants = ParticipantTeam & {
   members: (ParticipantTeamMember & {
     participant: Participant;
   })[];
+};
+
+export type ParticipantWithPicks = Participant & {
+  picks: ParticipantPick[];
 };
