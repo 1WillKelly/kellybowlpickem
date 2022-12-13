@@ -233,21 +233,25 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
           </div>
         </div>
       )}
-      <div className="mb-2 text-lg">Ready to import</div>
-      {participantPicks.map(({ participantId, email }) => {
-        return (
-          <div key={participantId} className="flex flex-row space-x-2">
-            <div className="inline-flex">{email}</div>
-          </div>
-        );
-      })}
+      {participantPicks.length > 0 && (
+        <>
+          <div className="mb-2 text-lg">Ready to import</div>
+          {participantPicks.map(({ participantId, email }) => {
+            return (
+              <div key={participantId} className="flex flex-row space-x-2">
+                <div className="inline-flex">{email}</div>
+              </div>
+            );
+          })}
 
-      <Button
-        className="mt-4"
-        onClick={() => submitPicks.mutate(participantPicks)}
-      >
-        Import it!
-      </Button>
+          <Button
+            className="mt-4"
+            onClick={() => submitPicks.mutate(participantPicks)}
+          >
+            Import it!
+          </Button>
+        </>
+      )}
     </div>
   );
 };
