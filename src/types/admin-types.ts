@@ -5,6 +5,7 @@ import {
   type Participant,
   type ParticipantTeam,
   type ParticipantTeamMember,
+  ParticipantSeasonScore,
 } from "@prisma/client";
 
 export type GameWithTeam = FootballMatchup & {
@@ -28,4 +29,12 @@ export type TeamWithParticipants = ParticipantTeam & {
 
 export type ParticipantWithPicks = Participant & {
   picks: ParticipantPick[];
+};
+
+export type TeamWithScores = ParticipantTeam & {
+  members: (ParticipantTeamMember & {
+    participant: Participant & {
+      seasonScores: ParticipantSeasonScore[];
+    };
+  })[];
 };

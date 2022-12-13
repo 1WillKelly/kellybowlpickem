@@ -67,7 +67,11 @@ const AdminParticipantPage: NextPage = () => {
         ]}
         loading={isLoading}
         renderItem={(participant) => [
-          <Link key={participant.id} href={`/user/${participant.id}/picks`}>
+          <Link
+            key={participant.id}
+            href={`/user/${participant.id}/picks`}
+            className="text-indigo-500"
+          >
             {participant.name}
           </Link>,
           participant.email,
