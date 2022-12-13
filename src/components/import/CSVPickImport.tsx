@@ -25,12 +25,27 @@ const nameToCandidate = (name: string): string => {
     .replace("cfp semi - ", "");
 };
 
+interface ChampionShipMarker {
+  isChampionship: true;
+}
+
 const findGame = (
   name: string,
   games: readonly GameWithTeam[]
-): GameWithTeam | undefined => {
+): GameWithTeam | ChampionShipMarker | undefined => {
   const nameCandidate = nameToCandidate(name);
-  return games.find((game) => game.name?.toLowerCase().includes(nameCandidate));
+  const found = games.find((game) =>
+    game.name?.toLowerCase().includes(nameCandidate)
+  );
+  if (found) {
+    return found;
+  }
+
+  if (nameCandidate.includes("championship")) {
+    return { isChampionship: true };
+  }
+
+  return undefined;
 };
 
 const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
@@ -45,11 +60,25 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
   }
 
   const bowlGameNames = csvLines[0]?.split(",").slice(3).map(cleanBowlName);
+  if (!bowlGameNames) {
+    return <div>No games</div>;
+  }
+  const columnsToGames = bowlGameNames.map((game) =>
+    findGame(game, props.games)
+  );
+
+  const championshipMarkers = columnsToGames.filter(
+    (g) => g && "isChampionship" in g && g.isChampionship
+  ).length;
+
+  if (championshipMarkers !== 1) {
+    return <div>Could not find a championship game column :(</div>;
+  }
 
   // BIG FAT TODO
   return (
     <div className="flex flex-col">
-      {bowlGameNames?.map((name, idx) => {
+      {bowlGameNames.map((name, idx) => {
         const foundGame = findGame(name, props.games);
         return (
           <div key={idx}>
