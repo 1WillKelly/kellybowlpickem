@@ -1,9 +1,11 @@
 import { FootballTeam, type Season } from "@prisma/client";
 import Button from "components/Button";
+import { useState } from "react";
 import {
   type ParticipantWithPicks,
   type GameWithTeam,
 } from "types/admin-types";
+import { trpc } from "utils/trpc";
 
 interface CSVPickImportProps {
   csvData: string;
@@ -71,6 +73,17 @@ const findGame = (
 };
 
 const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
+  const [submitted, setSubmitted] = useState(false);
+  const submitPicks = trpc.adminPicks.submitPicks.useMutation({
+    onSuccess: () => {
+      setSubmitted(true);
+    },
+  });
+
+  if (submitted) {
+    return <div>All done with import</div>;
+  }
+
   const csvLines = props.csvData.split("\n");
 
   if (csvLines.length < 2) {
@@ -140,6 +153,8 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
 
   const nonParticipantEmails: string[] = [];
 
+  const participantsAlreadySubmitted: string[] = [];
+
   const participantPicks: {
     participantId: string;
     email: string;
@@ -163,6 +178,11 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
     );
     if (!matchingParticipant) {
       nonParticipantEmails.push(email);
+      return;
+    }
+
+    if (matchingParticipant.picks.length) {
+      participantsAlreadySubmitted.push(email);
       return;
     }
     const picks = line
@@ -201,21 +221,33 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
 
   return (
     <div className="mt-2 flex flex-col overflow-scroll">
+      {participantsAlreadySubmitted.length > 0 && (
+        <div>
+          <div className="text-lg">
+            The following users were previously imported and will be ignored
+          </div>
+          <div className="text-red mt-4">
+            {participantsAlreadySubmitted.map((email, idx) => (
+              <div key={idx}>{email}</div>
+            ))}
+          </div>
+        </div>
+      )}
       <div className="mb-2 text-lg">Ready to import</div>
-      {participantPicks.map(({ participantId, email, picks }) => {
+      {participantPicks.map(({ participantId, email }) => {
         return (
-          <div key={participantId} className="flex flex-row space-x-1">
+          <div key={participantId} className="flex flex-row space-x-2">
             <div className="inline-flex">{email}</div>
-            <>
-              {picks.map((pick, idx) => {
-                return <div key={idx}>{pick.teamId}</div>;
-              })}
-            </>
           </div>
         );
       })}
 
-      <Button className="mt-4">Import (TODO)</Button>
+      <Button
+        className="mt-4"
+        onClick={() => submitPicks.mutate(participantPicks)}
+      >
+        Import it!
+      </Button>
     </div>
   );
 };

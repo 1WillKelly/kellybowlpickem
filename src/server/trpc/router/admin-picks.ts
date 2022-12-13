@@ -1,4 +1,5 @@
 import { getSeason } from "server/sync/season";
+import { z } from "zod";
 import { router, adminProcedure } from "../trpc";
 
 export const adminPicksRouter = router({
@@ -18,4 +19,24 @@ export const adminPicksRouter = router({
       participants,
     };
   }),
+
+  submitPicks: adminProcedure
+    .input(
+      z
+        .object({
+          participantId: z.string(),
+          picks: z
+            .object({
+              matchupId: z.string().optional(),
+              teamId: z.string(),
+              isChampionship: z.boolean().optional(),
+            })
+            .array(),
+        })
+        .array()
+    )
+    .mutation(async ({ ctx, input }) => {
+      console.log("Input", input);
+      // TODO
+    }),
 });
