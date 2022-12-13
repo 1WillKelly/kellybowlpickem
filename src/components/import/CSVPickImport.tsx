@@ -1,4 +1,5 @@
 import { FootballTeam, type Season } from "@prisma/client";
+import Button from "components/Button";
 import {
   type ParticipantWithPicks,
   type GameWithTeam,
@@ -48,6 +49,8 @@ const isChampionship = (
   return "isChampionship" in game && game.isChampionship;
 };
 
+const PICK_COLUMN_START = 3;
+
 const findGame = (
   name: string,
   games: readonly GameWithTeam[]
@@ -78,7 +81,10 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
     );
   }
 
-  const bowlGameNames = csvLines[0]?.split(",").slice(3).map(cleanName);
+  const bowlGameNames = csvLines[0]
+    ?.split(",")
+    .slice(PICK_COLUMN_START)
+    .map(cleanName);
   if (!bowlGameNames) {
     return <div>No games</div>;
   }
@@ -113,7 +119,7 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
   csvLines.slice(1).forEach((line) => {
     line
       .split(",")
-      .slice(3)
+      .slice(PICK_COLUMN_START)
       .forEach((team) => {
         if (teamLookups[team]) {
           return;
@@ -132,22 +138,84 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
     return <div>Unknown teams: {unknownTeams.join(" ")}</div>;
   }
 
+  const nonParticipantEmails: string[] = [];
+
+  const participantPicks: {
+    participantId: string;
+    email: string;
+    picks: { matchupId?: string; teamId: string; isChampionship?: boolean }[];
+  }[] = [];
+
+  csvLines.slice(1).forEach((line) => {
+    if (line.trim() === "") {
+      return;
+    }
+    const parts = line.split(",");
+    if (parts.length < 4) {
+      throw new Error("Invalid line: " + line);
+    }
+    const email = cleanName(parts[1] ?? "");
+    if (!email) {
+      throw new Error("Invalid email: " + line);
+    }
+    const matchingParticipant = props.participants.find(
+      (p) => p.email === email
+    );
+    if (!matchingParticipant) {
+      nonParticipantEmails.push(email);
+      return;
+    }
+    const picks = line
+      .split(",")
+      .slice(PICK_COLUMN_START)
+      .map((teamName, idx) => {
+        const matchup = columnsToGames[idx];
+        if (!matchup) {
+          throw new Error("Missing matchup: " + teamName + " for index " + idx);
+        }
+        const team = teamLookups[teamName];
+        if (!team) {
+          throw new Error("Participant team not found: " + teamName);
+        }
+
+        const isChampPick = isChampionship(matchup);
+        return {
+          teamId: team.id,
+          matchupId: isChampPick ? undefined : matchup.id,
+          isChampionship: isChampPick ? true : undefined,
+        };
+      });
+
+    participantPicks.push({
+      participantId: matchingParticipant.id,
+      email: matchingParticipant.email,
+      picks,
+    });
+  });
+
+  if (nonParticipantEmails.length) {
+    return (
+      <div>Missing participants by email: {nonParticipantEmails.join(" ")}</div>
+    );
+  }
+
   return (
-    <div className="flex flex-col">
-      {bowlGameNames.map((name, idx) => {
-        const foundGame = findGame(name, props.games);
+    <div className="mt-2 flex flex-col overflow-scroll">
+      <div className="mb-2 text-lg">Ready to import</div>
+      {participantPicks.map(({ participantId, email, picks }) => {
         return (
-          <div key={idx}>
-            <div
-              className={`inline-flex ${
-                foundGame ? "bg-zinc-700" : "bg-red-600"
-              } text-white`}
-            >
-              {name}
-            </div>
+          <div key={participantId} className="flex flex-row space-x-1">
+            <div className="inline-flex">{email}</div>
+            <>
+              {picks.map((pick, idx) => {
+                return <div key={idx}>{pick.teamId}</div>;
+              })}
+            </>
           </div>
         );
       })}
+
+      <Button className="mt-4">Import (TODO)</Button>
     </div>
   );
 };
