@@ -17,4 +17,10 @@ export const settlePicks = async (gameIds?: string[]) => {
       },
     },
   });
+
+  for (const game of gamesToSettle) {
+    console.log("Settling matchup", game.name);
+  }
+
+  // TODO
 };
