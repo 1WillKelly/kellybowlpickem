@@ -9,6 +9,7 @@ import Button from "components/Button";
 import EditParticipantDialog from "components/dialog/EditParticipantDialog";
 import { type Participant } from "@prisma/client";
 import DeleteParticipantDialog from "components/dialog/DeleteParticipantDialog";
+import Link from "next/link";
 
 const AdminParticipantPage: NextPage = () => {
   const { isLoading, data } = trpc.adminParticipants.participants.useQuery();
@@ -56,12 +57,15 @@ const AdminParticipantPage: NextPage = () => {
       </div>
       <EditableTable
         items={data?.participants}
-        columnNames={["Name", "Email", "Team"]}
+        columnNames={["Name", "Email", "Team", "Pick Count"]}
         loading={isLoading}
         renderItem={(participant) => [
-          participant.name,
+          <Link key={participant.id} href={`/user/${participant.id}/picks`}>
+            {participant.name}
+          </Link>,
           participant.email,
           participant.teamMembership?.team.name,
+          participant.picks.length + participant.championshipPick.length,
         ]}
         editItem={(participant) => {
           setEditingParticipant(participant);
