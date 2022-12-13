@@ -7,7 +7,7 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "migrate-prod": "scripts/migrate.sh",
-    "lint": "SKIP_ENV_VALIDATION=1 next lint",
+    "lint": "SKIP_ENV_VALIDATION=1 next lint --max-warnings=0",
     "test": "scripts/test.sh",
     "test-watch": "scripts/test.sh --watch",
     "start": "next start"

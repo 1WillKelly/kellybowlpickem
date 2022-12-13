@@ -1,4 +1,4 @@
-import { FootballTeam, type Season } from "@prisma/client";
+import { type FootballTeam, type Season } from "@prisma/client";
 import Button from "components/Button";
 import { useState } from "react";
 import {
