@@ -1,14 +1,27 @@
+import { getSeason } from "server/sync/season";
 import { z } from "zod";
 import { router, adminProcedure } from "../trpc";
 
 export const adminParticipantsRouter = router({
   participants: adminProcedure.query(async ({ ctx }) => {
+    const season = await getSeason();
     const participants = await ctx.prisma.participant.findMany({
       include: {
         teamMembership: {
           include: {
             team: true,
           },
+        },
+        seasonScores: {
+          where: { season },
+        },
+        picks: {
+          where: { season },
+          select: { id: true },
+        },
+        championshipPick: {
+          where: { season },
+          select: { id: true },
         },
       },
     });

@@ -41,7 +41,7 @@ export const adminRouter = router({
         dataToUpdate.homePointValue = input.homePointValue;
       }
       if (input.awayPointValue) {
-        dataToUpdate.awayPointValue = input.homePointValue;
+        dataToUpdate.awayPointValue = input.awayPointValue;
       }
       return await ctx.prisma.footballMatchup.update({
         where: {

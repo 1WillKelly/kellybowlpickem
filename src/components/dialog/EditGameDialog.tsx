@@ -70,6 +70,7 @@ const EditGameDialog: React.FC<EditGameDialogProps> = (props) => {
           <label htmlFor="name">Home Point Value</label>
           <Input
             type="number"
+            step="0.5"
             {...register("homePointValue", { valueAsNumber: true })}
             defaultValue={props.game.homePointValue ?? undefined}
           />
@@ -78,6 +79,7 @@ const EditGameDialog: React.FC<EditGameDialogProps> = (props) => {
           <label htmlFor="name">Away Point Value</label>
           <Input
             type="number"
+            step="0.5"
             {...register("awayPointValue", { valueAsNumber: true })}
             defaultValue={props.game.awayPointValue ?? undefined}
           />

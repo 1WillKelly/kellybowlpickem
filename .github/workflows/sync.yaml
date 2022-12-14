@@ -5,6 +5,7 @@ on:
   schedule:
     # Every hour on the :30
     - cron: "30 * * * *"
+    - cron: "0 * * * *"
     # # Every 2 hours on the 00
     # - cron: "0 */2 * * *"
     # # Once a week
@@ -30,6 +31,16 @@ jobs:
           curl -X POST -ss \
             -H "Authentication: token $WEBHOOK_SECRET" \
             "${DEPLOYMENT_URL}/api/sync/sync-scores"
+        env:
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+          DEPLOYMENT_URL: ${{ secrets.DEPLOYMENT_URL }}
+
+      - name: Settle Picks
+        if: github.event.schedule == '0 * * * *'
+        run: |
+          curl -X POST -ss \
+            -H "Authentication: token $WEBHOOK_SECRET" \
+            "${DEPLOYMENT_URL}/api/sync/settle-picks"
         env:
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
           DEPLOYMENT_URL: ${{ secrets.DEPLOYMENT_URL }}
