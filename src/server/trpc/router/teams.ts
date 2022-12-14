@@ -20,7 +20,18 @@ export const teamsRouter = router({
       },
     });
     return {
-      teams,
+      teams: teams.map((t) => ({
+        ...t,
+        members: t.members.map((m) => ({
+          ...m,
+          // Remove email from returned data. Can't use `include` and `select`
+          // on prisma sub-queries :(
+          participant: {
+            id: m.participant.id,
+            seasonScores: m.participant.seasonScores,
+          },
+        })),
+      })),
       season,
     };
   }),
