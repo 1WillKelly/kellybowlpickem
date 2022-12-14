@@ -3,7 +3,7 @@ import FullScreenLoading from "components/FullScreenLoading";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { PickWithMatchupAndTeam } from "types/admin-types";
+import { type PickWithMatchupAndTeam } from "types/admin-types";
 import { trpc } from "utils/trpc";
 
 interface PickCellProps {
