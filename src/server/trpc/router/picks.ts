@@ -36,6 +36,7 @@ export const picksRouter = router({
               id: true,
               name: true,
               startDate: true,
+              completed: true,
             },
           },
         },
@@ -53,6 +54,7 @@ export const picksRouter = router({
         });
 
       return {
+        season,
         championshipPick,
         participant,
         picks,
