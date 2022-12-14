@@ -33,8 +33,13 @@ export type ParticipantWithPicks = Participant & {
 
 export type TeamWithScores = ParticipantTeam & {
   members: (ParticipantTeamMember & {
-    participant: Participant & {
+    participant: Pick<Participant, "id"> & {
       seasonScores: ParticipantSeasonScore[];
     };
   })[];
+};
+
+export type PickWithMatchupAndTeam = ParticipantPick & {
+  team: FootballTeam;
+  matchup: Pick<FootballMatchup, "id" | "name" | "startDate" | "completed">;
 };
