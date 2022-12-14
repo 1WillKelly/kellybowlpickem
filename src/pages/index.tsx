@@ -62,7 +62,7 @@ const Home: NextPage = () => {
           <div className="flex flex-col items-center gap-2">
             {renderGames()}
             {renderParticipants()}
-          </div>
+    </div>
         </div>
       </main>
     </>
