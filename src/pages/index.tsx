@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import styles from '../styles/Home.module.scss'
 import BigLogo from '../assets/images/bowlpickem-logo.svg';
-import { trpc } from "../utils/trpc";
 import Nav from "components/navigation/Nav";
 import Table from "components/table/Table";
 
@@ -12,11 +11,11 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Bowl Pick'em 2022-23</title>
-        <meta name="description" content="Kelly Bowl Pick 'em 2022-23" />
+        <title>Bowl Pick&apos;em 2022-23</title>
+        <meta name="description" content="Kelly Bowl Pick'em 2022-23" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-white">
+      <main className="flex min-h-screen flex-col items-center bg-white">
         <Nav />
         <section className="w-full flex items-center justify-center py-14">
           <Image src={BigLogo.src} alt="test" width={390} height={160} />

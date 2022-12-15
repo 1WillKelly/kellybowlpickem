@@ -77,6 +77,7 @@ const ParticipantPicksPage: NextPage = () => {
             <div key={pick.id} className="grid grid-cols-3 space-x-2">
               <div>CHAMPIONSHIP GAME</div>
               <div>{pick.team.name}</div>
+              <div className="text-red-500">Edit here!!!</div>
             </div>
           ))}
         </div>
