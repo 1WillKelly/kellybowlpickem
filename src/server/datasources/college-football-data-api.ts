@@ -74,7 +74,10 @@ export class CFBDataSource {
     return (await this.games(season, { seasonType: "postseason" })).filter(
       // Ignore non-bowl games and FCS championship games
       // Non-bowl games have no `notes`
-      (g) => g.notes && !g.notes.includes("FCS Championship")
+      (g) =>
+        g.notes &&
+        !g.notes.includes("FCS Championship") &&
+        !g.notes.includes("Cricket Celebration Bowl")
     );
   }
 }
