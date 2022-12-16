@@ -13,8 +13,6 @@ const Home: NextPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Bowl Pick&apos;em 2022-23</title>
         <meta name="description" content="Kelly Bowl Pick'em 2022-23" />
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main>
         <Nav />

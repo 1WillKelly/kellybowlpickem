@@ -46,7 +46,6 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
       <Head>
         <title>Bowl Pick&apos;em 2022-23</title>
         <meta name="description" content="Kelly Bowl Pick'em 2022-23" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center bg-white">
         <Nav />
