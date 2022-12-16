@@ -118,8 +118,8 @@ const Table: React.FC = () => {
                     "",
                     "",
                   ]
-                ).map((name) => (
-                  <th>{name}</th>
+                ).map((name, idx) => (
+                  <th key={idx}>{name}</th>
                 ))}
               </tr>
             </thead>
