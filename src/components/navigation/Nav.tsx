@@ -24,10 +24,9 @@ const Nav: React.FC = () => {
       </Link>
       <ul>
         {NavItems.map(({ title, url }) => (
-          <li>
+          <li key={url}>
             <Link
               href={url}
-              key={url}
               className={` ${styles["nav-item"]} ${
                 pathname === url ? styles.active : ""
               }`}

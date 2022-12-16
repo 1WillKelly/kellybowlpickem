@@ -96,7 +96,7 @@ const Table: React.FC = () => {
               "",
             ]
           ).map((name) => (
-            <th>{name}</th>
+            <th key={name}>{name}</th>
           ))}
         </tr>
       </thead>
