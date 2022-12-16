@@ -1,7 +1,10 @@
+import Link from "next/link";
 import { trpc } from "utils/trpc";
+import styles from "./index.module.scss";
 
 interface ParticipantWithScore {
   name: string;
+  id: string;
   points?: number;
   possibleTotal?: number;
   upcomingPicks: string[];
@@ -30,22 +33,12 @@ const Table: React.FC = () => {
     const sortedParticipants: ParticipantWithScore[] =
       participantsQuery.data.participants
         .map((p) => {
-          // HOW DO WE FIND THESE?
-          // What variables do we have?
-          // we have: `p.picks` -- what do we need to do to it?
-          const upcomingPicks = p.picks
-            // Can remove this sort because it happens on the server
-            .sort(
-              (pick1, pick2) =>
-                pick1.matchup.startDate.getTime() -
-                pick2.matchup.startDate.getTime()
-            )
-            // delete above
-            .map((pick) => pick.team.name);
+          const upcomingPicks = p.picks.map((pick) => pick.team.name);
 
           if (p.seasonScores?.length !== 1 || !p.seasonScores[0]) {
             return {
               name: p.name,
+              id: p.id,
               upcomingPicks,
             };
           }
@@ -54,6 +47,7 @@ const Table: React.FC = () => {
 
           return {
             name: p.name,
+            id: p.id,
             points: scoring.points,
             possibleTotal: scoring.possiblePoints,
             upcomingPicks,
@@ -64,14 +58,17 @@ const Table: React.FC = () => {
     return (
       <>
         {sortedParticipants.map((participant, idx) => (
-          <tr key={idx} className="text-black">
-            <td className="p-4">{participant.name}</td>
-            <td className="p-4">{participant.points}</td>
-            <td className="p-4">{participant.possibleTotal}</td>
+          <tr key={idx}>
+            <td className={styles.rank}>{idx + 1}</td>
+            <td>
+              <Link href={`/user/${participant.id}/picks`}>
+                {participant.name}
+              </Link>
+            </td>
+            <td>{participant.points}</td>
+            <td>{participant.possibleTotal}</td>
             {participant.upcomingPicks.map((pick, idx) => (
-              <th className="p-4" key={idx}>
-                {pick}
-              </th>
+              <td key={idx}>{pick}</td>
             ))}
           </tr>
         ))}
@@ -80,12 +77,18 @@ const Table: React.FC = () => {
   };
 
   return (
-    <table className="min-w-full divide-y divide-gray-300 text-left">
-      <thead className="bg-gray-50">
+    <table
+      className={`
+      ${styles["standard-table"]}
+      min-w-full text-left
+      `}
+    >
+      <thead>
         <tr>
-          <th className="p-4">Name</th>
-          <th className="p-4">Score</th>
-          <th className="p-4">Possible Total</th>
+          <th></th>
+          <th>Name</th>
+          <th>Score</th>
+          <th>Potential</th>
           {(
             participantsQuery.data?.upcomingGames.map((g) => g.name) ?? [
               "",
@@ -93,7 +96,7 @@ const Table: React.FC = () => {
               "",
             ]
           ).map((name) => (
-            <th className="p-4">{name}</th>
+            <th>{name}</th>
           ))}
         </tr>
       </thead>
