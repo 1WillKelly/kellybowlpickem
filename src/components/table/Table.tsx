@@ -59,8 +59,21 @@ const Table: React.FC = () => {
       <>
         {sortedParticipants.map((participant, idx) => (
           <tr key={idx}>
-            <td className={styles.rank}>{idx + 1}</td>
-            <td>
+            <td
+              className={`
+                ${styles["sticky-col"]}
+                ${styles["first-col"]}
+                ${styles["rank"]}
+              `}
+            >
+              {idx + 1}
+            </td>
+            <td
+              className={`
+                ${styles["sticky-col"]}
+                ${styles["second-col"]}
+              `}
+            >
               <Link href={`/user/${participant.id}/picks`}>
                 {participant.name}
               </Link>
@@ -77,31 +90,44 @@ const Table: React.FC = () => {
   };
 
   return (
-    <table
-      className={`
-      ${styles["standard-table"]}
-      min-w-full text-left
-      `}
-    >
-      <thead>
-        <tr>
-          <th></th>
-          <th>Name</th>
-          <th>Score</th>
-          <th>Potential</th>
-          {(
-            participantsQuery.data?.upcomingGames.map((g) => g.name) ?? [
-              "",
-              "",
-              "",
-            ]
-          ).map((name) => (
-            <th>{name}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody className="bg-white">{renderParticipants()}</tbody>
-    </table>
+    <>
+      <div className={styles.view}>
+        <div className={styles["table-wrapper"]}>
+          <table className={styles["standard-table"]}>
+            <thead>
+              <tr>
+                <th
+                  className={`
+                  ${styles["sticky-col"]}
+                  ${styles["first-col"]}
+                `}
+                ></th>
+                <th
+                  className={`
+                  ${styles["sticky-col"]}
+                  ${styles["second-col"]}
+                `}
+                >
+                  Name
+                </th>
+                <th>Score</th>
+                <th>Potential</th>
+                {(
+                  participantsQuery.data?.upcomingGames.map((g) => g.name) ?? [
+                    "",
+                    "",
+                    "",
+                  ]
+                ).map((name) => (
+                  <th>{name}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="bg-white">{renderParticipants()}</tbody>
+          </table>
+        </div>
+      </div>
+    </>
   );
 };
 

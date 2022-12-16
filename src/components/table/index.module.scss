@@ -1,14 +1,12 @@
 @import "../../styles/variables";
 
 .standard-table {
+  width: 100%;
+  text-align: left;
   font-size: 14px;
-  box-shadow: 0 0 0 1px $color-table-border, 0 2px 4px rgb(0 0 0 / 8%); // table border, since border-radius doesn't work
-  border-radius: 6px;
-  overflow: hidden;
   background-color: white;
 
   thead {
-    background-color: $color-table-header-bg;
     border-bottom: 1px solid $color-table-border;
   }
 
@@ -24,6 +22,7 @@
     font-weight: 500;
     font-size: 12.5px;
     color: #64676d;
+    background-color: $color-table-header-bg;
   }
 
   th,
@@ -31,7 +30,7 @@
     padding: 0.75rem 1rem;
 
     &.rank {
-      padding-right: 0;
+      padding: 0;
       text-align: center;
       font-weight: 500;
       color: $color-brand-yellow;
@@ -45,4 +44,45 @@
       text-decoration: underline;
     }
   }
+}
+
+// Adjust
+
+.view {
+  margin: auto;
+  width: 100%;
+}
+
+.table-wrapper {
+  position: relative;
+  overflow: auto;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 8%);
+  border: 1px solid $color-table-border;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.sticky-col {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: white;
+}
+
+$first-col-width: 46px;
+$second-col-width: 130px;
+
+.first-col {
+  width: $first-col-width;
+  min-width: $first-col-width;
+  max-width: $first-col-width;
+  left: 0px;
+}
+
+.second-col {
+  padding-left: 0 !important;
+  box-shadow: inset -1px 0 0 0 $color-table-border;
+  width: $second-col-width;
+  min-width: $second-col-width;
+  max-width: $second-col-width;
+  left: $first-col-width;
 }
