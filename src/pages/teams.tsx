@@ -1,4 +1,5 @@
 import { type ParticipantSeasonScore, type Season } from "@prisma/client";
+import BigLogoHeader from "components/BigLogoHeader";
 import FullScreenLoading from "components/FullScreenLoading";
 import Nav from "components/navigation/Nav";
 import { type NextPage } from "next";
@@ -46,16 +47,10 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
         <title>Bowl Pick&apos;em 2022-23</title>
         <meta name="description" content="Kelly Bowl Pick'em 2022-23" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className="flex min-h-screen flex-col items-center bg-white">
         <Nav />
+        <BigLogoHeader />
         <div>
           <h1 className="text-xl">
             Team Standings &mdash; {props.season.displayName}
@@ -89,15 +84,13 @@ const TeamsPage: NextPage = () => {
       <Head>
         <title>Teams - Kelly Bowl Pick&apos;em</title>
       </Head>
-      <div>
-        {isLoading ? (
-          <FullScreenLoading />
-        ) : data?.season && data?.teams ? (
-          <TeamSummary season={data.season} teams={data.teams} />
-        ) : (
-          <div className="text-center">Unable to load teams</div>
-        )}
-      </div>
+      {isLoading ? (
+        <FullScreenLoading />
+      ) : data?.season && data?.teams ? (
+        <TeamSummary season={data.season} teams={data.teams} />
+      ) : (
+        <div className="text-center">Unable to load teams</div>
+      )}
     </>
   );
 };
