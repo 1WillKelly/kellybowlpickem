@@ -1,5 +1,6 @@
 import { formatTime } from "components/date-time";
 import FullScreenLoading from "components/FullScreenLoading";
+import Nav from "components/navigation/Nav";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -49,8 +50,10 @@ const ParticipantPicksPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{data.participant.name} | Bowl Pick&apos;em</title>
+        <title>Bowl Pick&apos;em 2022-23</title>
+        <meta name="description" content="Kelly Bowl Pick'em 2022-23" />
       </Head>
+      <Nav />
       <div className="mx-auto py-6">
         <h1 className="text-center text-3xl font-medium uppercase text-indigo-800">
           {data.participant.name}
@@ -77,6 +80,7 @@ const ParticipantPicksPage: NextPage = () => {
             <div key={pick.id} className="grid grid-cols-3 space-x-2">
               <div>CHAMPIONSHIP GAME</div>
               <div>{pick.team.name}</div>
+              <div className="text-red-500">Edit here!!!</div>
             </div>
           ))}
         </div>

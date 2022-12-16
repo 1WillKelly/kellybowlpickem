@@ -7,9 +7,11 @@ import { authRouter } from "./auth";
 import { gamesRouter } from "./games";
 import { picksRouter } from "./picks";
 import { teamsRouter } from "./teams";
+import { participantsRouter } from "./participants";
 
 export const appRouter = router({
   games: gamesRouter,
+  participants: participantsRouter,
   auth: authRouter,
   admin: adminRouter,
   picks: picksRouter,

@@ -1,6 +1,6 @@
 {
   "name": "bowlpickem",
-  "version": "0.1.0",
+  "version": "1.22.4",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -27,6 +27,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.40.0",
+    "sass": "^1.56.2",
     "superjson": "1.9.1",
     "zod": "^3.18.0"
   },
