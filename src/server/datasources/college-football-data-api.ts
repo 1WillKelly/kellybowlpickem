@@ -70,7 +70,14 @@ export class CFBDataSource {
     });
   }
 
-  postSeasonGames(season: number): Promise<CFBDGame[]> {
-    return this.games(season, { seasonType: "postseason" });
+  async postSeasonGames(season: number): Promise<CFBDGame[]> {
+    return (await this.games(season, { seasonType: "postseason" })).filter(
+      // Ignore non-bowl games and FCS championship games
+      // Non-bowl games have no `notes`
+      (g) =>
+        g.notes &&
+        !g.notes.includes("FCS Championship") &&
+        !g.notes.includes("Cricket Celebration Bowl")
+    );
   }
 }
