@@ -24,6 +24,10 @@ const getScores = (team: TeamWithScores): ParticipantSeasonScore[] => {
   });
 };
 
+const roundFloat = (input: number): number => {
+  return Math.round(input * 100) / 100;
+};
+
 const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
   const teamSummaries: TeamSummary[] = props.teams
     .map((t) => {
@@ -64,8 +68,10 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
               return (
                 <div key={team.id} className="grid grid-cols-3">
                   <div>{team.name}</div>
-                  <div>{team.teamTotal / team.members.length}</div>
-                  <div>{team.teamPossibleTotal / team.members.length}</div>
+                  <div>{roundFloat(team.teamTotal / team.members.length)}</div>
+                  <div>
+                    {roundFloat(team.teamPossibleTotal / team.members.length)}
+                  </div>
                 </div>
               );
             })}
