@@ -90,44 +90,42 @@ const Table: React.FC = () => {
   };
 
   return (
-    <>
-      <div className={styles.view}>
-        <div className={styles["table-wrapper"]}>
-          <table className={styles["standard-table"]}>
-            <thead>
-              <tr>
-                <th
-                  className={`
+    <div className={styles.view}>
+      <div className={styles["table-wrapper"]}>
+        <table className={styles["standard-table"]}>
+          <thead>
+            <tr>
+              <th
+                className={`
                   ${styles["sticky-col"]}
                   ${styles["first-col"]}
                 `}
-                ></th>
-                <th
-                  className={`
+              ></th>
+              <th
+                className={`
                   ${styles["sticky-col"]}
                   ${styles["second-col"]}
                 `}
-                >
-                  Name
-                </th>
-                <th>Score</th>
-                <th>Potential</th>
-                {(
-                  participantsQuery.data?.upcomingGames.map((g) => g.name) ?? [
-                    "",
-                    "",
-                    "",
-                  ]
-                ).map((name, idx) => (
-                  <th key={idx}>{name}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="bg-white">{renderParticipants()}</tbody>
-          </table>
-        </div>
+              >
+                Name
+              </th>
+              <th>Score</th>
+              <th>Potential</th>
+              {(
+                participantsQuery.data?.upcomingGames.map((g) => g.name) ?? [
+                  "",
+                  "",
+                  "",
+                ]
+              ).map((name, idx) => (
+                <th key={idx}>{name}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="bg-white">{renderParticipants()}</tbody>
+        </table>
       </div>
-    </>
+    </div>
   );
 };
 
