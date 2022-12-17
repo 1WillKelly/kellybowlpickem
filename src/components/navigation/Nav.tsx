@@ -24,6 +24,7 @@ const Nav: React.FC = () => {
   const { data: session } = useSession();
   const { data: isAdmin } = trpc.admin.isAdmin.useQuery(undefined, {
     retry: false,
+    enabled: !!session,
   });
 
   return (
