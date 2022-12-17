@@ -1,4 +1,3 @@
-import { FootballMatchup } from "@prisma/client";
 import BigLogoHeader from "components/BigLogoHeader/BigLogoHeader";
 import { formatTime } from "components/date-time";
 import FullScreenLoading from "components/FullScreenLoading";
