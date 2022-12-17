@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Sync Bowl Games
-        if: github.event.schedule == '0 0 * * 1'
+        if: github.event.schedule == '0 0 * * *'
         run: |
           curl -X POST -ss \
             -H "Authentication: token $WEBHOOK_SECRET" \
