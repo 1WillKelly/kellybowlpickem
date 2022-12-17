@@ -3,7 +3,7 @@ import React from "react";
 interface EditableTableProps<TData> {
   columnNames: readonly string[];
   items?: readonly TData[];
-  renderItem: (item: TData) => React.ReactNode;
+  renderItem: (item: TData) => React.ReactNode[];
   editItem: (item: TData) => void;
   deleteItem?: (item: TData) => void;
   loading?: boolean;
