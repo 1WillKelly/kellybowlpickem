@@ -6,6 +6,7 @@ import {
   type ParticipantTeam,
   type ParticipantTeamMember,
   type ParticipantSeasonScore,
+  type ParticipantChampionshipPick,
 } from "@prisma/client";
 
 export type GameWithTeam = FootballMatchup & {
@@ -42,4 +43,8 @@ export type TeamWithScores = ParticipantTeam & {
 export type PickWithMatchupAndTeam = ParticipantPick & {
   team: FootballTeam;
   matchup: Pick<FootballMatchup, "id" | "name" | "startDate" | "completed">;
+};
+
+export type ChampionshipPickWithTeam = ParticipantChampionshipPick & {
+  team: FootballTeam;
 };
