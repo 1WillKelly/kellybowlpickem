@@ -4,6 +4,9 @@ import { z } from "zod";
 import { router, adminProcedure } from "../trpc";
 
 export const adminRouter = router({
+  isAdmin: adminProcedure.query(() => {
+    return { ok: true };
+  }),
   listGames: adminProcedure.query(async ({ ctx }) => {
     const season = await getSeason();
     const matchups = await ctx.prisma.footballMatchup.findMany({
