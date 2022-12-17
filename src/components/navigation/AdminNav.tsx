@@ -16,7 +16,9 @@ const AdminNav: React.FC = () => {
   return (
     <nav className="flex h-16 flex-row bg-white px-6 shadow-md">
       <div className="flex items-center">
-        <Image src={FootballLogo.src} alt="Football" width={48} height={31} />
+        <Link href={"/"}>
+          <Image src={FootballLogo.src} alt="Football" width={48} height={31} />
+        </Link>
       </div>
       <div className="ml-6 flex space-x-8">
         {NavItems.map(({ title, url }) => (

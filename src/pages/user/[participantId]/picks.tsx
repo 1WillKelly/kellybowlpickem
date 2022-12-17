@@ -1,11 +1,15 @@
+import BigLogoHeader from "components/BigLogoHeader/BigLogoHeader";
 import { formatTime } from "components/date-time";
 import FullScreenLoading from "components/FullScreenLoading";
 import Nav from "components/navigation/Nav";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { type PickWithMatchupAndTeam } from "types/admin-types";
+
+import type { GameWithTeam, PickWithMatchupAndTeam } from "types/admin-types";
 import { trpc } from "utils/trpc";
+
+import styles from "../../../components/table/index.module.scss";
 
 interface PickCellProps {
   pick: PickWithMatchupAndTeam;
@@ -25,6 +29,22 @@ const PickCell: React.FC<PickCellProps> = (props) => {
       {props.pick.team.name} ({props.pick.settledPoints ?? 0})
     </span>
   );
+};
+
+interface MatchupStatusCellProps {
+  matchup: GameWithTeam;
+}
+
+const MatchupStatusCell: React.FC<MatchupStatusCellProps> = (props) => {
+  if (props.matchup.completed) {
+    return (
+      <>
+        {props.matchup.homeTeam.name}: {props.matchup.homeScore} —{" "}
+        {props.matchup.awayTeam.name}: {props.matchup.awayScore}
+      </>
+    );
+  }
+  return <p>Not completed</p>;
 };
 
 const ParticipantPicksPage: NextPage = () => {
@@ -53,38 +73,52 @@ const ParticipantPicksPage: NextPage = () => {
         <title>Bowl Pick&apos;em 2022-23</title>
         <meta name="description" content="Kelly Bowl Pick'em 2022-23" />
       </Head>
-      <Nav />
-      <div className="mx-auto py-6">
+      <main>
+        <Nav />
+        <BigLogoHeader />
         <h1 className="text-center text-3xl font-medium uppercase text-indigo-800">
           {data.participant.name}
         </h1>
-        <div className="mt-4 text-center text-lg text-slate-600">
+        <div className="mt-4 mb-6 text-center text-lg text-slate-600">
           {data.season.displayName} Picks
         </div>
-        <div className="mt-6 divide-y">
-          <div className="border-b-1 grid grid-cols-3 space-x-2 border-slate-400 bg-slate-100 px-2 py-1">
-            <div>Bowl</div>
-            <div>Your Pick</div>
-            <div>Time</div>
+        <div className={styles.view}>
+          <div className={styles["table-wrapper"]}>
+            <table className={styles["standings-table"]}>
+              <thead>
+                <tr>
+                  <th>Bowl</th>
+                  <th>Your Pick</th>
+                  <th>Time</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                {data.picks.map((pick) => (
+                  <tr key={pick.id}>
+                    <td>{pick.matchup.name}</td>
+                    <td>
+                      <PickCell pick={pick} />
+                    </td>
+                    <td>{formatTime(pick.matchup.startDate)}</td>
+                    <td>
+                      <MatchupStatusCell matchup={pick.matchup} />
+                    </td>
+                  </tr>
+                ))}
+                {data.championshipPick.map((pick) => (
+                  <tr key={pick.id}>
+                    <td>Championship</td>
+                    <td>{pick.team.name}</td>
+                    <td>TODO</td>
+                    <td>TODO</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          {data.picks.map((pick) => (
-            <div key={pick.id} className="grid grid-cols-3 space-x-2 px-2 py-1">
-              <div>{pick.matchup.name}</div>
-              <div>
-                <PickCell pick={pick} />
-              </div>
-              <div>{formatTime(pick.matchup.startDate)}</div>
-            </div>
-          ))}
-          {data.championshipPick.map((pick) => (
-            <div key={pick.id} className="grid grid-cols-3 space-x-2">
-              <div>CHAMPIONSHIP GAME</div>
-              <div>{pick.team.name}</div>
-              <div className="text-red-500">Edit here!!!</div>
-            </div>
-          ))}
         </div>
-      </div>
+      </main>
     </>
   );
 };

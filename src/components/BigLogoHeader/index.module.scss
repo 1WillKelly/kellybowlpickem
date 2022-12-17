@@ -1,0 +1,11 @@
+@import "../../styles/variables";
+
+@media (max-width: $mobile-breakpoint) {
+  .big-logo-header {
+    padding: 0.5rem 0 2rem;
+  }
+
+  .big-logo {
+    width: 250px;
+  }
+}

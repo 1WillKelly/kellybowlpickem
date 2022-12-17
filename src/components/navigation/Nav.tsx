@@ -22,7 +22,11 @@ const AdminNavItems = [
 const Nav: React.FC = () => {
   const { pathname } = useRouter();
   const { data: session } = useSession();
-  const { data: isAdmin } = trpc.admin.isAdmin.useQuery();
+  const { data: isAdmin } = trpc.admin.isAdmin.useQuery(undefined, {
+    retry: false,
+    enabled: !!session,
+  });
+
   return (
     <>
       <nav className={styles["primary-nav"]}>
