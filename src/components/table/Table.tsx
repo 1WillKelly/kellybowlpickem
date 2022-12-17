@@ -27,7 +27,13 @@ const Table: React.FC = () => {
         upcomingPicks,
       };
     })
-    .sort((a, b) => (b.points ?? 0) - (a.points ?? 0));
+    .sort((a, b) => {
+      const overallScore = (b.points ?? 0) - (a.points ?? 0);
+      if (overallScore !== 0) {
+        return overallScore;
+      }
+      return (b.possibleTotal ?? 0) - (a.possibleTotal ?? 0);
+    });
 
   return (
     <StandingsTable
