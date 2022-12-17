@@ -4,7 +4,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.scss";
 import Nav from "components/navigation/Nav";
 import Table from "components/table/Table";
-import BigLogoHeader from "components/BigLogoHeader";
+import BigLogoHeader from "components/BigLogoHeader/BigLogoHeader";
 
 const Home: NextPage = () => {
   return (

@@ -6,13 +6,24 @@ interface StandingsTableProps<TData> {
   items?: readonly TData[];
   renderItem: (item: TData) => React.ReactNode[];
   loading?: boolean;
+  individualtandings?: boolean;
 }
 
 const StandingsTable = <TData,>(props: StandingsTableProps<TData>) => {
   return (
-    <div className={styles.view}>
+    <div
+      className={`
+    ${styles.view}
+    ${
+      props.individualtandings
+        ? styles["individual-standings"]
+        : styles["team-standings"]
+    }
+`}
+    >
       <div className={styles["table-wrapper"]}>
-        <table className={styles["standard-table"]}>
+        {props.individualtandings ? "" : ""}
+        <table className={styles["standings-table"]}>
           <thead>
             <tr>
               {/** Standings place -- invisible header */}
@@ -58,9 +69,11 @@ const StandingsTable = <TData,>(props: StandingsTableProps<TData>) => {
                       key={cellIdx}
                       className={
                         cellIdx === 0
-                          ? [styles["sticky-col"], styles["second-col"]].join(
-                              " "
-                            )
+                          ? [
+                              styles["sticky-col"],
+                              styles["second-col"],
+                              styles["name"],
+                            ].join(" ")
                           : undefined
                       }
                     >

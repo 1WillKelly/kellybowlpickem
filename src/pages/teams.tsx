@@ -1,5 +1,5 @@
 import { type ParticipantSeasonScore, type Season } from "@prisma/client";
-import BigLogoHeader from "components/BigLogoHeader";
+import BigLogoHeader from "components/BigLogoHeader/BigLogoHeader";
 import FullScreenLoading from "components/FullScreenLoading";
 import Nav from "components/navigation/Nav";
 import StandingsTable from "components/table/StandingsTable";

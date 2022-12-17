@@ -1,4 +1,5 @@
-import BigLogoHeader from "components/BigLogoHeader";
+import { FootballMatchup } from "@prisma/client";
+import BigLogoHeader from "components/BigLogoHeader/BigLogoHeader";
 import { formatTime } from "components/date-time";
 import FullScreenLoading from "components/FullScreenLoading";
 import Nav from "components/navigation/Nav";
@@ -6,7 +7,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import { type PickWithMatchupAndTeam } from "types/admin-types";
+import { GameWithTeam, type PickWithMatchupAndTeam } from "types/admin-types";
 import { trpc } from "utils/trpc";
 
 import styles from "../../../components/table/index.module.scss";
@@ -29,6 +30,22 @@ const PickCell: React.FC<PickCellProps> = (props) => {
       {props.pick.team.name} ({props.pick.settledPoints ?? 0})
     </span>
   );
+};
+
+interface MatchupStatusCellProps {
+  matchup: GameWithTeam;
+}
+
+const MatchupStatusCell: React.FC<MatchupStatusCellProps> = (props) => {
+  if (props.matchup.completed) {
+    return (
+      <>
+        {props.matchup.homeTeam.name}: {props.matchup.homeScore} —{" "}
+        {props.matchup.awayTeam.name}: {props.matchup.awayScore}
+      </>
+    );
+  }
+  return <p>Not completed</p>;
 };
 
 const ParticipantPicksPage: NextPage = () => {
@@ -68,32 +85,37 @@ const ParticipantPicksPage: NextPage = () => {
         </div>
         <div className={styles.view}>
           <div className={styles["table-wrapper"]}>
-            <table className={styles["standard-table"]}>
+            <table className={styles["standings-table"]}>
               <thead>
                 <tr>
                   <th>Bowl</th>
                   <th>Your Pick</th>
                   <th>Time</th>
+                  <th>Result</th>
                 </tr>
-                <tbody className="bg-white">
-                  {data.picks.map((pick) => (
-                    <tr key={pick.id}>
-                      <td>{pick.matchup.name}</td>
-                      <td>
-                        <PickCell pick={pick} />
-                      </td>
-                      <td>{formatTime(pick.matchup.startDate)}</td>
-                    </tr>
-                  ))}
-                  {data.championshipPick.map((pick) => (
-                    <tr key={pick.id}>
-                      <td>Championship</td>
-                      <td>{pick.team.name}</td>
-                      <td>TODO</td>
-                    </tr>
-                  ))}
-                </tbody>
               </thead>
+              <tbody className="bg-white">
+                {data.picks.map((pick) => (
+                  <tr key={pick.id}>
+                    <td>{pick.matchup.name}</td>
+                    <td>
+                      <PickCell pick={pick} />
+                    </td>
+                    <td>{formatTime(pick.matchup.startDate)}</td>
+                    <td>
+                      <MatchupStatusCell matchup={pick.matchup} />
+                    </td>
+                  </tr>
+                ))}
+                {data.championshipPick.map((pick) => (
+                  <tr key={pick.id}>
+                    <td>Championship</td>
+                    <td>{pick.team.name}</td>
+                    <td>TODO</td>
+                    <td>TODO</td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
         </div>

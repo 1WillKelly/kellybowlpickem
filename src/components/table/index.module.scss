@@ -1,53 +1,5 @@
 @import "../../styles/variables";
 
-.standard-table {
-  width: 100%;
-  text-align: left;
-  font-size: 14px;
-  background-color: white;
-
-  thead {
-    border-bottom: 1px solid $color-table-border;
-  }
-
-  tr {
-    border-bottom: 1px solid $color-table-border;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  th {
-    font-weight: 500;
-    font-size: 12.5px;
-    color: #64676d;
-    background-color: $color-table-header-bg;
-  }
-
-  th,
-  td {
-    padding: 0.75rem 1rem;
-
-    &.rank {
-      padding: 0;
-      text-align: center;
-      font-weight: 500;
-      color: $color-brand-yellow;
-    }
-  }
-
-  a {
-    color: $color-primary;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
-// Adjust
-
 .view {
   margin: auto;
   width: 100%;
@@ -62,6 +14,61 @@
   white-space: nowrap;
 }
 
+.standings-table {
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  background-color: white;
+
+  tr {
+    border-bottom: 1px solid $color-table-border;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  th {
+    font-weight: 500;
+    font-size: 12.5px;
+    color: #64676d;
+    background-color: $color-table-header-bg;
+    border-bottom: 1px solid $color-table-border;
+  }
+
+  th,
+  td {
+    padding: 0.75rem 1rem;
+
+    &:nth-child(3) {
+      padding-left: 2rem;
+    }
+
+    &:last-child {
+      padding-right: 2rem;
+    }
+
+    &.rank {
+      padding: 0;
+      text-align: center;
+      font-weight: 500;
+      color: $color-brand-yellow;
+    }
+
+    &.name {
+      font-weight: 500;
+    }
+  }
+
+  a {
+    color: $color-primary;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .sticky-col {
   position: -webkit-sticky;
   position: sticky;
@@ -69,7 +76,8 @@
 }
 
 $first-col-width: 46px;
-$second-col-width: 130px;
+$individuals-second-col-width: 130px;
+$team-second-col-width: 190px;
 
 .first-col {
   width: $first-col-width;
@@ -81,8 +89,75 @@ $second-col-width: 130px;
 .second-col {
   padding-left: 0 !important;
   box-shadow: inset -1px 0 0 0 $color-table-border;
-  width: $second-col-width;
-  min-width: $second-col-width;
-  max-width: $second-col-width;
+  width: $individuals-second-col-width;
+  min-width: $individuals-second-col-width;
+  max-width: $individuals-second-col-width;
   left: $first-col-width;
+}
+
+.individual-standings {
+  max-width: 1200px;
+}
+
+.team-standings {
+  max-width: 800px;
+
+  .second-col {
+    width: $team-second-col-width;
+    min-width: $team-second-col-width;
+    max-width: $team-second-col-width;
+  }
+}
+
+// Mobile Styles
+
+$mobile-first-col-width: 30px;
+$mobile-individuals-second-col-width: 116px;
+$mobile-team-second-col-width: 164px;
+
+@media (max-width: $mobile-breakpoint) {
+  .table-wrapper {
+    border: none;
+    border-top: 1px solid $color-table-border;
+    border-bottom: 1px solid $color-table-border;
+    border-radius: 0;
+  }
+
+  .standings-table {
+    font-size: 12px;
+
+    th,
+    td {
+      padding: 0.5rem 0.5rem;
+
+      &:nth-child(3) {
+        padding-left: 1rem;
+      }
+
+      &:last-child {
+        padding-right: 1rem;
+      }
+    }
+  }
+
+  .first-col {
+    width: $mobile-first-col-width;
+    min-width: $mobile-first-col-width;
+    max-width: $mobile-first-col-width;
+  }
+
+  .second-col {
+    padding-left: 0 !important;
+    box-shadow: inset -1px 0 0 0 $color-table-border;
+    width: $mobile-individuals-second-col-width;
+    min-width: $mobile-individuals-second-col-width;
+    max-width: $mobile-individuals-second-col-width;
+    left: $mobile-first-col-width;
+  }
+
+  .team-standings .second-col {
+    width: $mobile-team-second-col-width;
+    min-width: $mobile-team-second-col-width;
+    max-width: $mobile-team-second-col-width;
+  }
 }

@@ -32,11 +32,9 @@ export const picksRouter = router({
         include: {
           team: true,
           matchup: {
-            select: {
-              id: true,
-              name: true,
-              startDate: true,
-              completed: true,
+            include: {
+              homeTeam: true,
+              awayTeam: true,
             },
           },
         },
