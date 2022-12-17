@@ -2,10 +2,12 @@ import { type ParticipantSeasonScore, type Season } from "@prisma/client";
 import BigLogoHeader from "components/BigLogoHeader";
 import FullScreenLoading from "components/FullScreenLoading";
 import Nav from "components/navigation/Nav";
+import StandingsTable from "components/table/StandingsTable";
 import { type NextPage } from "next";
 
 import Head from "next/head";
 import { type TeamWithScores } from "types/admin-types";
+import styles from "../styles/Home.module.scss";
 import { trpc } from "utils/trpc";
 
 interface TeamSummaryProps {
@@ -51,32 +53,21 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
         <title>Bowl Pick&apos;em 2022-23</title>
         <meta name="description" content="Kelly Bowl Pick'em 2022-23" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center bg-white">
+      <main>
         <Nav />
         <BigLogoHeader />
-        <div>
-          <h1 className="text-xl">
-            Team Standings &mdash; {props.season.displayName}
-          </h1>
-          <div className="mt-4 flex flex-col space-y-4">
-            <div className="grid grid-cols-3">
-              <div>Name</div>
-              <div>Average Score</div>
-              <div>Possible Score</div>
-            </div>
-            {teamSummaries.map((team) => {
-              return (
-                <div key={team.id} className="grid grid-cols-3">
-                  <div>{team.name}</div>
-                  <div>{roundFloat(team.teamTotal / team.members.length)}</div>
-                  <div>
-                    {roundFloat(team.teamPossibleTotal / team.members.length)}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <section className={styles["individual-standings"]}>
+          <StandingsTable
+            loading={false}
+            items={teamSummaries}
+            columnNames={() => ["Name", "Average Score", "Possible Score"]}
+            renderItem={(team) => [
+              team.name,
+              roundFloat(team.teamTotal / team.members.length),
+              roundFloat(team.teamPossibleTotal / team.members.length),
+            ]}
+          />
+        </section>
       </main>
     </>
   );
