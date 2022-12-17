@@ -6,7 +6,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import { GameWithTeam, type PickWithMatchupAndTeam } from "types/admin-types";
+import type { GameWithTeam, PickWithMatchupAndTeam } from "types/admin-types";
 import { trpc } from "utils/trpc";
 
 import styles from "../../../components/table/index.module.scss";
