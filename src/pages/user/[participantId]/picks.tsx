@@ -64,7 +64,7 @@ const ParticipantPicksPage: NextPage = () => {
   }
 
   if (!data?.participant || !data?.picks) {
-    return <div>Sorry, we're unable to load data for this participant</div>;
+    return <div>Sorry, we&#39;re unable to load data for this participant</div>;
   }
 
   return (
