@@ -35,6 +35,10 @@
         }
       }
     }
+
+    .logo-mark {
+      width: 32px;
+    }
   }
 }
 
@@ -45,7 +49,7 @@
   padding: 0.25rem 0;
 
   &.active {
-    color: #222;
+    color: #21242b;
     border-bottom: 1px solid $color-brand-yellow;
   }
 
