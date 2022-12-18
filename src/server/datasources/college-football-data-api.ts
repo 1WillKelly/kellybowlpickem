@@ -31,6 +31,14 @@ export interface CFBDGameMedia {
   outlet?: string;
 }
 
+export interface CFBDTeam {
+  id: number;
+  school: string;
+  mascot: string;
+  color: string;
+  logos: string[];
+}
+
 interface RequestOptions {
   [key: string]: string | number;
 }
@@ -97,5 +105,9 @@ export class CFBDataSource {
 
   postSeasonGamesMedia(season: number): Promise<CFBDGameMedia[]> {
     return this.gamesMedia(season, { seasonType: "postseason" });
+  }
+
+  bowlTeams(): Promise<CFBDTeam[]> {
+    return this.makeRequest<CFBDTeam[]>("/teams/fbs");
   }
 }

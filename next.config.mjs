@@ -7,6 +7,11 @@
 
 /** @type {import("next").NextConfig} */
 const config = {
+  images: {
+    remotePatterns: [
+      { protocol: "http", hostname: "*.espncdn.com", pathname: "**" },
+    ],
+  },
   reactStrictMode: true,
   swcMinify: true,
   i18n: {

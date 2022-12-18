@@ -34,9 +34,12 @@ export const getSeason = async (): Promise<Season> => {
 export const syncBowlGames = async () => {
   const season = await getSeason();
   const client = new CFBDataSource();
-  const games = await client.postSeasonGames(season.year);
-  const gamesMedia = await client.postSeasonGamesMedia(season.year);
-  const teams = await syncTeams(games);
+  const [games, gamesMedia, gameTeams] = await Promise.all([
+    client.postSeasonGames(season.year),
+    client.postSeasonGamesMedia(season.year),
+    client.bowlTeams(),
+  ]);
+  const teams = await syncTeams(games, gameTeams);
 
   const gamesWithMedia: (CFBDGame & Partial<CFBDGameMedia>)[] = games.map(
     (g) => {
