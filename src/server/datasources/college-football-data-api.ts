@@ -16,12 +16,19 @@ export interface CFBDGame {
   home_team: string;
   home_conference: string;
   home_points: number;
+  home_division: string;
   away_id: number;
   away_team: string;
   away_conference: string;
   away_points: number;
+  away_division: string;
   // Will be the bowl game title
   notes?: string;
+}
+
+export interface CFBDGameMedia {
+  id: number;
+  outlet?: string;
 }
 
 interface RequestOptions {
@@ -70,11 +77,25 @@ export class CFBDataSource {
     });
   }
 
+  gamesMedia(
+    season: number,
+    options: RequestOptions
+  ): Promise<CFBDGameMedia[]> {
+    return this.makeRequest<CFBDGame[]>("/games/media", {
+      year: season,
+      ...options,
+    });
+  }
+
   async postSeasonGames(season: number): Promise<CFBDGame[]> {
     return (await this.games(season, { seasonType: "postseason" })).filter(
       // Ignore non-bowl games and FCS championship games
       // Non-bowl games have no `notes`
-      (g) => g.notes && g.home_conference === "fbs"
+      (g) => g.notes && g.home_division === "fbs"
     );
+  }
+
+  postSeasonGamesMedia(season: number): Promise<CFBDGameMedia[]> {
+    return this.gamesMedia(season, { seasonType: "postseason" });
   }
 }
