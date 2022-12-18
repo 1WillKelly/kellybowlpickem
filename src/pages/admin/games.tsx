@@ -6,6 +6,29 @@ import { formatTime } from "components/date-time";
 import { useState } from "react";
 import { type GameWithTeam } from "types/admin-types";
 import EditGameDialog from "components/dialog/EditGameDialog";
+import Image from "next/image";
+import { type FootballTeam } from "@prisma/client";
+
+interface TeamCellProps {
+  team: FootballTeam;
+}
+
+const TeamCell: React.FC<TeamCellProps> = ({ team }) => {
+  return (
+    <div key={team.id} className="flex flex-row items-center space-x-2">
+      {team.logo && (
+        <Image
+          alt={team.name}
+          className="rounded-full"
+          width={20}
+          height={20}
+          src={team.logo}
+        />
+      )}
+      <div>{team.name}</div>
+    </div>
+  );
+};
 
 const AdminGamePage: NextPage = () => {
   const { isLoading, data } = trpc.admin.listGames.useQuery();
@@ -51,9 +74,9 @@ const AdminGamePage: NextPage = () => {
         }}
         renderItem={(game) => [
           formatName(game),
-          game.homeTeam.name,
+          <TeamCell key={game.homeTeam.id} team={game.homeTeam} />,
           game.homePointValue,
-          game.awayTeam.name,
+          <TeamCell key={game.awayTeam.id} team={game.awayTeam} />,
           game.awayPointValue,
           formatTime(game.startDate),
         ]}

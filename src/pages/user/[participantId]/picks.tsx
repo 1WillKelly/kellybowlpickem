@@ -20,13 +20,32 @@ interface PickCellProps {
 }
 
 const PickCell: React.FC<PickCellProps> = (props) => {
+  const teamLogo = props.pick.team.logo && (
+    <Image
+      alt={props.pick.team.name}
+      width={20}
+      height={20}
+      src={props.pick.team.logo}
+    />
+  );
+
   if (!props.pick.settled) {
-    return <>{props.pick.team.name}</>;
+    return (
+      <div className="flex flex-row space-x-2">
+        {teamLogo}
+        <div>{props.pick.team.name}</div>
+      </div>
+    );
   }
 
   return (
-    <span className={styles["your-pick"]}>
-      {props.pick.team.name} ({props.pick.settledPoints ?? 0})
+    <span
+      className={[styles["your-pick"], "flex flex-row space-x-2"].join(" ")}
+    >
+      {teamLogo}
+      <div>
+        {props.pick.team.name} ({props.pick.settledPoints ?? 0})
+      </div>
     </span>
   );
 };

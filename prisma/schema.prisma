@@ -81,6 +81,7 @@ model FootballTeam {
   apiId      String
   name       String
   conference String?
+  logo       String?
 
   homeGames                    FootballMatchup[]             @relation("HomeGames")
   awayGames                    FootballMatchup[]             @relation("AwayGames")

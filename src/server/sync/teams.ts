@@ -1,26 +1,41 @@
 import { prisma } from "server/db/client";
-import { type CFBDGame } from "server/datasources/college-football-data-api";
+import {
+  type CFBDTeam,
+  type CFBDGame,
+} from "server/datasources/college-football-data-api";
 import { type FootballTeam } from "@prisma/client";
 
 interface ApiTeam {
   apiId: string;
   name: string;
   conference: string;
+  logo?: string;
 }
 
 export const syncTeams = async (
-  games: readonly CFBDGame[]
+  games: readonly CFBDGame[],
+  gameTeams: readonly CFBDTeam[]
 ): Promise<FootballTeam[]> => {
+  const getLogo = (apiId: string): string | undefined => {
+    const foundTeam = gameTeams.find((t) => t.id.toString() === apiId);
+    if (!foundTeam || !foundTeam.logos.length) {
+      return undefined;
+    }
+    return foundTeam.logos[0];
+  };
+
   const teams = games.flatMap((game) => [
     {
       apiId: game.away_id.toString(),
       name: game.away_team,
       conference: game.away_conference,
+      logo: getLogo(game.away_id.toString()),
     },
     {
       apiId: game.home_id.toString(),
       name: game.home_team,
       conference: game.home_conference,
+      logo: getLogo(game.home_id.toString()),
     },
   ]);
   const teamApiIds = teams.map((team) => team.apiId);
@@ -39,6 +54,7 @@ export const syncTeams = async (
     apiId: team.apiId,
     name: team.name,
     conference: team.conference,
+    logo: team.logo,
   });
 
   const teamsToCreate = teams
@@ -56,7 +72,8 @@ export const syncTeams = async (
     }
     if (
       gameTeam.name !== team.name ||
-      gameTeam.conference !== team.conference
+      gameTeam.conference !== team.conference ||
+      gameTeam.logo !== team.logo
     ) {
       await prisma.footballTeam.update({
         where: {
@@ -65,6 +82,7 @@ export const syncTeams = async (
         data: {
           name: gameTeam.name,
           conference: gameTeam.conference,
+          logo: gameTeam.logo,
         },
       });
     }

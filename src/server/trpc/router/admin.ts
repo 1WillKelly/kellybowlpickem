@@ -1,11 +1,18 @@
 import { type FootballMatchup } from "@prisma/client";
-import { getSeason } from "server/sync/season";
+import { syncScores } from "server/sync/scores";
+import { getSeason, syncBowlGames } from "server/sync/season";
 import { z } from "zod";
 import { router, adminProcedure } from "../trpc";
 
 export const adminRouter = router({
   isAdmin: adminProcedure.query(() => {
     return { ok: true };
+  }),
+  syncGames: adminProcedure.mutation(async () => {
+    return await syncBowlGames();
+  }),
+  syncScores: adminProcedure.mutation(async () => {
+    return await syncScores();
   }),
   listGames: adminProcedure.query(async ({ ctx }) => {
     const season = await getSeason();
