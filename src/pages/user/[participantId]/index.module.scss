@@ -94,6 +94,29 @@
   font-size: 8px;
 }
 
+.matchup-cell {
+  min-width: 240px;
+  max-width: 240px;
+  color: #777c87;
+}
+
+.matchup {
+  display: flex;
+  flex-direction: column;
+
+  .matchup-line {
+    display: flex;
+    justify-content: space-between;
+
+    .team-name {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
+    }
+  }
+}
+
 @media (max-width: $mobile-breakpoint) {
   .participant-intro {
     margin: 0.75rem auto 2.5rem;
@@ -128,5 +151,10 @@
     .date-time {
       font-size: 12px;
     }
+  }
+
+  .matchup-cell {
+    min-width: 208px;
+    max-width: 208px;
   }
 }

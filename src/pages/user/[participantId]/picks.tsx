@@ -38,10 +38,22 @@ interface MatchupStatusCellProps {
 const MatchupStatusCell: React.FC<MatchupStatusCellProps> = (props) => {
   if (props.matchup.completed) {
     return (
-      <span className=" text-gray-600">
-        {props.matchup.homeTeam.name}: {props.matchup.homeScore} —{" "}
-        {props.matchup.awayTeam.name}: {props.matchup.awayScore}
-      </span>
+      <>
+        <div className={styles.matchup}>
+          <span className={styles["matchup-line"]}>
+            <span className={styles["team-name"]}>
+              {props.matchup.homeTeam.name}
+            </span>
+            <span>{props.matchup.homeScore}</span>
+          </span>
+          <span className={styles["matchup-line"]}>
+            <span className={styles["team-name"]}>
+              {props.matchup.awayTeam.name}
+            </span>
+            <span>{props.matchup.awayScore}</span>
+          </span>
+        </div>
+      </>
     );
   }
   return <span className="text-xs font-medium text-gray-400">TBD</span>;
@@ -140,7 +152,7 @@ const ParticipantPicksPage: NextPage = () => {
                         <td>
                           <PickCell pick={pick} />
                         </td>
-                        <td>
+                        <td className={styles["matchup-cell"]}>
                           <MatchupStatusCell matchup={pick.matchup} />
                         </td>
                       </tr>
