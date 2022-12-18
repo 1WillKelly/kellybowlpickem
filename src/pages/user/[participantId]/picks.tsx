@@ -23,7 +23,6 @@ const PickCell: React.FC<PickCellProps> = (props) => {
   const teamLogo = props.pick.team.logo && (
     <Image
       alt={props.pick.team.name}
-      className="rounded-full"
       width={20}
       height={20}
       src={props.pick.team.logo}

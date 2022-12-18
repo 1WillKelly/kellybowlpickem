@@ -11,41 +11,42 @@ export const participantsRouter = router({
       },
       take: 3,
       orderBy: {
-        startDate: "asc"
-      }
+        startDate: "asc",
+      },
     });
     const participants = await ctx.prisma.participant.findMany({
       include: {
         seasonScores: {
           where: {
             season,
-          }
+          },
         },
         picks: {
           where: {
             matchupId: {
-              in: upcomingGames.map((m) => m.id)
-            } 
+              in: upcomingGames.map((m) => m.id),
+            },
           },
           orderBy: {
             matchup: {
-              startDate: "asc"
-            }
+              startDate: "asc",
+            },
           },
           include: {
             team: {
               select: {
                 name: true,
-              }
+                logo: true,
+              },
             },
             matchup: {
               select: {
                 startDate: true,
-              }
-            }
-          }
-        }
-      }
+              },
+            },
+          },
+        },
+      },
     });
     return {
       // Strip out email so we don't leak it to the frontend

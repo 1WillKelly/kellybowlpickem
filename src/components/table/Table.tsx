@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { trpc } from "utils/trpc";
 import StandingsTable from "./StandingsTable";
@@ -7,7 +8,21 @@ const Table: React.FC = () => {
 
   const sortedParticipants = participantsQuery.data?.participants
     .map((p) => {
-      const upcomingPicks = p.picks.map((pick) => pick.team.name);
+      const upcomingPicks = p.picks.map((pick) => {
+        return (
+          <div key={pick.id} className="flex flex-row space-x-2">
+            {pick.team.logo && (
+              <Image
+                alt={pick.team.name}
+                width={20}
+                height={20}
+                src={pick.team.logo}
+              />
+            )}
+            <div>{pick.team.name}</div>
+          </div>
+        );
+      });
 
       if (p.seasonScores?.length !== 1 || !p.seasonScores[0]) {
         return {
