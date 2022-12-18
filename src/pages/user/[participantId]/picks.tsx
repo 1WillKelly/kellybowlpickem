@@ -99,7 +99,7 @@ const ParticipantPicksPage: NextPage = () => {
                         ${styles["bowl-row"]}
                         ${pick.correct ? styles.correct : ""}
                         ${
-                          pick.settledPoints && !pick.correct
+                          pick.settledPoints && pick.correct
                             ? styles.incorrect
                             : ""
                         }
@@ -110,12 +110,6 @@ const ParticipantPicksPage: NextPage = () => {
                             className={`
                             ${styles["status-circle"]}
                             ${styles.tbd}
-                            ${pick.correct ? styles.correct : ""}
-                            ${
-                              pick.settledPoints && !pick.correct
-                                ? styles.incorrect
-                                : ""
-                            }
                           `}
                           ></span>
                           <Image
