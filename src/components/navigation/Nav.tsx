@@ -45,7 +45,7 @@ const Nav: React.FC = () => {
               <Link
                 href={url}
                 className={` ${styles["nav-item"]} ${
-                  pathname === url ? styles.active : ""
+                  pathname === url ? styles.active : styles.inactive
                 }`}
               >
                 {title}
