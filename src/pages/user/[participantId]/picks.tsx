@@ -1,15 +1,19 @@
-import BigLogoHeader from "components/BigLogoHeader/BigLogoHeader";
 import { formatTime } from "components/date-time";
+import Image from "next/image";
 import FullScreenLoading from "components/FullScreenLoading";
 import Nav from "components/navigation/Nav";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
+import CirclePickCorrect from "../../../assets/images/circle-pick-correct.svg";
+import CirclePickIncorrect from "../../../assets/images/circle-pick-incorrect.svg";
+
 import type { GameWithTeam, PickWithMatchupAndTeam } from "types/admin-types";
 import { trpc } from "utils/trpc";
 
-import styles from "../../../components/table/index.module.scss";
+import tableStyles from "../../../components/table/index.module.scss";
+import styles from "./index.module.scss";
 
 interface PickCellProps {
   pick: PickWithMatchupAndTeam;
@@ -21,11 +25,7 @@ const PickCell: React.FC<PickCellProps> = (props) => {
   }
 
   return (
-    <span
-      className={
-        props.pick.correct ? "text-green-700" : "text-zinc-400 line-through"
-      }
-    >
+    <span className={styles["your-pick"]}>
       {props.pick.team.name} ({props.pick.settledPoints ?? 0})
     </span>
   );
@@ -39,12 +39,24 @@ const MatchupStatusCell: React.FC<MatchupStatusCellProps> = (props) => {
   if (props.matchup.completed) {
     return (
       <>
-        {props.matchup.homeTeam.name}: {props.matchup.homeScore} —{" "}
-        {props.matchup.awayTeam.name}: {props.matchup.awayScore}
+        <div className={styles.matchup}>
+          <span className={styles["matchup-line"]}>
+            <span className={styles["team-name"]}>
+              {props.matchup.homeTeam.name}
+            </span>
+            <span>{props.matchup.homeScore}</span>
+          </span>
+          <span className={styles["matchup-line"]}>
+            <span className={styles["team-name"]}>
+              {props.matchup.awayTeam.name}
+            </span>
+            <span>{props.matchup.awayScore}</span>
+          </span>
+        </div>
       </>
     );
   }
-  return <p>Not completed</p>;
+  return <span className="text-xs font-medium text-gray-400">TBD</span>;
 };
 
 const ParticipantPicksPage: NextPage = () => {
@@ -64,7 +76,7 @@ const ParticipantPicksPage: NextPage = () => {
   }
 
   if (!data?.participant || !data?.picks) {
-    return <div>Whoops! Unable to load data for this user</div>;
+    return <div>Sorry, we&#39;re unable to load data for this participant</div>;
   }
 
   return (
@@ -75,49 +87,106 @@ const ParticipantPicksPage: NextPage = () => {
       </Head>
       <main>
         <Nav />
-        <BigLogoHeader />
-        <h1 className="text-center text-3xl font-medium uppercase text-indigo-800">
-          {data.participant.name}
-        </h1>
-        <div className="mt-4 mb-6 text-center text-lg text-slate-600">
-          {data.season.displayName} Picks
+        <div className={styles["participant-intro"]}>
+          <h1>{data.participant.name}</h1>
+          <h2>{data.season.displayName} Picks</h2>
         </div>
-        <div className={styles.view}>
-          <div className={styles["table-wrapper"]}>
-            <table className={styles["standings-table"]}>
-              <thead>
-                <tr>
-                  <th>Bowl</th>
-                  <th>Your Pick</th>
-                  <th>Time</th>
-                  <th>Result</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white">
-                {data.picks.map((pick) => (
-                  <tr key={pick.id}>
-                    <td>{pick.matchup.name}</td>
-                    <td>
-                      <PickCell pick={pick} />
-                    </td>
-                    <td>{formatTime(pick.matchup.startDate)}</td>
-                    <td>
-                      <MatchupStatusCell matchup={pick.matchup} />
-                    </td>
+        <section className={styles["picks-wrapper"]}>
+          <div className={tableStyles.view}>
+            <div className={tableStyles["table-wrapper"]}>
+              <table className={tableStyles["standings-table"]}>
+                <thead>
+                  <tr>
+                    <th>Bowl</th>
+                    <th>Your Pick</th>
+                    <th>Result</th>
                   </tr>
-                ))}
-                {data.championshipPick.map((pick) => (
-                  <tr key={pick.id}>
-                    <td>Championship</td>
-                    <td>{pick.team.name}</td>
-                    <td>TODO</td>
-                    <td>TODO</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="bg-white">
+                  {data.picks.map((pick) => {
+                    return (
+                      <tr
+                        key={pick.id}
+                        className={`
+                        ${styles["bowl-row"]}
+                        ${pick.correct ? styles.correct : ""}
+                        ${pick.settled && !pick.correct ? styles.incorrect : ""}
+                      `}
+                      >
+                        <td className={styles["bowl-cell"]}>
+                          <span
+                            className={`
+                            ${styles["status-circle"]}
+                            ${styles.tbd}
+                          `}
+                          ></span>
+                          <Image
+                            src={CirclePickCorrect.src}
+                            alt="Kelly Bowl Pick'em"
+                            width={24}
+                            height={24}
+                            className={`
+                            ${styles["status-circle"]}
+                            ${styles.correct}
+                          `}
+                          />
+                          <Image
+                            src={CirclePickIncorrect.src}
+                            alt="Kelly Bowl Pick'em"
+                            width={24}
+                            height={24}
+                            className={`
+                            ${styles["status-circle"]}
+                            ${styles.incorrect}
+                          `}
+                          />
+                          <div>
+                            <span className={styles["bowl-name"]}>
+                              {pick.matchup.name}
+                            </span>
+                            <span className={styles["date-time"]}>
+                              {formatTime(pick.matchup.startDate)}
+                            </span>
+                          </div>
+                        </td>
+                        <td>
+                          <PickCell pick={pick} />
+                        </td>
+                        <td className={styles["matchup-cell"]}>
+                          <MatchupStatusCell matchup={pick.matchup} />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {data.championshipPick.map((pick) => (
+                    <tr key={pick.id}>
+                      <td className={styles["bowl-cell"]}>
+                        <span
+                          className={`
+                            ${styles["status-circle"]}
+                            ${styles.tbd}
+                          `}
+                        ></span>
+                        <div>
+                          <span className={styles["bowl-name"]}>
+                            National Championship
+                          </span>
+                          <span className={styles["date-time"]}>
+                            Tue, Jan 11 - 5:00 PM
+                          </span>
+                        </div>
+                      </td>
+                      <td>{pick.team.name}</td>
+                      <td>
+                        <span className="text-xs text-gray-400">TBD</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        </section>
       </main>
     </>
   );

@@ -9,7 +9,7 @@ const BigLogoHeader: React.FC = () => (
     className={`
       ${styles["big-logo-header"]}
       flex w-full items-center justify-center py-14 pt-8
-  `}
+    `}
   >
     <Image
       src={BigLogo.src}

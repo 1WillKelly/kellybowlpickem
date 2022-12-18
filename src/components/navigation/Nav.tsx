@@ -36,6 +36,7 @@ const Nav: React.FC = () => {
             alt="Football"
             width={41}
             height={26}
+            className={styles["logo-mark"]}
           />
         </Link>
         <ul>
