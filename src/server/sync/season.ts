@@ -1,6 +1,7 @@
 import { type Season } from "@prisma/client";
 import {
   CFBDataSource,
+  type CFBDGameMedia,
   type CFBDGame,
 } from "server/datasources/college-football-data-api";
 import { prisma } from "server/db/client";
@@ -34,7 +35,21 @@ export const syncBowlGames = async () => {
   const season = await getSeason();
   const client = new CFBDataSource();
   const games = await client.postSeasonGames(season.year);
+  const gamesMedia = await client.postSeasonGamesMedia(season.year);
   const teams = await syncTeams(games);
+
+  const gamesWithMedia: (CFBDGame & Partial<CFBDGameMedia>)[] = games.map(
+    (g) => {
+      const mediaInfo = gamesMedia.find((m) => m.id === g.id);
+      if (!mediaInfo) {
+        return g;
+      }
+      return {
+        ...g,
+        ...mediaInfo,
+      };
+    }
+  );
 
   const teamIdsToApiIds: Record<string, string> = {};
   for (const team of teams) {
@@ -59,7 +74,7 @@ export const syncBowlGames = async () => {
   });
 
   const existingMatchupIdSet = new Set(existingMatchups.map((m) => m.apiId));
-  const matchupCreateFields = (m: CFBDGame) => ({
+  const matchupCreateFields = (m: CFBDGame & Partial<CFBDGameMedia>) => ({
     apiId: m.id.toString(),
     startDate: new Date(m.start_date),
     completed: m.completed,
@@ -71,9 +86,10 @@ export const syncBowlGames = async () => {
     seasonId: season.id,
     homeTeamId: getTeamId(m.home_id),
     awayTeamId: getTeamId(m.away_id),
+    tvChannel: m.outlet,
   });
 
-  const matchupsToCreate = games
+  const matchupsToCreate = gamesWithMedia
     .filter((m) => !existingMatchupIdSet.has(m.id.toString()))
     .map(matchupCreateFields);
 
@@ -83,23 +99,28 @@ export const syncBowlGames = async () => {
 
   const upserts = [];
   for (const matchup of existingMatchups) {
-    const matchupData = games.find((m) => m.id.toString() === matchup.apiId);
+    const matchupData = gamesWithMedia.find(
+      (m) => m.id.toString() === matchup.apiId
+    );
     if (!matchupData) {
       throw new Error(`Could not find matchup ${matchup.apiId} in games`);
     }
+    console.log("Matchup data", matchupData);
 
     const updateFields = {
       startDate: new Date(matchupData.start_date),
       completed: matchupData.completed,
       homeScore: matchupData.home_points,
       awayScore: matchupData.away_points,
+      tvChannel: matchupData.outlet,
     };
 
     if (
       matchup.startDate.getTime() !== updateFields.startDate.getTime() ||
       matchup.completed !== updateFields.completed ||
       matchup.homeScore !== updateFields.homeScore ||
-      matchup.awayScore !== updateFields.awayScore
+      matchup.awayScore !== updateFields.awayScore ||
+      matchup.tvChannel !== updateFields.tvChannel
     ) {
       upserts.push(
         prisma.footballMatchup.update({

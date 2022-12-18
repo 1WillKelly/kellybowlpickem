@@ -107,6 +107,7 @@ model FootballMatchup {
   completed Boolean
   homeScore Int?
   awayScore Int?
+  tvChannel String?
 
   // How many points a participant gets for correctly predicting
   homePointValue   Float?

@@ -146,6 +146,9 @@ const ParticipantPicksPage: NextPage = () => {
                             </span>
                             <span className={styles["date-time"]}>
                               {formatTime(pick.matchup.startDate)}
+                              {!pick.settled &&
+                                pick.matchup.tvChannel &&
+                                ` on ${pick.matchup.tvChannel}`}
                             </span>
                           </div>
                         </td>
