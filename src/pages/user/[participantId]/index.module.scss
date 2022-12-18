@@ -95,8 +95,10 @@
 }
 
 .matchup-cell {
-  min-width: 240px;
-  max-width: 240px;
+  $cell-width: 250px;
+  min-width: $cell-width;
+  max-width: $cell-width;
+  width: $cell-width;
   color: #777c87;
 }
 
@@ -154,7 +156,10 @@
   }
 
   .matchup-cell {
-    min-width: 208px;
-    max-width: 208px;
+    $cell-width: 208px;
+    min-width: $cell-width;
+    max-width: $cell-width;
+    width: $cell-width;
+    color: #777c87;
   }
 }
