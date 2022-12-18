@@ -117,8 +117,8 @@
     width: 22px;
   }
 
-  td.bowl-cell {
-    padding-left: 0.75rem;
+  .bowl-cell {
+    padding-left: 0.75rem !important;
 
     .bowl-name {
       font-size: 13px;
