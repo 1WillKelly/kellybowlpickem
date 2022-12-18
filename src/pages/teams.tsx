@@ -63,11 +63,17 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
           <StandingsTable
             loading={false}
             items={teamSummaries}
-            columnNames={() => ["Name", "Average Score", "Possible Score"]}
+            columnNames={() => [
+              "Name",
+              "Average Score",
+              "Possible Score",
+              "Members",
+            ]}
             renderItem={(team) => [
               team.name,
               roundFloat(team.teamAverage),
               roundFloat(team.teamPossibleTotal / team.members.length),
+              team.members.length,
             ]}
           />
         </section>
