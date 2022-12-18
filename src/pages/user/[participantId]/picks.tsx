@@ -98,12 +98,7 @@ const ParticipantPicksPage: NextPage = () => {
                         className={`
                         ${styles["bowl-row"]}
                         ${pick.correct ? styles.correct : ""}
-                        ${
-                          pick.settledPoints && pick.correct
-                            ? styles.incorrect
-                            : ""
-                        }
-                        ${pick.settledPoints ? styles.incorrect : ""}
+                        ${pick.settled && !pick.correct ? styles.incorrect : ""}
                       `}
                       >
                         <td className={styles["bowl-cell"]}>
