@@ -17,6 +17,7 @@ interface TeamSummaryProps {
 
 interface TeamSummary extends TeamWithScores {
   teamTotal: number;
+  teamAverage: number;
   teamPossibleTotal: number;
 }
 
@@ -35,6 +36,7 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
     .map((t) => {
       const scores = getScores(t);
       const teamTotal = scores.map((s) => s.points).reduce((a, b) => a + b, 0);
+      const teamAverage = teamTotal / t.members.length;
       const teamPossibleTotal = scores
         .map((s) => s.possiblePoints)
         .reduce((a, b) => a + b, 0);
@@ -43,9 +45,10 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
         ...t,
         teamTotal,
         teamPossibleTotal,
+        teamAverage,
       };
     })
-    .sort((a, b) => b.teamTotal - a.teamTotal);
+    .sort((a, b) => b.teamAverage - a.teamAverage);
 
   return (
     <>
@@ -63,7 +66,7 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
             columnNames={() => ["Name", "Average Score", "Possible Score"]}
             renderItem={(team) => [
               team.name,
-              roundFloat(team.teamTotal / team.members.length),
+              roundFloat(team.teamAverage),
               roundFloat(team.teamPossibleTotal / team.members.length),
             ]}
           />
