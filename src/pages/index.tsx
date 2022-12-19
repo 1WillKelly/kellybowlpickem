@@ -5,6 +5,7 @@ import styles from "../styles/Home.module.scss";
 import Nav from "components/navigation/Nav";
 import Table from "components/table/Table";
 import BigLogoHeader from "components/BigLogoHeader/BigLogoHeader";
+import { createSSG } from "server/trpc/ssg";
 
 const Home: NextPage = () => {
   return (
@@ -22,6 +23,12 @@ const Home: NextPage = () => {
       </main>
     </>
   );
+};
+
+export const getStaticProps = async () => {
+  const ssg = createSSG();
+  await ssg.participants.participantsWithScores.prefetch();
+  return { props: { trpcState: ssg.dehydrate() }, revalidate: 60 };
 };
 
 export default Home;

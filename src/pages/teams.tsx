@@ -9,6 +9,7 @@ import Head from "next/head";
 import { type TeamWithScores } from "types/admin-types";
 import styles from "../styles/Home.module.scss";
 import { trpc } from "utils/trpc";
+import { createSSG } from "server/trpc/ssg";
 
 interface TeamSummaryProps {
   season: Season;
@@ -98,6 +99,12 @@ const TeamsPage: NextPage = () => {
       )}
     </>
   );
+};
+
+export const getStaticProps = async () => {
+  const ssg = createSSG();
+  await ssg.teams.teamSummary.prefetch();
+  return { props: { trpcState: ssg.dehydrate() }, revalidate: 60 };
 };
 
 export default TeamsPage;
