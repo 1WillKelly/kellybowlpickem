@@ -5,6 +5,5 @@ export const formatTime = (date: Date): string => {
       month: "short",
       day: "numeric",
     })
-    .replace(":00 ", " ")
-    .replace(new RegExp("[0-9], ", "g"), " - ");
+    .replace(":00 ", " ");
 };
