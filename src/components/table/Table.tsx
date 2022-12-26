@@ -10,7 +10,7 @@ const Table: React.FC = () => {
     .map((p) => {
       const upcomingPicks = p.picks.map((pick) => {
         return (
-          <div key={pick.id} className="flex flex-row space-x-2">
+          <div key={pick.id} className="flex flex-row space-x-2 pr-6">
             {pick.team.logo && (
               <Image
                 alt={pick.team.name}

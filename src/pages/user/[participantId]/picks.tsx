@@ -31,7 +31,7 @@ const PickCell: React.FC<PickCellProps> = (props) => {
 
   if (!props.pick.settled) {
     return (
-      <div className="flex flex-row space-x-2">
+      <div className="flex flex-row space-x-2 pr-6">
         {teamLogo}
         <div>{props.pick.team.name}</div>
       </div>
