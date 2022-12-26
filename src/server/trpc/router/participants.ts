@@ -51,10 +51,8 @@ export const participantsRouter = router({
     return {
       // Strip out email so we don't leak it to the frontend
       participants: participants.map((p) => ({
-        id: p.id,
-        name: p.name,
-        seasonScores: p.seasonScores,
-        picks: p.picks,
+        ...p,
+        email: undefined,
       })),
       upcomingGames,
     };
