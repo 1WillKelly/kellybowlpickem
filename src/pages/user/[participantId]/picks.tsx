@@ -1,19 +1,22 @@
-import { formatTime } from "components/date-time";
 import Image from "next/image";
-import FullScreenLoading from "components/FullScreenLoading";
-import Nav from "components/navigation/Nav";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import CirclePickCorrect from "../../../assets/images/circle-pick-correct.svg";
-import CirclePickIncorrect from "../../../assets/images/circle-pick-incorrect.svg";
+import FullScreenLoading from "components/FullScreenLoading";
+import Nav from "components/navigation/Nav";
+import { formatTime } from "components/date-time";
+
+import CirclePickCorrect from "assets/images/circle-pick-correct.svg";
+import CirclePickIncorrect from "assets/images/circle-pick-incorrect.svg";
 
 import type { GameWithTeam, PickWithMatchupAndTeam } from "types/admin-types";
 import { trpc } from "utils/trpc";
 
-import tableStyles from "../../../components/table/index.module.scss";
+import tableStyles from "components/table/index.module.scss";
 import styles from "./index.module.scss";
+import PickPossiblePoints from "components/PickPossiblePoints";
+import { CHAMPIONSHIP_POINT_VALUE } from "server/constants/point-constants";
 
 interface PickCellProps {
   pick: PickWithMatchupAndTeam;
@@ -30,18 +33,11 @@ const PickCell: React.FC<PickCellProps> = (props) => {
   );
 
   if (!props.pick.settled) {
-    const possiblePoints =
-      props.pick.teamId === props.pick.matchup.homeTeamId
-        ? props.pick.matchup.homePointValue
-        : props.pick.matchup.awayPointValue;
     return (
       <div className="flex flex-row space-x-2 pr-6">
         {teamLogo}
         <div>
-          {props.pick.team.name}{" "}
-          {possiblePoints && (
-            <span className="text-slate-500">({possiblePoints})</span>
-          )}
+          {props.pick.team.name} <PickPossiblePoints pick={props.pick} />
         </div>
       </div>
     );
@@ -207,7 +203,12 @@ const ParticipantPicksPage: NextPage = () => {
                           </span>
                         </div>
                       </td>
-                      <td>{pick.team.name}</td>
+                      <td>
+                        {pick.team.name}{" "}
+                        <span className="text-slate-500">
+                          ({CHAMPIONSHIP_POINT_VALUE})
+                        </span>
+                      </td>
                       <td>
                         <span className="text-xs text-gray-400">TBD</span>
                       </td>

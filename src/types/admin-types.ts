@@ -45,6 +45,13 @@ export type PickWithMatchupAndTeam = ParticipantPick & {
   matchup: FootballMatchup;
 };
 
+export type PickWithMatchup = ParticipantPick & {
+  matchup: Pick<
+    FootballMatchup,
+    "homeTeamId" | "homePointValue" | "awayTeamId" | "awayPointValue"
+  >;
+};
+
 export type ChampionshipPickWithTeam = ParticipantChampionshipPick & {
   team: FootballTeam;
 };

@@ -1,12 +1,15 @@
+import PickPossiblePoints from "components/PickPossiblePoints";
 import Image from "next/image";
 import Link from "next/link";
 import { trpc } from "utils/trpc";
+
 import StandingsTable from "./StandingsTable";
 
 const Table: React.FC = () => {
-  const participantsQuery = trpc.participants.participantsWithScores.useQuery();
+  const { data, isLoading } =
+    trpc.participants.participantsWithScores.useQuery();
 
-  const sortedParticipants = participantsQuery.data?.participants
+  const sortedParticipants = data?.participants
     .map((p) => {
       const upcomingPicks = p.picks.map((pick) => {
         return (
@@ -19,7 +22,9 @@ const Table: React.FC = () => {
                 src={pick.team.logo}
               />
             )}
-            <div>{pick.team.name}</div>
+            <div>
+              {pick.team.name} <PickPossiblePoints pick={pick} />
+            </div>
           </div>
         );
       });
@@ -53,17 +58,13 @@ const Table: React.FC = () => {
   return (
     <StandingsTable
       individualtandings
-      loading={participantsQuery.isLoading}
+      loading={isLoading}
       items={sortedParticipants}
       columnNames={() => [
         "Name",
         "Score",
         "Potential",
-        ...(participantsQuery.data?.upcomingGames.map((g) => g.name) ?? [
-          "",
-          "",
-          "",
-        ]),
+        ...(data?.upcomingGames.map((g) => g.name) ?? ["", "", ""]),
       ]}
       renderItem={(participant) => [
         <Link key={participant.id} href={`/user/${participant.id}/picks`}>

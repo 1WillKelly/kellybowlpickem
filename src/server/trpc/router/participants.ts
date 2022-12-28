@@ -42,6 +42,10 @@ export const participantsRouter = router({
             matchup: {
               select: {
                 startDate: true,
+                homeTeamId: true,
+                awayTeamId: true,
+                homePointValue: true,
+                awayPointValue: true,
               },
             },
           },
