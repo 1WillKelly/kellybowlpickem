@@ -30,10 +30,19 @@ const PickCell: React.FC<PickCellProps> = (props) => {
   );
 
   if (!props.pick.settled) {
+    const possiblePoints =
+      props.pick.teamId === props.pick.matchup.homeTeamId
+        ? props.pick.matchup.homePointValue
+        : props.pick.matchup.awayPointValue;
     return (
       <div className="flex flex-row space-x-2 pr-6">
         {teamLogo}
-        <div>{props.pick.team.name}</div>
+        <div>
+          {props.pick.team.name}{" "}
+          {possiblePoints && (
+            <span className="text-slate-500">({possiblePoints})</span>
+          )}
+        </div>
       </div>
     );
   }
