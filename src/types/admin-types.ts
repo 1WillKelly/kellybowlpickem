@@ -42,7 +42,14 @@ export type TeamWithScores = ParticipantTeam & {
 
 export type PickWithMatchupAndTeam = ParticipantPick & {
   team: FootballTeam;
-  matchup: Pick<FootballMatchup, "id" | "name" | "startDate" | "completed">;
+  matchup: FootballMatchup;
+};
+
+export type PickWithMatchup = ParticipantPick & {
+  matchup: Pick<
+    FootballMatchup,
+    "homeTeamId" | "homePointValue" | "awayTeamId" | "awayPointValue"
+  >;
 };
 
 export type ChampionshipPickWithTeam = ParticipantChampionshipPick & {
