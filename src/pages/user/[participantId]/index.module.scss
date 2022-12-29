@@ -18,7 +18,11 @@
 
 .picks-wrapper {
   max-width: 960px;
-  margin: 0 auto;
+  margin: 0 auto $gutters-width;
+
+  @media (max-width: $mobile-breakpoint) {
+    margin: 0 auto $gutters-mobile-width;
+  }
 }
 
 .bowl-row {
