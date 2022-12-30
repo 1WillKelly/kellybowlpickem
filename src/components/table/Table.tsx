@@ -5,9 +5,14 @@ import { trpc } from "utils/trpc";
 
 import StandingsTable from "./StandingsTable";
 
-const Table: React.FC = () => {
-  const { data, isLoading } =
-    trpc.participants.participantsWithScores.useQuery();
+interface TableProps {
+  participantIds?: string[];
+}
+
+const Table: React.FC<TableProps> = (props) => {
+  const { data, isLoading } = trpc.participants.participantsWithScores.useQuery(
+    { participantIds: props.participantIds }
+  );
 
   const sortedParticipants = data?.participants
     .map((p) => {
