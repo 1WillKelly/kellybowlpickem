@@ -5,7 +5,6 @@ import styles from "../styles/Home.module.scss";
 import Nav from "components/navigation/Nav";
 import Table from "components/table/Table";
 import BigLogoHeader from "components/BigLogoHeader/BigLogoHeader";
-import { createSSG } from "server/trpc/ssg";
 
 const Home: NextPage = () => {
   const participantIds = [
