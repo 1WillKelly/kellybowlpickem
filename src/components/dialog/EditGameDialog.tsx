@@ -15,6 +15,7 @@ interface FormProps {
   name: string;
   homePointValue?: number;
   awayPointValue?: number;
+  isChampionship: boolean;
 }
 
 const EditGameDialog: React.FC<EditGameDialogProps> = (props) => {
@@ -31,6 +32,7 @@ const EditGameDialog: React.FC<EditGameDialogProps> = (props) => {
     updateGame.mutate({
       gameId: props.game.id,
       name: data.name,
+      isChampionship: data.isChampionship,
       homePointValue:
         data.homePointValue && !isNaN(data.homePointValue)
           ? data.homePointValue
@@ -82,6 +84,15 @@ const EditGameDialog: React.FC<EditGameDialogProps> = (props) => {
             step="0.5"
             {...register("awayPointValue", { valueAsNumber: true })}
             defaultValue={props.game.awayPointValue ?? undefined}
+          />
+        </div>
+
+        <div className="flex flex-row items-center justify-between space-x-4">
+          <label htmlFor="isChampionship">Is Championship</label>
+          <Input
+            type="checkbox"
+            {...register("isChampionship")}
+            defaultChecked={props.game.isChampionship}
           />
         </div>
         <input type="submit" className="hidden" />

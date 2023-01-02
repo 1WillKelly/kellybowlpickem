@@ -1,4 +1,5 @@
 import { type FootballMatchup } from "@prisma/client";
+import { syncChampionship } from "server/sync/championship";
 import { syncScores } from "server/sync/scores";
 import { getSeason, syncBowlGames } from "server/sync/season";
 import { z } from "zod";
@@ -13,6 +14,9 @@ export const adminRouter = router({
   }),
   syncScores: adminProcedure.mutation(async () => {
     return await syncScores();
+  }),
+  syncChampionship: adminProcedure.mutation(async () => {
+    return await syncChampionship();
   }),
   listGames: adminProcedure.query(async ({ ctx }) => {
     const season = await getSeason();
@@ -40,6 +44,7 @@ export const adminRouter = router({
         homePointValue: z.number().optional(),
         awayPointValue: z.number().optional(),
         name: z.string().optional(),
+        isChampionship: z.boolean().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -52,6 +57,9 @@ export const adminRouter = router({
       }
       if (input.awayPointValue) {
         dataToUpdate.awayPointValue = input.awayPointValue;
+      }
+      if (input.isChampionship !== undefined) {
+        dataToUpdate.isChampionship = input.isChampionship;
       }
       return await ctx.prisma.footballMatchup.update({
         where: {

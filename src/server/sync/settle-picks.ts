@@ -29,6 +29,16 @@ const pointValue = (
           game.id
       );
     }
+    // Special case for championship game, where they may have picked a team
+    // that didn't make it to the 'ship
+    if (pick.teamId !== game.homeTeamId && pick.teamId !== game.awayTeamId) {
+      return {
+        completed: true,
+        points: 0,
+        correct: false,
+      };
+    }
+
     const homeTeamWon = game.homeScore > game.awayScore;
     const participantPickedHome = pick.teamId === game.homeTeamId;
     const correct = homeTeamWon === participantPickedHome;
@@ -47,6 +57,15 @@ const pointValue = (
       completed: true,
     };
   } else {
+    // Special case for championship game, where they may have picked a team
+    // that didn't make it to the 'ship
+    if (pick.teamId !== game.homeTeamId && pick.teamId !== game.awayTeamId) {
+      return {
+        completed: false,
+        possiblePoints: 0,
+      };
+    }
+
     return {
       completed: false,
       possiblePoints:
@@ -76,6 +95,16 @@ const calculatePossiblePoints = (
         }
       })
       .reduce((acc, item) => (item ?? 0) + (acc ?? 0), 0) ?? 0;
+
+  const championshipGame = games.find((g) => g.isChampionship);
+  // Game is available in API / configured, don't need to artificially add
+  if (
+    championshipGame &&
+    picks.find((p) => p.matchupId === championshipGame.id)
+  ) {
+    return points;
+  }
+
   return points + CHAMPIONSHIP_POINT_VALUE;
 };
 
