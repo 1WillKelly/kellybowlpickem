@@ -95,6 +95,16 @@ const calculatePossiblePoints = (
         }
       })
       .reduce((acc, item) => (item ?? 0) + (acc ?? 0), 0) ?? 0;
+
+  const championshipGame = games.find((g) => g.isChampionship);
+  // Game is available in API / configured, don't need to artificially add
+  if (
+    championshipGame &&
+    picks.find((p) => p.matchupId === championshipGame.id)
+  ) {
+    return points;
+  }
+
   return points + CHAMPIONSHIP_POINT_VALUE;
 };
 
