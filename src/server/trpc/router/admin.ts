@@ -40,6 +40,7 @@ export const adminRouter = router({
         homePointValue: z.number().optional(),
         awayPointValue: z.number().optional(),
         name: z.string().optional(),
+        isChampionship: z.boolean().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -52,6 +53,9 @@ export const adminRouter = router({
       }
       if (input.awayPointValue) {
         dataToUpdate.awayPointValue = input.awayPointValue;
+      }
+      if (input.isChampionship !== undefined) {
+        dataToUpdate.isChampionship = input.isChampionship;
       }
       return await ctx.prisma.footballMatchup.update({
         where: {

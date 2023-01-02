@@ -105,6 +105,8 @@ model FootballMatchup {
   awayTeamId String
   awayTeam   FootballTeam @relation(name: "AwayGames", fields: [awayTeamId], references: [id])
 
+  isChampionship Boolean @default(false)
+
   completed Boolean
   homeScore Int?
   awayScore Int?
