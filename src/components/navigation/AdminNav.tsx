@@ -13,27 +13,36 @@ const NavItems = [
   { title: "Picks", url: "/admin/picks" },
 ];
 
+type SyncStatus = "unsynced" | "syncing" | "synced";
+
 const AdminNav: React.FC = () => {
   const { pathname } = useRouter();
   const utils = trpc.useContext();
 
-  const [isSyncingGames, setIsSyncingGames] = useState(false);
-  const [isSyncingScores, setIsSyncingScores] = useState(false);
-  const [didSyncGames, setDidSyncGames] = useState(false);
-  const [didSyncScores, setDidSyncScores] = useState(false);
+  const [gameSyncStatus, setGameSyncStatus] = useState<SyncStatus>("unsynced");
+  const [scoresSyncStatus, setScoresSyncStatus] =
+    useState<SyncStatus>("unsynced");
+  const [championshipSyncStatus, setChampionshipSyncStatus] =
+    useState<SyncStatus>("unsynced");
 
   const syncGamesMutation = trpc.admin.syncGames.useMutation({
-    onSettled: () => setIsSyncingGames(false),
+    onError: () => setGameSyncStatus("unsynced"),
     onSuccess: () => {
       utils.admin.listGames.invalidate();
-      setDidSyncGames(true);
+      setGameSyncStatus("synced");
     },
   });
   const syncScoresMutation = trpc.admin.syncScores.useMutation({
-    onSettled: () => setIsSyncingScores(false),
+    onError: () => setScoresSyncStatus("unsynced"),
     onSuccess: () => {
       utils.admin.listGames.invalidate();
-      setDidSyncScores(true);
+      setScoresSyncStatus("synced");
+    },
+  });
+  const syncChampionshipMutation = trpc.admin.syncChampionship.useMutation({
+    onError: () => setChampionshipSyncStatus("unsynced"),
+    onSuccess: () => {
+      setChampionshipSyncStatus("synced");
     },
   });
 
@@ -63,33 +72,49 @@ const AdminNav: React.FC = () => {
         <div className="flex flex-row items-center space-x-4">
           <Button
             onClick={() => {
-              setIsSyncingScores(true);
+              setScoresSyncStatus("syncing");
               syncScoresMutation.mutate();
             }}
             primary={false}
             secondary
-            disabled={isSyncingScores}
+            disabled={scoresSyncStatus === "syncing"}
           >
-            {isSyncingScores
+            {scoresSyncStatus == "syncing"
               ? "Syncing..."
-              : didSyncScores
+              : scoresSyncStatus === "synced"
               ? "Scores Synced"
               : "Sync Scores"}
           </Button>
           <Button
             onClick={() => {
-              setIsSyncingGames(true);
+              setGameSyncStatus("syncing");
               syncGamesMutation.mutate();
             }}
             primary={false}
             secondary
-            disabled={isSyncingGames}
+            disabled={gameSyncStatus === "syncing"}
           >
-            {isSyncingGames
+            {gameSyncStatus === "syncing"
               ? "Syncing..."
-              : didSyncGames
+              : gameSyncStatus === "synced"
               ? "Games Synced"
               : "Sync Games"}
+          </Button>
+
+          <Button
+            onClick={() => {
+              setChampionshipSyncStatus("syncing");
+              syncChampionshipMutation.mutate();
+            }}
+            primary={false}
+            secondary
+            disabled={championshipSyncStatus === "syncing"}
+          >
+            {championshipSyncStatus === "syncing"
+              ? "Syncing..."
+              : championshipSyncStatus === "synced"
+              ? "Championship Synced"
+              : "Sync Championship"}
           </Button>
         </div>
       </div>

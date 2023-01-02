@@ -103,6 +103,9 @@ const ParticipantPicksPage: NextPage = () => {
     return <div>Sorry, we&#39;re unable to load data for this participant</div>;
   }
 
+  const hasChampionshipPick =
+    data.picks.find((p) => p.matchup.isChampionship) !== undefined;
+
   return (
     <>
       <Head>
@@ -185,35 +188,36 @@ const ParticipantPicksPage: NextPage = () => {
                       </tr>
                     );
                   })}
-                  {data.championshipPick.map((pick) => (
-                    <tr key={pick.id}>
-                      <td className={styles["bowl-cell"]}>
-                        <span
-                          className={`
+                  {!hasChampionshipPick &&
+                    data.championshipPick.map((pick) => (
+                      <tr key={pick.id}>
+                        <td className={styles["bowl-cell"]}>
+                          <span
+                            className={`
                             ${styles["status-circle"]}
                             ${styles.tbd}
                           `}
-                        ></span>
-                        <div>
-                          <span className={styles["bowl-name"]}>
-                            National Championship
+                          ></span>
+                          <div>
+                            <span className={styles["bowl-name"]}>
+                              National Championship
+                            </span>
+                            <span className={styles["date-time"]}>
+                              Tue, Jan 11 - 5:00 PM
+                            </span>
+                          </div>
+                        </td>
+                        <td>
+                          {pick.team.name}{" "}
+                          <span className="text-slate-500">
+                            ({CHAMPIONSHIP_POINT_VALUE})
                           </span>
-                          <span className={styles["date-time"]}>
-                            Tue, Jan 11 - 5:00 PM
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                        {pick.team.name}{" "}
-                        <span className="text-slate-500">
-                          ({CHAMPIONSHIP_POINT_VALUE})
-                        </span>
-                      </td>
-                      <td>
-                        <span className="text-xs text-gray-400">TBD</span>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td>
+                          <span className="text-xs text-gray-400">TBD</span>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

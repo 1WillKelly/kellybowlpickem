@@ -1,4 +1,5 @@
 import { type FootballMatchup } from "@prisma/client";
+import { syncChampionship } from "server/sync/championship";
 import { syncScores } from "server/sync/scores";
 import { getSeason, syncBowlGames } from "server/sync/season";
 import { z } from "zod";
@@ -13,6 +14,9 @@ export const adminRouter = router({
   }),
   syncScores: adminProcedure.mutation(async () => {
     return await syncScores();
+  }),
+  syncChampionship: adminProcedure.mutation(async () => {
+    return await syncChampionship();
   }),
   listGames: adminProcedure.query(async ({ ctx }) => {
     const season = await getSeason();
