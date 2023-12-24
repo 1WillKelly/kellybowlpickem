@@ -10,5 +10,6 @@ export const currentSeasonYear = (): number => {
 
 export const seasonDisplayName = (): string => {
   const year = currentSeasonYear();
-  return `${year}-${year + 1}`;
+  const shortYear = year % 100;
+  return `${year}-${shortYear + 1}`;
 };
