@@ -109,8 +109,8 @@ const ParticipantPicksPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Bowl Pick&apos;em 2022-23</title>
-        <meta name="description" content="Kelly Bowl Pick'em 2022-23" />
+        <title>Bowl Pick&apos;em {data.season.displayName}</title>
+        <meta name="description" content={`Kelly Bowl Pick'em ${data.season.displayName}`} />
       </Head>
       <main>
         <Nav />
