@@ -54,8 +54,8 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
   return (
     <>
       <Head>
-        <title>Bowl Pick&apos;em 2022-23</title>
-        <meta name="description" content="Kelly Bowl Pick'em 2022-23" />
+        <title>Bowl Pick&apos;em 2023-24</title>
+        <meta name="description" content="Kelly Bowl Pick'em 2023-24" />
       </Head>
       <main>
         <Nav />
