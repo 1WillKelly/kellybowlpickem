@@ -10,6 +10,7 @@ import { type TeamWithScores } from "types/admin-types";
 import styles from "../styles/Home.module.scss";
 import { trpc } from "utils/trpc";
 import { createSSG } from "server/trpc/ssg";
+import HeadMetadata from "components/HeadMetadata";
 
 interface TeamSummaryProps {
   season: Season;
@@ -53,10 +54,7 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
 
   return (
     <>
-      <Head>
-        <title>Bowl Pick&apos;em 2023-24</title>
-        <meta name="description" content="Kelly Bowl Pick'em 2023-24" />
-      </Head>
+      <HeadMetadata />
       <main>
         <Nav />
         <BigLogoHeader />

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { type NextPage } from "next";
-import Head from "next/head";
 import { useRouter } from "next/router";
 
 import FullScreenLoading from "components/FullScreenLoading";
@@ -17,6 +16,7 @@ import tableStyles from "components/table/index.module.scss";
 import styles from "./index.module.scss";
 import PickPossiblePoints from "components/PickPossiblePoints";
 import { CHAMPIONSHIP_POINT_VALUE } from "server/constants/point-constants";
+import HeadMetadata from "components/HeadMetadata";
 
 interface PickCellProps {
   pick: PickWithMatchupAndTeam;
@@ -108,10 +108,7 @@ const ParticipantPicksPage: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Bowl Pick&apos;em {data.season.displayName}</title>
-        <meta name="description" content={`Kelly Bowl Pick'em ${data.season.displayName}`} />
-      </Head>
+      <HeadMetadata />
       <main>
         <Nav />
         <div className={styles["participant-intro"]}>

@@ -1,10 +1,10 @@
 import { type NextPage } from "next";
-import Head from "next/head";
 
 import styles from "../styles/Home.module.scss";
 import Nav from "components/navigation/Nav";
 import Table from "components/table/Table";
 import BigLogoHeader from "components/BigLogoHeader/BigLogoHeader";
+import HeadMetadata from "components/HeadMetadata";
 
 const Home: NextPage = () => {
   const participantIds = [
@@ -19,10 +19,7 @@ const Home: NextPage = () => {
   ];
   return (
     <>
-      <Head>
-        <title>Bowl Pick&apos;em 2023-24</title>
-        <meta name="description" content="Kelly Bowl Pick'em 2023-24" />
-      </Head>
+      <HeadMetadata />
       <main>
         <Nav />
         <BigLogoHeader />

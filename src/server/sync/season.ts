@@ -5,26 +5,19 @@ import {
   type CFBDGame,
 } from "server/datasources/college-football-data-api";
 import { prisma } from "server/db/client";
+import { currentSeasonYear, seasonDisplayName } from "utils/datetime";
 import { syncTeams } from "./teams";
-
-const currentSeasonYear = (): number => {
-  const now = new Date();
-  // If it's before October, assume we're talking about the previous year's
-  // season
-  if (now.getMonth() < 10) {
-    return now.getFullYear() - 1;
-  }
-  return now.getFullYear();
-};
 
 export const getSeason = async (): Promise<Season> => {
   const year = currentSeasonYear();
+  const displayName = seasonDisplayName();
+
   return await prisma.season.upsert({
     where: {
       year,
     },
     create: {
-      displayName: `${year}-${year + 1}`,
+      displayName,
       year,
     },
     update: {},
