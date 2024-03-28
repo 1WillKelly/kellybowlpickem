@@ -11,7 +11,7 @@ if [[ "${CI}" ]]; then
     echo "Using CI database"
   fi
 else
-  export DATABASE_URL=mysql://root:bowlpickem@localhost:3364/bowlpickem-test
+  export DATABASE_URL="postgres://bowlpickem:bowlpickem@localhost:5436/bowlpickem-test"
 fi
 
 yarn prisma migrate reset --force --skip-seed --skip-generate
