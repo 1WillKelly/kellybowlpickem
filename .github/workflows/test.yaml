@@ -8,12 +8,13 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.0
+        image: postgres:15
         env:
-          MYSQL_DATABASE: bowlpickem-test
-          MYSQL_ROOT_PASSWORD: bowlpickem
+          POSTGRES_DB: bowlpickem-test
+          POSTGRES_USER: bowlpickem
+          POSTGRES_PASSWORD: bowlpickem
         ports:
-          - "3380:3306"
+          - "5438:5432"
 
     steps:
       - name: Checkout
@@ -22,7 +23,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           cache: "yarn"
 
       - name: Install dependencies
@@ -31,7 +32,7 @@ jobs:
       - name: Set up dummy environment
         run: |
           cat << EOF > .env
-          DATABASE_URL=mysql://root:bowlpickem@localhost:3380/bowlpickem-test
+          DATABASE_URL=postgres://bowlpickem:bowlpickem@localhost:5438/bowlpickem-test
           EOF
 
       - name: Run lint
