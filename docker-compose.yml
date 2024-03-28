@@ -3,33 +3,33 @@ version: '3.1'
 
 services:
   db:
-    image: mysql
-    command: --default-authentication-plugin=caching_sha2_password
+    image: postgres:15
     restart: always
     environment:
-      MYSQL_DATABASE: bowlpickem-dev
-      MYSQL_USER: bowlpickem
-      MYSQL_PASSWORD: bowlpickem
-      MYSQL_ROOT_PASSWORD: bowlpickem
+      POSTGRES_DB: bowlpickem-dev
+      POSTGRES_USER: bowlpickem
+      POSTGRES_PASSWORD: bowlpickem
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - "3363:3306"
+      - "5435:5432"
     volumes:
-      - db-datavolume:/var/lib/mysql
+      - dev-pg-datavolume:/var/lib/postgresql/data/pgdata
 
   test-db:
-    image: mysql
-    command: --default-authentication-plugin=caching_sha2_password
+    image: postgres:15
     restart: always
     environment:
-      MYSQL_DATABASE: bowlpickem-test
-      MYSQL_USER: bowlpickem
-      MYSQL_PASSWORD: bowlpickem
-      MYSQL_ROOT_PASSWORD: bowlpickem
+      POSTGRES_DATABASE: bowlpickem-test
+      POSTGRES_USER: bowlpickem
+      POSTGRES_PASSWORD: bowlpickem
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - "3364:3306"
+      - "5436:5432"
     volumes:
-      - test-datavolume:/var/lib/mysql
+      - test-pg-datavolume:/var/lib/postgresql/data/pgdata
 
 volumes:
-  db-datavolume:
-  test-datavolume:
+  dev-pg-datavolume:
+  test-pg-datavolume:
