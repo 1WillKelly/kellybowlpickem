@@ -57,9 +57,18 @@ export const syncTeams = async (
     logo: team.logo,
   });
 
-  const teamsToCreate = teams
+  const candidatesToCreate = teams
     .filter((t) => !existingTeamIdSet.has(t.apiId))
     .map(createTeamFields);
+
+  const existingTeamIds = new Set();
+  const teamsToCreate = [];
+  for (const team of candidatesToCreate) {
+    if (!existingTeamIds.has(team.apiId)) {
+      teamsToCreate.push(team);
+    }
+    existingTeamIds.add(team.apiId);
+  }
 
   await prisma.footballTeam.createMany({
     data: teamsToCreate,

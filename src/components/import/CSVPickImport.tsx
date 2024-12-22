@@ -24,6 +24,7 @@ const bowlNameToCandidate = (name: string): string => {
   return lowered
     .replace("sdccu ", "")
     .replace("hawaii", "hawai'i")
+    .replace("hawai'i", "hawaiʻi")
     .replace("gasparill", "gasparilla")
     .replace("cfp semi - ", "");
 };
@@ -35,9 +36,7 @@ const cleanTeamName = (name: string): string => {
     .trim()
     .replace("Miami-OH", "Miami (OH)")
     .replace("Southern Miss", "Southern Mississippi")
-    .replace("UConn", "Connecticut")
     .replace(/New Mexico St$/, "New Mexico State")
-    .replace("UTSA", "UT San Antonio")
     .replace("San Jose", "San José");
 };
 
@@ -116,13 +115,15 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
     return <div>No matchup on record for games: {missingGames.join(" ")}</div>;
   }
 
-  const championshipMarkers = columnsToGames.filter(
-    (g) => g && isChampionship(g)
-  ).length;
-
-  if (championshipMarkers !== 1) {
-    return <div>Could not find a championship game column :(</div>;
-  }
+  // TODO: We currently can't upload championship picks because the
+  // `FootballTeam`s don't exist in the DB yet. Remove this requirement for now.
+  // const championshipMarkers = columnsToGames.filter(
+  //   (g) => g && isChampionship(g)
+  // ).length;
+  //
+  // if (championshipMarkers !== 1) {
+  //   return <div>Could not find a championship game column :(</div>;
+  // }
 
   const teams = props.games.flatMap((game) => [game.homeTeam, game.awayTeam]);
 
