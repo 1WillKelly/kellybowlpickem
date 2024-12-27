@@ -18,7 +18,7 @@ import PickPossiblePoints from "components/PickPossiblePoints";
 import { CHAMPIONSHIP_POINT_VALUE } from "server/constants/point-constants";
 import HeadMetadata from "components/HeadMetadata";
 import { createSSG } from "server/trpc/ssg";
-import { DehydratedState } from "@tanstack/react-query";
+import { type DehydratedState } from "@tanstack/react-query";
 
 interface PickCellProps {
   pick: PickWithMatchupAndTeam;
@@ -229,8 +229,11 @@ const ParticipantPicksPage: NextPage = () => {
 
 export const getStaticProps = (async (context) => {
   const ssg = createSSG();
+  if (!context.params) {
+    throw new Error("No params");
+  }
   await ssg.picks.participantPicks.prefetch({
-    participantId: context.params!.participantId as string,
+    participantId: context.params.participantId as string,
   });
   return { props: { trpcState: ssg.dehydrate() }, revalidate: 60 };
 }) satisfies GetStaticProps<{ trpcState: DehydratedState }>;
