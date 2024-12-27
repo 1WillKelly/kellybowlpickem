@@ -3,6 +3,24 @@ import { getSeason } from "server/sync/season";
 import { z } from "zod";
 
 export const participantsRouter = router({
+  participants: publicProcedure.query(async ({ ctx }) => {
+    const season = await getSeason();
+    const participants = await ctx.prisma.participant.findMany({
+      where: {
+        picks: {
+          some: {
+            matchup: {
+              season,
+            },
+          },
+        },
+      },
+    });
+    return participants.map((p) => ({
+      ...p,
+      email: undefined,
+    }));
+  }),
   participantsWithScores: publicProcedure
     .input(
       z.object({
