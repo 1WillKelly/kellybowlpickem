@@ -143,7 +143,7 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
         if (foundTeam) {
           teamLookups[team] = foundTeam;
         } else {
-          unknownTeams.push(team);
+          unknownTeams.push(cleanedName);
         }
       });
   });
