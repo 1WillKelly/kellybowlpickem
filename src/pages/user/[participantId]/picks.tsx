@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { type NextPage } from "next";
+import { type GetStaticPaths, type GetStaticProps, type NextPage } from "next";
 import { useRouter } from "next/router";
 
 import FullScreenLoading from "components/FullScreenLoading";
@@ -17,6 +17,8 @@ import styles from "./index.module.scss";
 import PickPossiblePoints from "components/PickPossiblePoints";
 import { CHAMPIONSHIP_POINT_VALUE } from "server/constants/point-constants";
 import HeadMetadata from "components/HeadMetadata";
+import { createSSG } from "server/trpc/ssg";
+import { type DehydratedState } from "@tanstack/react-query";
 
 interface PickCellProps {
   pick: PickWithMatchupAndTeam;
@@ -224,5 +226,29 @@ const ParticipantPicksPage: NextPage = () => {
     </>
   );
 };
+
+export const getStaticProps = (async (context) => {
+  const ssg = createSSG();
+  if (!context.params) {
+    throw new Error("No params");
+  }
+  await ssg.picks.participantPicks.prefetch({
+    participantId: context.params.participantId as string,
+  });
+  return { props: { trpcState: ssg.dehydrate() }, revalidate: 60 };
+}) satisfies GetStaticProps<{ trpcState: DehydratedState }>;
+
+export const getStaticPaths = (async () => {
+  const ssg = createSSG();
+  const participants = await ssg.participants.participants.fetch();
+  return {
+    paths: participants.map((p) => ({
+      params: {
+        participantId: p.id,
+      },
+    })),
+    fallback: true, // false or "blocking"
+  };
+}) satisfies GetStaticPaths;
 
 export default ParticipantPicksPage;
