@@ -58,11 +58,6 @@ export const participantsRouter = router({
             },
           },
           picks: {
-            where: {
-              matchupId: {
-                in: upcomingGames.map((m) => m.id),
-              },
-            },
             orderBy: {
               matchup: {
                 startDate: "asc",
@@ -88,11 +83,16 @@ export const participantsRouter = router({
           },
         },
       });
+      const upcomingGameIds = new Set(upcomingGames.map((g) => g.id));
       return {
         // Strip out email so we don't leak it to the frontend
         participants: participants.map((p) => ({
           ...p,
           email: undefined,
+          upcomingPicks: p.picks.filter(
+            (pick) => !pick.settled && upcomingGameIds.has(pick.matchupId)
+          ),
+          completedPicks: p.picks.filter((pick) => pick.settled),
         })),
         upcomingGames,
       };

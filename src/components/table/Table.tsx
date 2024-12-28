@@ -16,7 +16,7 @@ const Table: React.FC<TableProps> = (props) => {
 
   const sortedParticipants = data?.participants
     .map((p) => {
-      const upcomingPicks = p.picks.map((pick) => {
+      const upcomingPicks = p.upcomingPicks.map((pick) => {
         return (
           <div key={pick.id} className="flex flex-row space-x-2 pr-6">
             {pick.team.logo && (
