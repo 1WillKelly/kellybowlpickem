@@ -1,3 +1,4 @@
+import SparkLine from "components/data/SparkLine";
 import PickPossiblePoints from "components/PickPossiblePoints";
 import Image from "next/image";
 import Link from "next/link";
@@ -39,6 +40,7 @@ const Table: React.FC<TableProps> = (props) => {
           name: p.name,
           id: p.id,
           upcomingPicks,
+          completedPicks: p.completedPicks,
         };
       }
 
@@ -50,6 +52,7 @@ const Table: React.FC<TableProps> = (props) => {
         points: scoring.points,
         possibleTotal: scoring.possiblePoints,
         upcomingPicks,
+        completedPicks: p.completedPicks,
       };
     })
     .sort((a, b) => {
@@ -75,7 +78,12 @@ const Table: React.FC<TableProps> = (props) => {
         <Link key={participant.id} href={`/user/${participant.id}/picks`}>
           {participant.name}
         </Link>,
-        participant.points,
+        <div
+          key={`points-${participant.id}`}
+          className="flex justify-between space-x-1"
+        >
+          <div>{participant.points}</div>
+        </div>,
         participant.possibleTotal,
         ...participant.upcomingPicks,
       ]}
