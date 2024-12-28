@@ -27,7 +27,6 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.40.0",
-    "sass": "^1.56.2",
     "superjson": "1.9.1",
     "zod": "^3.18.0"
   },
