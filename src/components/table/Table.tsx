@@ -83,9 +83,11 @@ const Table: React.FC<TableProps> = (props) => {
           className="flex items-center justify-between space-x-1"
         >
           <div>{participant.points}</div>
-          <div className="w-12 sm:w-20">
-            <SparkLine picks={participant.completedPicks} />
-          </div>
+          {participant.completedPicks.length > 5 && (
+            <div className="w-12 sm:w-20">
+              <SparkLine picks={participant.completedPicks} />
+            </div>
+          )}
         </div>,
         participant.possibleTotal,
         ...participant.upcomingPicks,
