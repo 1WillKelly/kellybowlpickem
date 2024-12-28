@@ -5,6 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
+import PlausibleProvider from "next-plausible";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -12,7 +13,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <PlausibleProvider
+        domain="kellybowlpickem.com"
+        customDomain="https://plausible.ndella.com"
+      >
+        <Component {...pageProps} />
+      </PlausibleProvider>
     </SessionProvider>
   );
 };
