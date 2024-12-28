@@ -62,7 +62,7 @@ const Table: React.FC<TableProps> = (props) => {
 
   return (
     <StandingsTable
-      individualtandings
+      individualStandings
       loading={isLoading}
       items={sortedParticipants}
       columnNames={() => [
