@@ -1,4 +1,6 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+"use client";
+
+import { type QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink } from "@trpc/client";
 import { createTRPCReact, httpBatchLink } from "@trpc/react-query";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";

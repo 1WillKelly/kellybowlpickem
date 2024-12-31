@@ -1,4 +1,5 @@
 import PlausibleProvider from "next-plausible";
+import { TRPCReactProvider } from "utils/trpc";
 
 export default async function RootLayout({
   // Layouts must accept a children prop.
@@ -12,9 +13,11 @@ export default async function RootLayout({
       domain="kellybowlpickem.com"
       customDomain="https://plausible.ndella.com"
     >
-      <html lang="en">
-        <body>{children}</body>
-      </html>
+      <TRPCReactProvider>
+        <html lang="en">
+          <body>{children}</body>
+        </html>
+      </TRPCReactProvider>
     </PlausibleProvider>
   );
 }
