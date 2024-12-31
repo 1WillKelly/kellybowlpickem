@@ -2,6 +2,7 @@ import {
   Bar,
   BarChart,
   Cell,
+  ComposedChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -36,10 +37,11 @@ const PickBarChart: React.FC<Props> = ({ picks, height = 80 }) => {
     settled: pick.settled,
     points: pointsForPick(pick),
     name: pick.matchup.name,
+    miss: pick.settled && !pick.correct ? 2 : undefined,
   }));
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <BarChart data={picksWithPoints} barGap={20}>
+      <ComposedChart data={picksWithPoints} barGap={30}>
         <YAxis hide />
         <XAxis dataKey="week" hide />
         <Tooltip
@@ -59,18 +61,24 @@ const PickBarChart: React.FC<Props> = ({ picks, height = 80 }) => {
             }
           }}
         />
-        <Bar type="natural" dataKey="points" radius={2}>
+        <Bar
+          stackId="a"
+          type="natural"
+          dataKey="miss"
+          radius={2}
+          fill="hsla(3, 77%, 69%, 1)"
+        />
+        <Bar type="natural" dataKey="points" radius={2} stackId="a">
           {picksWithPoints.map((pick) => {
             const fillColor = pick.settled
               ? pick.correct
                 ? "#27ae60"
                 : "hsla(230, 7%, 84%, 0.4)"
-              : // : "hsla(230, 7%, 84%, 0.4)";
-                "hsla(226, 7%, 84%, 1)";
+              : "hsla(226, 7%, 84%, 1)";
             return <Cell key={pick.id} fill={fillColor} />;
           })}
         </Bar>
-      </BarChart>
+      </ComposedChart>
     </ResponsiveContainer>
   );
 };
