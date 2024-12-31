@@ -3,6 +3,7 @@ import {
   BarChart,
   Cell,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
@@ -34,12 +35,30 @@ const PickBarChart: React.FC<Props> = ({ picks, height = 80 }) => {
     correct: pick.correct,
     settled: pick.settled,
     points: pointsForPick(pick),
+    name: pick.matchup.name,
   }));
   return (
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={picksWithPoints} barGap={20}>
         <YAxis hide />
         <XAxis dataKey="week" hide />
+        <Tooltip
+          content={({ active, payload }) => {
+            if (
+              active &&
+              payload &&
+              payload.length >= 0 &&
+              payload[0]?.value != null &&
+              payload[0]?.payload != null
+            ) {
+              return (
+                <div className="bg-white p-1 shadow-md">
+                  {payload[0].payload.name}
+                </div>
+              );
+            }
+          }}
+        />
         <Bar type="natural" dataKey="points" radius={2}>
           {picksWithPoints.map((pick) => {
             const fillColor = pick.settled
