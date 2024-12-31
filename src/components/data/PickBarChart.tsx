@@ -29,6 +29,7 @@ const pointsForPick = (pick: Picks[number]): number => {
 };
 
 const PickBarChart: React.FC<Props> = ({ picks }) => {
+  // TODO: Include championship picks
   const picksWithPoints = picks.map((pick) => ({
     id: pick.id,
     correct: pick.correct,
