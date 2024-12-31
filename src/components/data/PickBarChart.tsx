@@ -40,7 +40,7 @@ const PickBarChart: React.FC<Props> = ({ picks }) => {
   }));
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <BarChart data={picksWithPoints} barGap={30}>
+      <BarChart data={picksWithPoints} barCategoryGap={2}>
         <YAxis hide />
         <XAxis dataKey="week" hide />
         <Tooltip
