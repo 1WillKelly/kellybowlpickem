@@ -182,10 +182,6 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
       return;
     }
 
-    if (matchingParticipant.picks.length) {
-      participantsAlreadySubmitted.push(email);
-      return;
-    }
     const picks = line
       .split(",")
       .slice(PICK_COLUMN_START)
@@ -205,6 +201,12 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
           matchupId: isChampPick ? undefined : matchup.id,
           isChampionship: isChampPick ? true : undefined,
         };
+      })
+      .filter((pick) => {
+        const existingMatchup = matchingParticipant.picks.find(
+          (p) => p.matchupId === pick.matchupId
+        );
+        return !existingMatchup;
       });
 
     participantPicks.push({
