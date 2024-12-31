@@ -3,7 +3,8 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+
 import React from "react";
 import { api } from "utils/trpc";
 import FootballLogoMark from "../../assets/images/football.svg";
@@ -22,9 +23,9 @@ const AdminNavItems = [
 ];
 
 const Nav: React.FC = () => {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
   // const { data: session } = useSession();
-  return;
+  return null;
   // const { data: isAdmin } = api.admin.isAdmin.useQuery(undefined, {
   //   retry: false,
   //   enabled: !!session,

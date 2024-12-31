@@ -3,8 +3,6 @@ import { env } from "env/server.mjs";
 import { getServerAuthSessionApp } from "server/common/get-server-auth-session";
 import superjson from "superjson";
 
-import { type Context } from "./context";
-
 /**
  * 1. CONTEXT
  *
@@ -27,7 +25,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   };
 };
 
-const t = initTRPC.context<Context>().create({
+const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape }) {
     return shape;
