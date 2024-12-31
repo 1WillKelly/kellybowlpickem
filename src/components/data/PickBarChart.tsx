@@ -7,7 +7,7 @@ interface Props {
   width?: number;
 }
 
-const SparkLine: React.FC<Props> = ({ picks, height = 36, width = 84 }) => {
+const PickBarChart: React.FC<Props> = ({ picks, height = 36, width = 84 }) => {
   const saturation = 82;
   return (
     <ResponsiveContainer width="100%" height={height}>
@@ -25,4 +25,4 @@ const SparkLine: React.FC<Props> = ({ picks, height = 36, width = 84 }) => {
   );
 };
 
-export default SparkLine;
+export default PickBarChart;
