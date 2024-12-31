@@ -120,7 +120,10 @@ const ParticipantPicksPage: NextPage = () => {
         </div>
         <div className="mx-4 mb-4 flex flex-row justify-center">
           <div className="h-14 w-full max-w-xl sm:h-20">
-            <PickBarChart picks={data.picks} />
+            <PickBarChart
+              picks={data.picks}
+              championshipPick={data.championshipPick}
+            />
           </div>
         </div>
         <section className={styles["picks-wrapper"]}>
