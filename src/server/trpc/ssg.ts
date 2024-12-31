@@ -7,7 +7,7 @@ export const createSSG = () => {
   return createServerSideHelpers({
     router: appRouter,
     // No session, generated at build time
-    ctx: { prisma: prisma, session: null },
+    ctx: { prisma: prisma, session: null, headers: new Headers() },
     transformer: superjson,
   });
 };
