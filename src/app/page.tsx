@@ -1,5 +1,3 @@
-import { type NextPage } from "next";
-
 import styles from "../styles/Home.module.scss";
 import Nav from "components/navigation/Nav";
 import Table from "components/table/Table";
@@ -8,7 +6,14 @@ import { createSSG } from "server/trpc/ssg";
 import HeadMetadata from "components/HeadMetadata";
 import { seasonDisplayName } from "utils/datetime";
 
-const Home: NextPage = () => {
+export const revalidate = 60;
+
+export default async function Page() {
+  const ssg = createSSG();
+  const participants = await ssg.participants.participantsWithScores.fetch({
+    participantIds: undefined,
+  });
+
   return (
     <>
       <HeadMetadata />
@@ -16,12 +21,12 @@ const Home: NextPage = () => {
         <Nav />
         <BigLogoHeader />
         <section className={styles["individual-standings"]}>
-          <Table />
+          <Table data={participants} />
         </section>
       </main>
     </>
   );
-};
+}
 
 export async function generateMetadata() {
   const seasonName = seasonDisplayName();
@@ -29,13 +34,3 @@ export async function generateMetadata() {
     title: `Bowl Pick&apos;em ${seasonName}`,
   };
 }
-
-export const getStaticProps = async () => {
-  const ssg = createSSG();
-  await ssg.participants.participantsWithScores.prefetch({
-    participantIds: undefined,
-  });
-  return { props: { trpcState: ssg.dehydrate() }, revalidate: 60 };
-};
-
-export default Home;

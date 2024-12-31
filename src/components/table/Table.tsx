@@ -2,20 +2,16 @@ import StreakDots from "components/data/StreakDots";
 import PickPossiblePoints from "components/PickPossiblePoints";
 import Image from "next/image";
 import Link from "next/link";
-import { api } from "utils/trpc";
+import { type RouterOutputs } from "utils/trpc";
 
 import StandingsTable from "./StandingsTable";
 
 interface TableProps {
-  participantIds?: string[];
+  data: RouterOutputs["participants"]["participantsWithScores"];
 }
 
-const Table: React.FC<TableProps> = (props) => {
-  const { data, isLoading } = api.participants.participantsWithScores.useQuery({
-    participantIds: props.participantIds,
-  });
-
-  const sortedParticipants = data?.participants
+const Table: React.FC<TableProps> = ({ data }) => {
+  const sortedParticipants = data.participants
     .map((p) => {
       const upcomingPicks = p.upcomingPicks.map((pick) => {
         return (
@@ -66,7 +62,7 @@ const Table: React.FC<TableProps> = (props) => {
   return (
     <StandingsTable
       individualStandings
-      loading={isLoading}
+      loading={false}
       items={sortedParticipants}
       columnNames={() => [
         "Name",
