@@ -13,3 +13,8 @@ export const getServerAuthSession = async (ctx: {
 }) => {
   return await getServerSession(ctx.req, ctx.res, authOptions);
 };
+
+export const getServerAuthSessionApp = async () => {
+  return getServerSession(authOptions);
+};
+

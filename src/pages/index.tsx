@@ -6,6 +6,7 @@ import Table from "components/table/Table";
 import BigLogoHeader from "components/BigLogoHeader/BigLogoHeader";
 import { createSSG } from "server/trpc/ssg";
 import HeadMetadata from "components/HeadMetadata";
+import { seasonDisplayName } from "utils/datetime";
 
 const Home: NextPage = () => {
   return (
@@ -21,6 +22,13 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+export async function generateMetadata() {
+  const seasonName = seasonDisplayName();
+  return {
+    title: `Bowl Pick&apos;em ${seasonName}`,
+  };
+}
 
 export const getStaticProps = async () => {
   const ssg = createSSG();

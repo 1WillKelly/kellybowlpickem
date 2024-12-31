@@ -8,7 +8,6 @@ const HeadMetadata: React.FC = () => {
     <Head>
       <link rel="icon" href="/favicon.ico" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>Bowl Pick&apos;em {seasonName}</title>
       <meta name="description" content={`Kelly Bowl Pick'em ${seasonName}`} />
     </Head>
   );
