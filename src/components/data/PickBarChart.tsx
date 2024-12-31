@@ -2,7 +2,6 @@ import {
   Bar,
   BarChart,
   Cell,
-  ComposedChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -14,7 +13,6 @@ type Picks = RouterOutputs["picks"]["participantPicks"]["picks"];
 
 interface Props {
   picks: Picks;
-  height?: number;
 }
 
 const pointsForPick = (pick: Picks[number]): number => {
@@ -30,7 +28,7 @@ const pointsForPick = (pick: Picks[number]): number => {
   return 0;
 };
 
-const PickBarChart: React.FC<Props> = ({ picks, height = 80 }) => {
+const PickBarChart: React.FC<Props> = ({ picks }) => {
   const picksWithPoints = picks.map((pick) => ({
     id: pick.id,
     correct: pick.correct,
@@ -40,8 +38,8 @@ const PickBarChart: React.FC<Props> = ({ picks, height = 80 }) => {
     miss: pick.settled && !pick.correct ? 2 : undefined,
   }));
   return (
-    <ResponsiveContainer width="100%" height={height}>
-      <ComposedChart data={picksWithPoints} barGap={30}>
+    <ResponsiveContainer width="100%" height="100%">
+      <BarChart data={picksWithPoints} barGap={30}>
         <YAxis hide />
         <XAxis dataKey="week" hide />
         <Tooltip
@@ -78,7 +76,7 @@ const PickBarChart: React.FC<Props> = ({ picks, height = 80 }) => {
             return <Cell key={pick.id} fill={fillColor} />;
           })}
         </Bar>
-      </ComposedChart>
+      </BarChart>
     </ResponsiveContainer>
   );
 };

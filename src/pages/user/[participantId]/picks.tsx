@@ -119,7 +119,7 @@ const ParticipantPicksPage: NextPage = () => {
           <h2>{data.season.displayName} Picks</h2>
         </div>
         <div className="mx-4 mb-4 flex flex-row justify-center">
-          <div className="w-full max-w-xl">
+          <div className="h-14 w-full max-w-xl sm:h-20">
             <PickBarChart picks={data.picks} />
           </div>
         </div>
