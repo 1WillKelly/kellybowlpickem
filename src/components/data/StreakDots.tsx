@@ -8,7 +8,7 @@ const StreakDots: React.FC<Props> = ({ picks }) => {
   return (
     <div className="flex flex-shrink-0 flex-row space-x-1">
       {picks.slice(picks.length - 10).map((pick) => {
-        const color = pick.correct ? "bg-green-500" : "bg-red-500";
+        const color = pick.correct ? "bg-green-correct" : "bg-red-incorrect";
         return (
           <div
             key={pick.id}
