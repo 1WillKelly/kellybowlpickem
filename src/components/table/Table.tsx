@@ -1,3 +1,4 @@
+import StreakDots from "components/data/StreakDots";
 import PickPossiblePoints from "components/PickPossiblePoints";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +17,7 @@ const Table: React.FC<TableProps> = (props) => {
 
   const sortedParticipants = data?.participants
     .map((p) => {
-      const upcomingPicks = p.picks.map((pick) => {
+      const upcomingPicks = p.upcomingPicks.map((pick) => {
         return (
           <div key={pick.id} className="flex flex-row space-x-2 pr-6">
             {pick.team.logo && (
@@ -39,6 +40,7 @@ const Table: React.FC<TableProps> = (props) => {
           name: p.name,
           id: p.id,
           upcomingPicks,
+          completedPicks: p.completedPicks,
         };
       }
 
@@ -50,6 +52,7 @@ const Table: React.FC<TableProps> = (props) => {
         points: scoring.points,
         possibleTotal: scoring.possiblePoints,
         upcomingPicks,
+        completedPicks: p.completedPicks,
       };
     })
     .sort((a, b) => {
@@ -62,7 +65,7 @@ const Table: React.FC<TableProps> = (props) => {
 
   return (
     <StandingsTable
-      individualtandings
+      individualStandings
       loading={isLoading}
       items={sortedParticipants}
       columnNames={() => [
@@ -75,7 +78,15 @@ const Table: React.FC<TableProps> = (props) => {
         <Link key={participant.id} href={`/user/${participant.id}/picks`}>
           {participant.name}
         </Link>,
-        participant.points,
+        <div
+          key={`points-${participant.id}`}
+          className="flex items-center justify-between space-x-1"
+        >
+          <div>{participant.points}</div>
+          {participant.completedPicks.length > 5 && (
+            <StreakDots picks={participant.completedPicks} />
+          )}
+        </div>,
         participant.possibleTotal,
         ...participant.upcomingPicks,
       ]}

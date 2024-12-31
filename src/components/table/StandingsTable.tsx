@@ -6,7 +6,7 @@ interface StandingsTableProps<TData> {
   items?: readonly TData[];
   renderItem: (item: TData) => React.ReactNode[];
   loading?: boolean;
-  individualtandings?: boolean;
+  individualStandings?: boolean;
 }
 
 const StandingsTable = <TData,>(props: StandingsTableProps<TData>) => {
@@ -15,14 +15,14 @@ const StandingsTable = <TData,>(props: StandingsTableProps<TData>) => {
       className={`
     ${styles.view}
     ${
-      props.individualtandings
+      props.individualStandings
         ? styles["individual-standings"]
         : styles["team-standings"]
     }
 `}
     >
       <div className={styles["table-wrapper"]}>
-        {props.individualtandings ? "" : ""}
+        {props.individualStandings ? "" : ""}
         <table className={styles["standings-table"]}>
           <thead>
             <tr>
