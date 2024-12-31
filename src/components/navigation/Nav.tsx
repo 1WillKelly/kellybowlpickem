@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 import FootballLogoMark from "../../assets/images/football.svg";
 import styles from "./index.module.scss";
 
@@ -22,7 +22,7 @@ const AdminNavItems = [
 const Nav: React.FC = () => {
   const { pathname } = useRouter();
   const { data: session } = useSession();
-  const { data: isAdmin } = trpc.admin.isAdmin.useQuery(undefined, {
+  const { data: isAdmin } = api.admin.isAdmin.useQuery(undefined, {
     retry: false,
     enabled: !!session,
   });

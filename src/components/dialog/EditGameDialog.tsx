@@ -1,7 +1,7 @@
 import Input from "components/Input";
 import { useForm } from "react-hook-form";
 import { type GameWithTeam } from "types/admin-types";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 
 import Dialog from "./Dialog";
 
@@ -20,8 +20,8 @@ interface FormProps {
 
 const EditGameDialog: React.FC<EditGameDialogProps> = (props) => {
   const { register, handleSubmit } = useForm<FormProps>();
-  const utils = trpc.useContext();
-  const updateGame = trpc.admin.updateGame.useMutation({
+  const utils = api.useUtils();
+  const updateGame = api.admin.updateGame.useMutation({
     onSuccess: () => {
       props.onClose();
       utils.admin.listGames.invalidate();

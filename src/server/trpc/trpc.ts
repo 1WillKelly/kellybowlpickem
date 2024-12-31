@@ -1,8 +1,31 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import { env } from "env/server.mjs";
+import { getServerAuthSessionApp } from "server/common/get-server-auth-session";
 import superjson from "superjson";
 
 import { type Context } from "./context";
+
+/**
+ * 1. CONTEXT
+ *
+ * This section defines the "contexts" that are available in the backend API.
+ *
+ * These allow you to access things when processing a request, like the database, the session, etc.
+ *
+ * This helper generates the "internals" for a tRPC context. The API handler and RSC clients each
+ * wrap this and provides the required context.
+ *
+ * @see https://trpc.io/docs/server/context
+ */
+export const createTRPCContext = async (opts: { headers: Headers }) => {
+  const session = await getServerAuthSessionApp();
+
+  return {
+    prisma,
+    session,
+    ...opts,
+  };
+};
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,

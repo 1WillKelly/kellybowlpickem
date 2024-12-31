@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import AdminLayout from "components/layouts/AdminLayout";
 
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 import EditableTable from "components/EditableTable";
 import { useState } from "react";
 import { type ParticipantWithTeam } from "types/admin-types";
@@ -12,7 +12,7 @@ import DeleteParticipantDialog from "components/dialog/DeleteParticipantDialog";
 import Link from "next/link";
 
 const AdminParticipantPage: NextPage = () => {
-  const { isLoading, data } = trpc.adminParticipants.participants.useQuery();
+  const { isLoading, data } = api.adminParticipants.participants.useQuery();
   const [editingParticipant, setEditingParticipant] = useState<
     ParticipantWithTeam | undefined
   >();

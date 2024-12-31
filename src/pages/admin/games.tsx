@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import AdminLayout from "components/layouts/AdminLayout";
 import EditableTable from "components/EditableTable";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 import { formatTime } from "components/date-time";
 import { useState } from "react";
 import { type GameWithTeam } from "types/admin-types";
@@ -31,7 +31,7 @@ const TeamCell: React.FC<TeamCellProps> = ({ team }) => {
 };
 
 const AdminGamePage: NextPage = () => {
-  const { isLoading, data } = trpc.admin.listGames.useQuery();
+  const { isLoading, data } = api.admin.listGames.useQuery();
 
   const [editingGame, setEditingGame] = useState<GameWithTeam | undefined>();
   const [dialogOpen, setDialogOpen] = useState(false);

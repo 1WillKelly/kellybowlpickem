@@ -8,7 +8,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { type TeamWithScores } from "types/admin-types";
 import styles from "../styles/Home.module.scss";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 import { createSSG } from "server/trpc/ssg";
 import HeadMetadata from "components/HeadMetadata";
 
@@ -82,7 +82,7 @@ const TeamSummary: React.FC<TeamSummaryProps> = (props) => {
 };
 
 const TeamsPage: NextPage = () => {
-  const { data, isLoading } = trpc.teams.teamSummary.useQuery();
+  const { data, isLoading } = api.teams.teamSummary.useQuery();
   return (
     <>
       <Head>

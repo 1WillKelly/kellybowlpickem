@@ -1,5 +1,5 @@
 import { type Participant } from "@prisma/client";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 
 import Dialog from "./Dialog";
 
@@ -12,15 +12,16 @@ interface DeleteParticipantDialogProps {
 const DeleteParticipantDialog: React.FC<DeleteParticipantDialogProps> = (
   props
 ) => {
-  const utils = trpc.useContext();
+  const utils = api.useUtils();
 
-  const deleteParticipant =
-    trpc.adminParticipants.deleteParticipant.useMutation({
+  const deleteParticipant = api.adminParticipants.deleteParticipant.useMutation(
+    {
       onSuccess: () => {
         props.onClose();
         utils.adminParticipants.participants.invalidate();
       },
-    });
+    }
+  );
 
   const onSubmit = () => {
     deleteParticipant.mutate({

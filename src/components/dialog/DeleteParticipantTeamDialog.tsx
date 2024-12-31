@@ -1,5 +1,5 @@
 import { type ParticipantTeam } from "@prisma/client";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 
 import Dialog from "./Dialog";
 
@@ -12,9 +12,9 @@ interface DeleteParticipantTeamDialogProps {
 const DeleteParticipantTeamDialog: React.FC<
   DeleteParticipantTeamDialogProps
 > = (props) => {
-  const utils = trpc.useContext();
+  const utils = api.useUtils();
 
-  const deleteParticipantTeam = trpc.adminTeams.deleteTeam.useMutation({
+  const deleteParticipantTeam = api.adminTeams.deleteTeam.useMutation({
     onSuccess: () => {
       props.onClose();
       utils.adminTeams.teams.invalidate();

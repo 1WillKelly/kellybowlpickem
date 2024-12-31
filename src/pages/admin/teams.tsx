@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import { useState } from "react";
 
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 import { type ParticipantTeam } from "@prisma/client";
 import AdminLayout from "components/layouts/AdminLayout";
 import EditableTable from "components/EditableTable";
@@ -10,7 +10,7 @@ import EditParticipantTeamDialog from "components/dialog/EditParticipantTeamDial
 import DeleteParticipantTeamDialog from "components/dialog/DeleteParticipantTeamDialog";
 
 const AdminTeamPage: NextPage = () => {
-  const { isLoading, data } = trpc.adminTeams.teams.useQuery();
+  const { isLoading, data } = api.adminTeams.teams.useQuery();
 
   const [editingTeamId, setEditingTeamId] = useState<string | undefined>();
   const [editDialogOpen, setEditDialogOpen] = useState(false);

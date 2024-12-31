@@ -2,7 +2,7 @@ import Button from "components/Button";
 import Input from "components/Input";
 import { useForm } from "react-hook-form";
 import { type TeamWithParticipants } from "types/admin-types";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 
 import Dialog from "./Dialog";
 
@@ -27,31 +27,32 @@ const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
     handleSubmit: handleSubmitAdd,
     reset: resetAddForm,
   } = useForm<AddParticipantFormProps>();
-  const utils = trpc.useContext();
+  const utils = api.useUtils();
 
   const { data: participantData } =
-    trpc.adminParticipants.participants.useQuery();
+    api.adminParticipants.participants.useQuery();
 
-  const update = trpc.adminTeams.upsertTeam.useMutation({
+  const update = api.adminTeams.upsertTeam.useMutation({
     onSuccess: () => {
       props.onClose();
       utils.adminTeams.teams.invalidate();
     },
   });
 
-  const addTeamMember = trpc.adminTeams.addParticipantToTeam.useMutation({
+  const addTeamMember = api.adminTeams.addParticipantToTeam.useMutation({
     onSuccess: () => {
       resetAddForm();
       utils.adminTeams.teams.invalidate();
     },
   });
 
-  const removeTeamMember =
-    trpc.adminTeams.removeParticipantFromTeam.useMutation({
+  const removeTeamMember = api.adminTeams.removeParticipantFromTeam.useMutation(
+    {
       onSuccess: () => {
         utils.adminTeams.teams.invalidate();
       },
-    });
+    }
+  );
 
   const onSubmit = handleSubmit(async (data) => {
     update.mutate({

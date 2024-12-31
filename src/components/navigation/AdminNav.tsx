@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 import Button from "components/Button";
 import FootballLogo from "../../../public/images/football-logo.png";
 
@@ -17,7 +17,7 @@ type SyncStatus = "unsynced" | "syncing" | "synced";
 
 const AdminNav: React.FC = () => {
   const { pathname } = useRouter();
-  const utils = trpc.useContext();
+  const utils = api.useUtils();
 
   const [gameSyncStatus, setGameSyncStatus] = useState<SyncStatus>("unsynced");
   const [scoresSyncStatus, setScoresSyncStatus] =
@@ -25,21 +25,21 @@ const AdminNav: React.FC = () => {
   const [championshipSyncStatus, setChampionshipSyncStatus] =
     useState<SyncStatus>("unsynced");
 
-  const syncGamesMutation = trpc.admin.syncGames.useMutation({
+  const syncGamesMutation = api.admin.syncGames.useMutation({
     onError: () => setGameSyncStatus("unsynced"),
     onSuccess: () => {
       utils.admin.listGames.invalidate();
       setGameSyncStatus("synced");
     },
   });
-  const syncScoresMutation = trpc.admin.syncScores.useMutation({
+  const syncScoresMutation = api.admin.syncScores.useMutation({
     onError: () => setScoresSyncStatus("unsynced"),
     onSuccess: () => {
       utils.admin.listGames.invalidate();
       setScoresSyncStatus("synced");
     },
   });
-  const syncChampionshipMutation = trpc.admin.syncChampionship.useMutation({
+  const syncChampionshipMutation = api.admin.syncChampionship.useMutation({
     onError: () => setChampionshipSyncStatus("unsynced"),
     onSuccess: () => {
       setChampionshipSyncStatus("synced");

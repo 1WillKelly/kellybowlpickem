@@ -2,12 +2,12 @@ import CSVPickImport from "components/import/CSVPickImport";
 import AdminLayout from "components/layouts/AdminLayout";
 import { type NextPage } from "next";
 import { type ChangeEvent, useState } from "react";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 
 const AdminPicksPage: NextPage = () => {
-  const { data: gamesData } = trpc.admin.listGames.useQuery();
+  const { data: gamesData } = api.admin.listGames.useQuery();
   const { data: participantData } =
-    trpc.adminPicks.participantsWithPicks.useQuery();
+    api.adminPicks.participantsWithPicks.useQuery();
 
   const [loadedFile, setLoadedFile] = useState<string | undefined>();
 

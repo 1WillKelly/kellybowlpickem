@@ -1,7 +1,7 @@
 import { type Participant } from "@prisma/client";
 import Input from "components/Input";
 import { useForm } from "react-hook-form";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 
 import Dialog from "./Dialog";
 
@@ -18,8 +18,8 @@ interface EditParticipantDialogProps {
 
 const EditParticipantDialog: React.FC<EditParticipantDialogProps> = (props) => {
   const { register, handleSubmit } = useForm<FormProps>();
-  const utils = trpc.useContext();
-  const update = trpc.adminParticipants.upsertParticipant.useMutation({
+  const utils = api.useUtils();
+  const update = api.adminParticipants.upsertParticipant.useMutation({
     onSuccess: () => {
       props.onClose();
       utils.adminParticipants.participants.invalidate();

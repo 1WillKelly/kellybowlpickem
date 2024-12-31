@@ -5,7 +5,7 @@ import {
   type ParticipantWithPicks,
   type GameWithTeam,
 } from "types/admin-types";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 
 interface CSVPickImportProps {
   csvData: string;
@@ -73,7 +73,7 @@ const findGame = (
 
 const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
   const [submitted, setSubmitted] = useState(false);
-  const submitPicks = trpc.adminPicks.submitPicks.useMutation({
+  const submitPicks = api.adminPicks.submitPicks.useMutation({
     onSuccess: () => {
       setSubmitted(true);
     },

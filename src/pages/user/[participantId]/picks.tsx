@@ -10,7 +10,7 @@ import CirclePickCorrect from "assets/images/circle-pick-correct.svg";
 import CirclePickIncorrect from "assets/images/circle-pick-incorrect.svg";
 
 import type { GameWithTeam, PickWithMatchupAndTeam } from "types/admin-types";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 
 import tableStyles from "components/table/index.module.scss";
 import styles from "./index.module.scss";
@@ -88,7 +88,7 @@ const MatchupStatusCell: React.FC<MatchupStatusCellProps> = (props) => {
 
 const ParticipantPicksPage: NextPage = () => {
   const { query } = useRouter();
-  const { data, isLoading } = trpc.picks.participantPicks.useQuery(
+  const { data, isLoading } = api.picks.participantPicks.useQuery(
     {
       participantId: query.participantId as string,
     },

@@ -2,7 +2,7 @@ import StreakDots from "components/data/StreakDots";
 import PickPossiblePoints from "components/PickPossiblePoints";
 import Image from "next/image";
 import Link from "next/link";
-import { trpc } from "utils/trpc";
+import { api } from "utils/trpc";
 
 import StandingsTable from "./StandingsTable";
 
@@ -11,9 +11,9 @@ interface TableProps {
 }
 
 const Table: React.FC<TableProps> = (props) => {
-  const { data, isLoading } = trpc.participants.participantsWithScores.useQuery(
-    { participantIds: props.participantIds }
-  );
+  const { data, isLoading } = api.participants.participantsWithScores.useQuery({
+    participantIds: props.participantIds,
+  });
 
   const sortedParticipants = data?.participants
     .map((p) => {
