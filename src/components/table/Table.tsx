@@ -1,4 +1,4 @@
-import SparkLine from "components/data/SparkLine";
+import StreakDots from "components/data/StreakDots";
 import PickPossiblePoints from "components/PickPossiblePoints";
 import Image from "next/image";
 import Link from "next/link";
@@ -84,9 +84,7 @@ const Table: React.FC<TableProps> = (props) => {
         >
           <div>{participant.points}</div>
           {participant.completedPicks.length > 5 && (
-            <div className="w-12 sm:w-20">
-              <SparkLine picks={participant.completedPicks} />
-            </div>
+            <StreakDots picks={participant.completedPicks} />
           )}
         </div>,
         participant.possibleTotal,
