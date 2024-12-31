@@ -7,12 +7,16 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { CHAMPIONSHIP_POINT_VALUE } from "server/constants/point-constants";
 import { type RouterOutputs } from "utils/trpc";
 
 type Picks = RouterOutputs["picks"]["participantPicks"]["picks"];
+type ChampionshipPick =
+  RouterOutputs["picks"]["participantPicks"]["championshipPick"];
 
 interface Props {
   picks: Picks;
+  championshipPick: ChampionshipPick;
 }
 
 const pointsForPick = (pick: Picks[number]): number => {
@@ -28,8 +32,7 @@ const pointsForPick = (pick: Picks[number]): number => {
   return 0;
 };
 
-const PickBarChart: React.FC<Props> = ({ picks }) => {
-  // TODO: Include championship picks
+const PickBarChart: React.FC<Props> = ({ picks, championshipPick }) => {
   const picksWithPoints = picks.map((pick) => ({
     id: pick.id,
     correct: pick.correct,
@@ -38,6 +41,22 @@ const PickBarChart: React.FC<Props> = ({ picks }) => {
     name: pick.matchup.name,
     miss: pick.settled && !pick.correct ? 2 : undefined,
   }));
+
+  const hasChampionshipPick =
+    picks.find((p) => p.matchup.isChampionship) !== undefined;
+
+  if (!hasChampionshipPick) {
+    for (const pick of championshipPick) {
+      picksWithPoints.push({
+        id: pick.id,
+        correct: null,
+        settled: false,
+        points: CHAMPIONSHIP_POINT_VALUE,
+        name: "Championship",
+        miss: undefined,
+      });
+    }
+  }
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={picksWithPoints} barCategoryGap={2}>
