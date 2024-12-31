@@ -1,25 +1,35 @@
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  Cell,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { type RouterOutputs } from "utils/trpc";
 
 interface Props {
-  picks: RouterOutputs["participants"]["participantsWithScores"]["participants"][number]["completedPicks"];
+  picks: RouterOutputs["picks"]["participantPicks"]["picks"];
   height?: number;
   width?: number;
 }
 
-const PickBarChart: React.FC<Props> = ({ picks, height = 36, width = 84 }) => {
-  const saturation = 82;
+const PickBarChart: React.FC<Props> = ({ picks, height = 60, width = 84 }) => {
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <BarChart data={picks.slice(picks.length - 10)} width={width}>
+      <BarChart data={picks} width={width}>
         <YAxis hide />
         <XAxis dataKey="week" hide />
-        <Bar
-          type="natural"
-          dataKey="settledPoints"
-          strokeWidth={1.5}
-          fill={`hsl(32, ${saturation}%, 58.4%)`}
-        />
+        <Bar type="natural" dataKey="settledPoints" radius={2}>
+          {picks.map((pick) => {
+            const fillColor = pick.settled
+              ? pick.correct
+                ? "#27ae60"
+                : "hsl(0, 100%, 50%)"
+              : "hsla(230, 7%, 84%, 0.4)";
+            return <Cell key={pick.id} fill={fillColor} />;
+          })}
+        </Bar>
       </BarChart>
     </ResponsiveContainer>
   );

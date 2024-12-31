@@ -19,6 +19,7 @@ import { CHAMPIONSHIP_POINT_VALUE } from "server/constants/point-constants";
 import HeadMetadata from "components/HeadMetadata";
 import { createSSG } from "server/trpc/ssg";
 import { type DehydratedState } from "@tanstack/react-query";
+import PickBarChart from "components/data/PickBarChart";
 
 interface PickCellProps {
   pick: PickWithMatchupAndTeam;
@@ -116,6 +117,11 @@ const ParticipantPicksPage: NextPage = () => {
         <div className={styles["participant-intro"]}>
           <h1>{data.participant.name}</h1>
           <h2>{data.season.displayName} Picks</h2>
+        </div>
+        <div className="mx-4 mb-4 flex flex-row justify-center">
+          <div className="w-full max-w-xl">
+            <PickBarChart picks={data.picks} />
+          </div>
         </div>
         <section className={styles["picks-wrapper"]}>
           <div className={tableStyles.view}>
