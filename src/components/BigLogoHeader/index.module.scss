@@ -1,6 +1,6 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: variables.$mobile-breakpoint) {
   .big-logo-header {
     padding: 0.5rem 0 2rem;
   }

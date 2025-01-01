@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 .view {
   margin: auto;
@@ -9,7 +9,7 @@
   position: relative;
   overflow: auto;
   box-shadow: 0 2px 4px rgb(0 0 0 / 8%);
-  border: 1px solid $color-table-border;
+  border: 1px solid variables.$color-table-border;
   border-radius: 6px;
   white-space: nowrap;
 }
@@ -21,7 +21,7 @@
   background-color: white;
 
   tr {
-    border-bottom: 1px solid $color-table-border;
+    border-bottom: 1px solid variables.$color-table-border;
 
     &:last-child {
       border-bottom: none;
@@ -32,8 +32,8 @@
     font-weight: 500;
     font-size: 12.5px;
     color: #64676d;
-    background-color: $color-table-header-bg;
-    border-bottom: 1px solid $color-table-border;
+    background-color: variables.$color-table-header-bg;
+    border-bottom: 1px solid variables.$color-table-border;
   }
 
   th,
@@ -52,7 +52,7 @@
       padding: 0;
       text-align: center;
       font-weight: 500;
-      color: $color-brand-yellow;
+      color: variables.$color-brand-yellow;
     }
 
     &.name {
@@ -61,7 +61,7 @@
   }
 
   a {
-    color: $color-primary;
+    color: variables.$color-primary;
 
     &:hover {
       text-decoration: underline;
@@ -88,7 +88,7 @@ $team-second-col-width: 190px;
 
 .second-col {
   padding-left: 0 !important;
-  box-shadow: inset -1px 0 0 0 $color-table-border;
+  box-shadow: inset -1px 0 0 0 variables.$color-table-border;
   width: $individuals-second-col-width;
   min-width: $individuals-second-col-width;
   max-width: $individuals-second-col-width;
@@ -115,11 +115,11 @@ $mobile-first-col-width: 30px;
 $mobile-individuals-second-col-width: 116px;
 $mobile-team-second-col-width: 164px;
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: variables.$mobile-breakpoint) {
   .table-wrapper {
     border: none;
-    border-top: 1px solid $color-table-border;
-    border-bottom: 1px solid $color-table-border;
+    border-top: 1px solid variables.$color-table-border;
+    border-bottom: 1px solid variables.$color-table-border;
     border-radius: 0;
   }
 
@@ -148,7 +148,7 @@ $mobile-team-second-col-width: 164px;
 
   .second-col {
     padding-left: 0 !important;
-    box-shadow: inset -1px 0 0 0 $color-table-border;
+    box-shadow: inset -1px 0 0 0 variables.$color-table-border;
     width: $mobile-individuals-second-col-width;
     min-width: $mobile-individuals-second-col-width;
     max-width: $mobile-individuals-second-col-width;

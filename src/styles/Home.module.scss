@@ -1,9 +1,9 @@
-@import "../styles/variables";
+@use "../styles/variables";
 
 .individual-standings {
-  padding: 0 $gutters-width $gutters-width;
+  padding: 0 variables.$gutters-width variables.$gutters-width;
 
-  @media (max-width: $mobile-breakpoint) {
-    padding: 0 0 $gutters-mobile-width;
+  @media (max-width: variables.$mobile-breakpoint) {
+    padding: 0 0 variables.$gutters-mobile-width;
   }
 }
