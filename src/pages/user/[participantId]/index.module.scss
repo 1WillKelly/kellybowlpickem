@@ -1,11 +1,11 @@
-@import "../../../styles/variables";
+@use "../../../styles/variables";
 
 .participant-intro {
   margin: 3.5rem auto 2rem;
   text-align: center;
 
   h1 {
-    color: $color-primary;
+    color: variables.$color-primary;
     font-size: 40px;
     font-weight: 600;
   }
@@ -18,10 +18,10 @@
 
 .picks-wrapper {
   max-width: 960px;
-  margin: 0 auto $gutters-width;
+  margin: 0 auto variables.$gutters-width;
 
-  @media (max-width: $mobile-breakpoint) {
-    margin: 0 auto $gutters-mobile-width;
+  @media (max-width: variables.$mobile-breakpoint) {
+    margin: 0 auto variables.$gutters-mobile-width;
   }
 }
 
@@ -124,13 +124,13 @@
   }
 }
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: variables.$mobile-breakpoint) {
   .participant-intro {
     margin: 0.75rem auto 1rem;
     text-align: center;
 
     h1 {
-      color: $color-primary;
+      color: variables.$color-primary;
       font-size: 30px;
       font-weight: 600;
     }

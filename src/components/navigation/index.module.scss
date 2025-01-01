@@ -1,7 +1,7 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 .primary-nav {
-  padding: 0 $gutters-width;
+  padding: 0 variables.$gutters-width;
   height: 72px;
   width: 100%;
   display: flex;
@@ -21,8 +21,8 @@
     }
   }
 
-  @media (max-width: $mobile-breakpoint) {
-    padding: 0 $gutters-mobile-width;
+  @media (max-width: variables.$mobile-breakpoint) {
+    padding: 0 variables.$gutters-mobile-width;
 
     ul {
       margin-left: 1.1rem;
@@ -67,10 +67,10 @@ $bottom-border-width: 1px;
 
   &.active {
     color: #21242b;
-    border-bottom: $bottom-border-width solid $color-brand-yellow;
+    border-bottom: $bottom-border-width solid variables.$color-brand-yellow;
   }
 
-  @media (max-width: $mobile-breakpoint) {
+  @media (max-width: variables.$mobile-breakpoint) {
     font-size: 12.5px;
     padding: 0.15rem 0;
   }
@@ -99,7 +99,7 @@ $bottom-border-width: 1px;
       padding: 2px 5px;
 
       a {
-        color: $color-primary;
+        color: variables.$color-primary;
       }
     }
   }
