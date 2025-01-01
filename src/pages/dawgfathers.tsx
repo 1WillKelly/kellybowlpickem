@@ -9,13 +9,13 @@ import HeadMetadata from "components/HeadMetadata";
 const Home: NextPage = () => {
   const participantIds = [
     // Dawgfather user IDs
-    "clbpimp7d000mmu0857uq0p8m",
-    "clbqrtmog0014mh08u6d12mf6",
-    "clbpvgnj70002i508dju21cwt",
-    "clbqrs3v0000qmh08wl2c2z45",
-    "clblg4pee000rla08ll9zsquy",
-    "clbqrrjfy001ejs08az4ee57t",
-    "clbqsequ80004l1084dp9u0nh",
+    "cm5886qi30013fa98bzjpkh3t",
+    "cm5880loq001g2gk6a4pqre6w",
+    "cm588566o00392gk6qg6mcrja",
+    "cm58851qb000dfa98mdeyllkj",
+    "cm58841f5002r2gk6hd9ra1jd",
+    "cm5884hmo0007fa98luc2rgxq",
+    "cm5884bww0003fa984lcag8k7",
   ];
   return (
     <>
