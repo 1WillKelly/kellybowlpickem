@@ -5,7 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
-import PlausibleProvider from "next-plausible";
+import Script from "next/script";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -13,12 +13,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <PlausibleProvider
-        domain="kellybowlpickem.com"
-        customDomain="https://plausible.ndella.com"
-      >
-        <Component {...pageProps} />
-      </PlausibleProvider>
+      {process.env.NODE_ENV === "production" && (
+        <Script
+          defer
+          src="https://umami.ndella.com/script.js"
+          data-website-id="2a130eb1-8e27-4fca-940e-d6ea925d097b"
+        />
+      )}
+
+      <Component {...pageProps} />
     </SessionProvider>
   );
 };

@@ -24,7 +24,6 @@
     "cross-fetch": "^3.1.5",
     "next": "^15",
     "next-auth": "^4.24.11",
-    "next-plausible": "^3.12.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.40.0",
