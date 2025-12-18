@@ -33,6 +33,8 @@ export const syncBowlGames = async () => {
     client.bowlTeams(),
   ]);
   const teams = await syncTeams(games, gameTeams);
+  console.log("Games", { games });
+  console.log("Media", { gamesMedia });
 
   const gamesWithMedia: (CFBDGame & Partial<CFBDGameMedia>)[] = games.map(
     (g) => {
@@ -69,19 +71,21 @@ export const syncBowlGames = async () => {
     },
   });
 
+  console.log("Existing matchups", existingMatchups);
+
   const existingMatchupIdSet = new Set(existingMatchups.map((m) => m.apiId));
   const matchupCreateFields = (m: CFBDGame & Partial<CFBDGameMedia>) => ({
     apiId: m.id.toString(),
-    startDate: new Date(m.start_date),
+    startDate: new Date(m.startDate),
     completed: m.completed,
-    homeScore: m.home_points,
-    awayScore: m.away_points,
+    homeScore: m.homePoints,
+    awayScore: m.awayPoints,
     name: m.notes,
     week: m.week,
-    seasonType: m.season_type,
+    seasonType: m.seasonType,
     seasonId: season.id,
-    homeTeamId: getTeamId(m.home_id),
-    awayTeamId: getTeamId(m.away_id),
+    homeTeamId: getTeamId(m.homeId),
+    awayTeamId: getTeamId(m.awayId),
     tvChannel: m.outlet,
   });
 
@@ -104,10 +108,10 @@ export const syncBowlGames = async () => {
     console.log("Matchup data", matchupData);
 
     const updateFields = {
-      startDate: new Date(matchupData.start_date),
+      startDate: new Date(matchupData.startDate),
       completed: matchupData.completed,
-      homeScore: matchupData.home_points,
-      awayScore: matchupData.away_points,
+      homeScore: matchupData.homePoints,
+      awayScore: matchupData.awayPoints,
       tvChannel: matchupData.outlet,
     };
 

@@ -26,16 +26,16 @@ export const syncTeams = async (
 
   const teams = games.flatMap((game) => [
     {
-      apiId: game.away_id.toString(),
-      name: game.away_team,
-      conference: game.away_conference,
-      logo: getLogo(game.away_id.toString()),
+      apiId: game.awayId.toString(),
+      name: game.awayTeam,
+      conference: game.awayConference,
+      logo: getLogo(game.awayId.toString()),
     },
     {
-      apiId: game.home_id.toString(),
-      name: game.home_team,
-      conference: game.home_conference,
-      logo: getLogo(game.home_id.toString()),
+      apiId: game.homeId.toString(),
+      name: game.homeTeam,
+      conference: game.homeConference,
+      logo: getLogo(game.homeId.toString()),
     },
   ]);
   const teamApiIds = teams.map((team) => team.apiId);

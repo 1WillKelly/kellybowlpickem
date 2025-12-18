@@ -26,18 +26,17 @@ const bowlNameToCandidate = (name: string): string => {
   const cleaned = lowered
     // Legacy replacements
     .replace("sdccu ", "")
+    .replace("bowl of beans", "bowl")
     .replace("hawaii", "hawai'i")
     .replace("hawai'i", "hawaiʻi")
-    .replace("gasparill", "gasparilla")
+    .replace("hawaiê»i", "hawaiʻi")
     .replace("cfp semi - ", "")
     // 2025-26 sponsor removals
     .replace("bucked up ", "")
     .replace(" hosted by gronk", "")
     .replace("is4s ", "")
     .replace("staffdna ", "")
-    .replace("68 ventures ", "bahamas ") // 68 Ventures sponsors Bahamas Bowl
     .replace("xbox ", "")
-    .replace("union home mortgage ", "")
     .replace("famous ", "")
     .replace("bush's ", "")
     .replace(" of beans", "")
@@ -158,7 +157,16 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
     })
     .filter(Boolean);
   if (missingGames.length) {
-    return <div>No matchup on record for games: {missingGames.join(" ")}</div>;
+    return (
+      <div>
+        No matchup on record for games:
+        <ul>
+          {missingGames.map((game, idx) => (
+            <li key={idx}>{game}</li>
+          ))}
+        </ul>
+      </div>
+    );
   }
 
   // TODO: We currently can't upload championship picks because the

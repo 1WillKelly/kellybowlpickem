@@ -31,8 +31,8 @@ export const syncScores = async () => {
 
     if (
       matchup.completed !== game.completed ||
-      matchup.awayScore !== game.away_points ||
-      matchup.homeScore !== game.home_points
+      matchup.awayScore !== game.awayPoints ||
+      matchup.homeScore !== game.homePoints
     ) {
       if (matchup.completed !== game.completed) {
         // Only push the ID, because the in-memory data representation isn't
@@ -45,8 +45,8 @@ export const syncScores = async () => {
           where: { id: matchup.id },
           data: {
             completed: game.completed,
-            homeScore: game.home_points,
-            awayScore: game.away_points,
+            homeScore: game.homePoints,
+            awayScore: game.awayPoints,
           },
         })
       );
