@@ -82,7 +82,6 @@ const cleanTeamName = (name: string): string => {
     .replace(/^[0-9]+\./, "")
     .trim()
     .replace("Miami-OH", "Miami (OH)")
-    .replace("Southern Miss", "Southern Mississippi")
     .replace(/New Mexico St$/, "New Mexico State")
     .replace("San Jose", "San José");
 };
