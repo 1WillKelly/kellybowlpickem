@@ -23,10 +23,13 @@ const bowlNameToCandidate = (name: string): string => {
   const lowered = name.toLowerCase();
   return lowered
     .replace("sdccu ", "")
+    .replace("hosted by gronk", "")
+    .replace("bowl of beans", "bowl")
     .replace("hawaii", "hawai'i")
     .replace("hawai'i", "hawaiʻi")
-    .replace("gasparill", "gasparilla")
-    .replace("cfp semi - ", "");
+    .replace("hawaiê»i", "hawaiʻi")
+    .replace("cfp semi - ", "")
+    .trim();
 };
 
 const cleanTeamName = (name: string): string => {
@@ -112,7 +115,16 @@ const CSVPickImport: React.FC<CSVPickImportProps> = (props) => {
     })
     .filter(Boolean);
   if (missingGames.length) {
-    return <div>No matchup on record for games: {missingGames.join(" ")}</div>;
+    return (
+      <div>
+        No matchup on record for games:
+        <ul>
+          {missingGames.map((game, idx) => (
+            <li key={idx}>{game}</li>
+          ))}
+        </ul>
+      </div>
+    );
   }
 
   // TODO: We currently can't upload championship picks because the
