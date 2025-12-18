@@ -23,7 +23,7 @@ const bowlNameToCandidate = (name: string): string => {
   const lowered = name.toLowerCase();
 
   // Strip out sponsor names and normalize bowl names for 2025-26 season
-  let cleaned = lowered
+  const cleaned = lowered
     // Legacy replacements
     .replace("sdccu ", "")
     .replace("hawaii", "hawai'i")
