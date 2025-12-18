@@ -7,21 +7,21 @@ export interface CFBDGame {
   id: number;
   season: number;
   week: number;
-  season_type: string;
-  start_date: string;
+  seasonType: string;
+  startDate: string;
   completed: boolean;
-  conference_game: boolean;
+  conferenceGame: boolean;
   venue: string;
-  home_id: number;
-  home_team: string;
-  home_conference: string;
-  home_points: number;
-  home_division: string;
-  away_id: number;
-  away_team: string;
-  away_conference: string;
-  away_points: number;
-  away_division: string;
+  homeId: number;
+  homeTeam: string;
+  homeConference: string;
+  homePoints: number;
+  homeDivision: string;
+  awayId: number;
+  awayTeam: string;
+  awayConference: string;
+  awayPoints: number;
+  awayDivision: string;
   // Will be the bowl game title
   notes?: string;
 }
@@ -96,15 +96,24 @@ export class CFBDataSource {
   }
 
   async postSeasonGames(season: number): Promise<CFBDGame[]> {
-    return (await this.games(season, { seasonType: "postseason" })).filter(
-      // Ignore non-bowl games and FCS championship games
+    return (
+      await this.games(season, {
+        seasonType: "postseason",
+        classification: "fbs",
+      })
+    ).filter(
       // Non-bowl games have no `notes`
-      (g) => g.notes && g.home_division === "fbs"
+      (g) => {
+        return g.notes;
+      }
     );
   }
 
   postSeasonGamesMedia(season: number): Promise<CFBDGameMedia[]> {
-    return this.gamesMedia(season, { seasonType: "postseason" });
+    return this.gamesMedia(season, {
+      seasonType: "postseason",
+      classification: "fbs",
+    });
   }
 
   bowlTeams(): Promise<CFBDTeam[]> {
