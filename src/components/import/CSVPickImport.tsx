@@ -21,15 +21,58 @@ const cleanName = (name: string): string => {
 
 const bowlNameToCandidate = (name: string): string => {
   const lowered = name.toLowerCase();
-  return lowered
+
+  // Strip out sponsor names and normalize bowl names for 2025-26 season
+  const cleaned = lowered
+    // Legacy replacements
     .replace("sdccu ", "")
-    .replace("hosted by gronk", "")
     .replace("bowl of beans", "bowl")
     .replace("hawaii", "hawai'i")
     .replace("hawai'i", "hawaiʻi")
     .replace("hawaiê»i", "hawaiʻi")
     .replace("cfp semi - ", "")
-    .trim();
+    // 2025-26 sponsor removals
+    .replace("bucked up ", "")
+    .replace(" hosted by gronk", "")
+    .replace("is4s ", "")
+    .replace("staffdna ", "")
+    .replace("xbox ", "")
+    .replace("famous ", "")
+    .replace("bush's ", "")
+    .replace(" of beans", "")
+    .replace("scooter's coffee ", "")
+    .replace("sheraton ", "")
+    .replace("gameabove sports ", "")
+    .replace("servpro ", "")
+    .replace("rate ", "")
+    .replace("go bowling ", "")
+    .replace("bad boy mowers ", "")
+    .replace("wasabi ", "")
+    .replace("pop-tarts ", "")
+    .replace("snoop dogg ", "")
+    .replace("isleta ", "")
+    .replace("taxslayer ", "")
+    .replace("kinder's ", "")
+    .replace("jlab ", "")
+    .replace("radiance technologies ", "")
+    .replace("liberty mutual ", "")
+    .replace("valero ", "")
+    .replace("reliaquest ", "")
+    .replace("tony the tiger ", "")
+    .replace("cheez-it ", "")
+    .replace("srs distribution ", "")
+    .replace("goodyear ", "")
+    .replace("capital one ", "")
+    .replace("prudential ", "")
+    .replace("allstate ", "")
+    .replace("lockheed martin ", "")
+    .replace("autozone ", "")
+    .replace("trust & will ", "")
+    .replace("duke's mayo ", "")
+    .replace("vrbo ", "")
+    .replace("chick-fil-a ", "");
+
+  return cleaned;
 };
 
 const cleanTeamName = (name: string): string => {
