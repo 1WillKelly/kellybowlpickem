@@ -30,6 +30,7 @@ const bowlNameToCandidate = (name: string): string => {
     .replace("hawaii", "hawai'i")
     .replace("hawai'i", "hawaiʻi")
     .replace("hawaiê»i", "hawaiʻi")
+    .replace("gasparill", "gasparilla")
     .replace("cfp semi - ", "")
     // 2025-26 sponsor removals
     .replace("bucked up ", "")
@@ -37,6 +38,7 @@ const bowlNameToCandidate = (name: string): string => {
     .replace("is4s ", "")
     .replace("staffdna ", "")
     .replace("xbox ", "")
+    .replace("union home mortgage ", "")
     .replace("famous ", "")
     .replace("bush's ", "")
     .replace(" of beans", "")
