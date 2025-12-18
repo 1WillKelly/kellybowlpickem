@@ -15,6 +15,7 @@ export interface CFBDGame {
   homeId: number;
   homeTeam: string;
   homeConference: string;
+  homeClassification: string;
   homePoints: number;
   homeDivision: string;
   awayId: number;
