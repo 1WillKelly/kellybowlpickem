@@ -8,14 +8,14 @@ const StreakDots: React.FC<Props> = ({ picks }) => {
   const streak = picks.slice(picks.length - 10);
 
   return (
-    <div className="flex flex-shrink-0 flex-row space-x-[3px] sm:space-x-1">
+    <div className="flex flex-shrink-0 flex-row space-x-[2px] sm:space-x-[3px]">
       {streak.map((pick, idx) => {
         const hideOnMobile = idx < streak.length - 5 ? "hidden sm:block" : "";
         const color = pick.correct ? "bg-green-correct" : "bg-red-incorrect";
         return (
           <div
             key={pick.id}
-            className={`h-[6px] w-[6px] rounded-sm ${color} ${hideOnMobile}`}
+            className={`h-[5px] w-[5px] sm:h-[6px] sm:w-[6px] rounded-sm ${color} ${hideOnMobile}`}
           />
         );
       })}

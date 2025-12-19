@@ -80,7 +80,7 @@ const Table: React.FC<TableProps> = (props) => {
         </Link>,
         <div
           key={`points-${participant.id}`}
-          className="flex items-center justify-between space-x-1"
+          className="flex items-center justify-between gap-3"
         >
           <div>{participant.points}</div>
           {participant.completedPicks.length > 2 && (
