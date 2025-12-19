@@ -1,5 +1,9 @@
 # KellyBowlPickem.com
 
+## Analytics
+
+View site analytics on [Umami here](https://umami.ndella.com/share/8Sg1V1oqrbThkYIw)
+
 ## Development environment
 
 This repository uses Docker (and `docker-compose`) in development for its MySQL
