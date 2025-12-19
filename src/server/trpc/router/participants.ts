@@ -28,6 +28,7 @@ export const participantsRouter = router({
       })
     )
     .query(async ({ input, ctx }) => {
+      const season = await getSeason();
       const whereClause = input.participantIds
         ? {
             where: {
@@ -38,7 +39,6 @@ export const participantsRouter = router({
           }
         : undefined;
 
-      const season = await getSeason();
       const upcomingGames = await ctx.prisma.footballMatchup.findMany({
         where: {
           season,
@@ -58,6 +58,9 @@ export const participantsRouter = router({
             },
           },
           picks: {
+            where: {
+              season,
+            },
             orderBy: {
               matchup: {
                 startDate: "asc",

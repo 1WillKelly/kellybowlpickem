@@ -71,6 +71,24 @@ export const adminPicksRouter = router({
           }
         });
       });
+
+      // Check for duplicate participantId/matchupId pairs
+      const pickKeys = new Set<string>();
+      const duplicates: string[] = [];
+      picksToCreate.forEach((pick) => {
+        const key = `${pick.participantId}:${pick.matchupId}`;
+        if (pickKeys.has(key)) {
+          duplicates.push(key);
+        }
+        pickKeys.add(key);
+      });
+
+      if (duplicates.length > 0) {
+        throw new Error(
+          `Duplicate picks found for participantId:matchupId pairs: ${duplicates.join(", ")}`
+        );
+      }
+
       await ctx.prisma.participantPick.createMany({
         data: picksToCreate,
       });
