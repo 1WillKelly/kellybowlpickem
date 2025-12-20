@@ -5,7 +5,7 @@ interface Props {
 }
 
 const StreakDots: React.FC<Props> = ({ picks }) => {
-  const streak = picks.slice(picks.length - 10);
+  const streak = picks.slice(-10);
 
   return (
     <div className="flex flex-shrink-0 flex-row space-x-[2px] sm:space-x-[3px]">
@@ -16,6 +16,7 @@ const StreakDots: React.FC<Props> = ({ picks }) => {
           <div
             key={pick.id}
             className={`h-[5px] w-[5px] sm:h-[6px] sm:w-[6px] rounded-sm ${color} ${hideOnMobile}`}
+            aria-label={pick.team.name}
           />
         );
       })}
