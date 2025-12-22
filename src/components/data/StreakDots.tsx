@@ -5,12 +5,12 @@ interface Props {
 }
 
 const StreakDots: React.FC<Props> = ({ picks }) => {
-  const streak = picks.slice(-10);
+  const streak = picks.slice(-10).reverse();
 
   return (
     <div className="flex flex-shrink-0 flex-row space-x-[2px] sm:space-x-[3px]">
       {streak.map((pick, idx) => {
-        const hideOnMobile = idx < streak.length - 5 ? "hidden sm:block" : "";
+        const hideOnMobile = idx >= 5 ? "hidden sm:block" : "";
         const color = pick.correct ? "bg-green-correct" : "bg-red-incorrect";
         return (
           <div
