@@ -79,7 +79,7 @@ const bowlNameToCandidate = (name: string): string => {
 
 const cleanTeamName = (name: string): string => {
   return cleanName(name)
-    .replace(/\(.*\)/, "")
+    .replace(/^\([0-9]+\)\s*/, "") // Only remove rankings like "(15) Miami", not location identifiers like "Miami (OH)"
     .replace(/^[0-9]+\./, "")
     .trim()
     .replace("Miami-OH", "Miami (OH)")
