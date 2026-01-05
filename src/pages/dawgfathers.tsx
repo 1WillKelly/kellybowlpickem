@@ -8,7 +8,7 @@ import HeadMetadata from "components/HeadMetadata";
 
 const Home: NextPage = () => {
   const participantIds = [
-    // Dawgfather user IDs
+    // Dawgfather user IDs (some new IDs added)
     "cm5886qi30013fa98bzjpkh3t",
     "cm5880loq001g2gk6a4pqre6w",
     "cm588566o00392gk6qg6mcrja",
@@ -17,6 +17,7 @@ const Home: NextPage = () => {
     "cm5884hmo0007fa98luc2rgxq",
     "cm5884bww0003fa984lcag8k7",
     "cmj7ebt4t0022136qnvgtfx6y",
+    "cmj7ehqn6001b4ksairc4wp6o",
   ];
   return (
     <>
